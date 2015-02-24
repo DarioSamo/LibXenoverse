@@ -3,7 +3,7 @@ Dragon Ball Xenoverse Modding Tools and Library.
 
 Simple library to handle Dragon Ball Xenoverse's file formats. Tested on the Xbox 360 version's files so far and hopefully PC when it's released.
 
-You can also integrate LibXenoverse into your own applications if you wish to add support for these files on a custom game engine, previewer, plugin, etc. Simply build LibXenoverse.lib
+You can also integrate LibXenoverse into your own applications if you wish to add support for these files on a custom game engine, previewer, plugin, etc. Simply build LibXenoverse.lib and link it.
 
 #### System Requirements
 OS
