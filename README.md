@@ -19,4 +19,4 @@ If the LIBXENOVERSE_FBX_SUPPORT preprocessor flag is defined, you'll need to dow
 Win32 builds of the tools are provided on the /bin/ directory.
 
 ####License
-(todo)
+GNU General Public License, version 2
