@@ -18,5 +18,8 @@ If the LIBXENOVERSE_FBX_SUPPORT preprocessor flag is defined, you'll need to dow
 #### Builds
 Win32 builds of the tools are provided on the /bin/ directory.
 
+#### Modding the game
+It's recommended to use the data folder inside of data2.cpk to override the files from data.cpk. It's much smaller and faster to repack than the main big data.cpk. Use the CPKPack tool to extract and repack Dragon Ball Xenoverse's CPK files.
+
 ####License
 (todo)

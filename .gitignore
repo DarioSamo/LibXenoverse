@@ -5,6 +5,7 @@
 *.suo
 *.user
 *.sln.docstates
+*.cpk
 
 # Build results
 [Dd]ebug/
@@ -15,7 +16,6 @@ x64/
 x86/
 build/
 bld/
-[Bb]in/
 [Oo]bj/
 
 # Roslyn cache directories
@@ -181,3 +181,8 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+data/
+data2/
+resources/
+pack-data-2.bat

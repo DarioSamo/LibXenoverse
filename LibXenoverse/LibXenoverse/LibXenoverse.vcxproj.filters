@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="tinyxml">
+      <UniqueIdentifier>{b3684e13-e2da-4b9b-b3f9-81896efaf6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EMD">
+      <UniqueIdentifier>{13b17b19-50e4-4847-a0a9-796c77f66dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EMB">
+      <UniqueIdentifier>{2e9156e5-1c3d-4a0b-9109-fa513d45336b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EMM">
+      <UniqueIdentifier>{6c5b47bc-3c93-49d9-96e2-47568e7b7449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ESK">
+      <UniqueIdentifier>{0f31a0d7-53e7-4104-a83d-76ff6d7d8367}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CBS">
+      <UniqueIdentifier>{54eb7a12-caa7-4afc-882b-7f406d73da67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AGD">
+      <UniqueIdentifier>{021278b5-e7bf-4a38-bc7a-b4419148a08f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Files.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="half.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinystr.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml\tinyxml.h">
+      <Filter>tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="LibXenoverse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EMD.h">
+      <Filter>EMD</Filter>
+    </ClInclude>
+    <ClInclude Include="ESK.h">
+      <Filter>ESK</Filter>
+    </ClInclude>
+    <ClInclude Include="EMM.h">
+      <Filter>EMM</Filter>
+    </ClInclude>
+    <ClInclude Include="EMB.h">
+      <Filter>EMB</Filter>
+    </ClInclude>
+    <ClInclude Include="CBS.h">
+      <Filter>CBS</Filter>
+    </ClInclude>
+    <ClInclude Include="AGD.h">
+      <Filter>AGD</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Files.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="half.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxml.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlerror.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinyxmlparser.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml\tinystr.cpp">
+      <Filter>tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="EMD.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDFBX.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDMesh.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDModel.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDSubmesh.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDVertex.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="ESK.cpp">
+      <Filter>ESK</Filter>
+    </ClCompile>
+    <ClCompile Include="EMM.cpp">
+      <Filter>EMM</Filter>
+    </ClCompile>
+    <ClCompile Include="EMB.cpp">
+      <Filter>EMB</Filter>
+    </ClCompile>
+    <ClCompile Include="EMBFile.cpp">
+      <Filter>EMB</Filter>
+    </ClCompile>
+    <ClCompile Include="ESKBone.cpp">
+      <Filter>ESK</Filter>
+    </ClCompile>
+    <ClCompile Include="ESKFBX.cpp">
+      <Filter>ESK</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDTriangles.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="CBS.cpp">
+      <Filter>CBS</Filter>
+    </ClCompile>
+    <ClCompile Include="CBSScale.cpp">
+      <Filter>CBS</Filter>
+    </ClCompile>
+    <ClCompile Include="AGD.cpp">
+      <Filter>AGD</Filter>
+    </ClCompile>
+    <ClCompile Include="AGDGrowth.cpp">
+      <Filter>AGD</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDSubmeshDefinition.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
