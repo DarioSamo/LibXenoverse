@@ -24,7 +24,7 @@ namespace LibXenoverse {
 		unsigned int submesh_name_address = 0;
 		unsigned int submesh_offset_1 = 0;
 		unsigned int submesh_offset_2 = 0;
-		unsigned short submesh_definition_count = 0;
+		unsigned char submesh_definition_count = 0;
 		unsigned short submesh_triangles_count = 0;
 
 		file->readInt32E(&vertex_type_flag);
@@ -32,7 +32,8 @@ namespace LibXenoverse {
 		file->readInt32E(&vertex_count);
 		file->readInt32E(&vertex_address);
 		file->readInt32E(&submesh_name_address);
-		file->readInt16E(&submesh_definition_count);
+		file->moveAddress(1);
+		file->readUChar(&submesh_definition_count);
 		file->readInt16E(&submesh_triangles_count);
 		file->readInt32E(&submesh_offset_1);
 		file->readInt32E(&submesh_offset_2);
@@ -126,14 +127,15 @@ namespace LibXenoverse {
 		// Write Header
 		file->goToAddress(base_submesh_address + 0x30);
 		unsigned int vertex_count = vertices.size();
-		unsigned short definition_count = definitions.size();
+		unsigned char definition_count = definitions.size();
 		unsigned short triangles_count = triangles.size();
 		file->writeInt32E(&vertex_type_flag);
 		file->writeInt32E(&vertex_size);
 		file->writeInt32E(&vertex_count);
 		file->writeInt32E(&vertex_address);
 		file->writeInt32E(&submesh_name_address);
-		file->writeInt16E(&definition_count);
+		file->writeNull(1);
+		file->writeUChar(&definition_count);
 		file->writeInt16E(&triangles_count);
 		file->writeInt32E(&submesh_offset_1);
 		file->writeInt32E(&submesh_offset_triangle_table);
