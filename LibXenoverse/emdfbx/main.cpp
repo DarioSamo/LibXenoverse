@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
 	}
 
 	scene->GetGlobalSettings().SetAxisSystem(FbxAxisSystem::eMax);
-	//scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::sPredefinedUnits[3]);
+	scene->GetGlobalSettings().SetSystemUnit(FbxSystemUnit::m);
 	
 
 	// Export scene
