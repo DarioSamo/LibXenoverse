@@ -105,7 +105,7 @@ namespace LibXenoverse {
 			EMDTriangles *getTriangleListFor(vector<string> bone_names);
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
-			void importFBX(FbxMesh *lMesh, int material_index, vector<string> &material_names, vector<vector<pair<double, FbxNode *>>> &control_points_skin_bindings);
+			void importFBX(FbxMesh *lMesh, int material_index, FbxAMatrix transform_matrix, vector<string> &material_names, vector<vector<pair<double, FbxNode *>>> &control_points_skin_bindings);
 			#endif
 	};
 

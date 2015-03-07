@@ -193,10 +193,14 @@ namespace LibXenoverse {
 		return lMesh;
 	}
 
-	void EMDSubmesh::importFBX(FbxMesh *lMesh, int material_index, vector<string> &material_names, vector<vector<pair<double, FbxNode *>>> &control_points_skin_bindings) {
+	void EMDSubmesh::importFBX(FbxMesh *lMesh, int material_index, FbxAMatrix transform_matrix, vector<string> &material_names, vector<vector<pair<double, FbxNode *>>> &control_points_skin_bindings) {
 		// Scan FBX Mesh for vertices on the current material index
 		int lPolygonCount = lMesh->GetPolygonCount();
 		FbxLayerElementArrayTemplate<int>* lMaterialIndice = NULL;
+
+		FbxAMatrix rotation_matrix = transform_matrix;
+		rotation_matrix.SetT(FbxVector4(0.0, 0.0, 0.0, 0.0));
+		rotation_matrix.SetS(FbxVector4(1.0, 1.0, 1.0, 1.0));
 
 		bool add = false;
 		if (material_names.size() != 1) {
@@ -234,10 +238,10 @@ namespace LibXenoverse {
 					for (int j = 0; j < polygon_size; j++) {
 						int control_point_index = lMesh->GetPolygonVertex(lPolygonIndex, j);
 
-						FbxVector4 control_point = /*transform_matrix.MultT(*/control_points[control_point_index]/*)*/;
+						FbxVector4 control_point = transform_matrix.MultT(control_points[control_point_index]);
 						FbxVector4 normal;
 						lMesh->GetPolygonVertexNormal(lPolygonIndex, j, normal);
-						//normal = rotation_matrix.MultT(normal);
+						normal = rotation_matrix.MultT(normal);
 
 						// Create Vertex
 						EMDVertex v;
@@ -440,10 +444,11 @@ namespace LibXenoverse {
 			}
 		}
 
+		FbxAMatrix transform_matrix = lNode->EvaluateGlobalTransform();
 		// Go through materials
 		for (int m = 0; m < material_count; m++) {
 			EMDSubmesh *submesh = new EMDSubmesh();
-			submesh->importFBX(lMesh, m, material_names, control_points_skin_bindings);
+			submesh->importFBX(lMesh, m, transform_matrix, material_names, control_points_skin_bindings);
 			submeshes.push_back(submesh);
 		}
 	}
