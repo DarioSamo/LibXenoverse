@@ -327,7 +327,7 @@ namespace LibXenoverse {
 
 			// Fill Submesh Data
 			for (size_t i = 0; i < 12; i++) {
-				float_group[i] = 1.0f;
+				float_group[i] = 0.0f;
 			}
 
 			vertex_type_flag = 0x8207;
@@ -391,7 +391,7 @@ namespace LibXenoverse {
 		name = ToString(lNode->GetName());
 
 		for (size_t i = 0; i < 12; i++) {
-			float_group[i] = 1.0f;
+			float_group[i] = 0.0f;
 		}
 
 		vector<string> material_names;
