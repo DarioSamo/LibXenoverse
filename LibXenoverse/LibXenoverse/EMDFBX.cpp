@@ -279,7 +279,7 @@ namespace LibXenoverse {
 							for (size_t s = 0; s < bone_names.size(); s++) {
 								for (size_t b = 0; b < triangle_list_ptr->bone_names.size(); b++) {
 									if (triangle_list_ptr->bone_names[b] == bone_names[s]) {
-										v.bone[s] = b;
+										v.bone[3-s] = b;
 										v.bone_weight[s] = (float)skin_bindings[s].first;
 										break;
 									}
