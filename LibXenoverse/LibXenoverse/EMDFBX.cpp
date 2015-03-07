@@ -288,7 +288,7 @@ namespace LibXenoverse {
 						}
 						else {
 							// Add a failsafe bone in case no bones were detected for the current submesh
-							bone_names.push_back("b_C_Head");
+							bone_names.push_back("b_C_Spine2");
 							triangle_list_ptr = getTriangleListFor(bone_names);
 						}
 
