@@ -32,7 +32,7 @@ int main(int argc, char** argv) {
 	lImporter->GetFileVersion(lFileMajor, lFileMinor, lFileRevision);
 	lImporter->Destroy();
 
-	LibXenoverse::EMD *emd_model = new LibXenoverse::EMD();
+	string folder = LibXenoverse::folderFromFilename(fbx_filename);
 
 	// Search Scene
 	const int lNodeCount = lScene->GetSrcObjectCount<FbxNode>();
@@ -46,17 +46,16 @@ int main(int argc, char** argv) {
 			FbxMesh *lMesh = lNode->GetMesh();
 			if (lMesh) {
 				printf("Mesh found\n");
-				emd_model->importFBX(lNode);
+
+				LibXenoverse::EMD *emd_model = new LibXenoverse::EMD();
+				if (emd_model) {
+					emd_model->importFBX(lNode);
+					emd_model->save(folder + lNode->GetName() + ".emd");
+					delete emd_model;
+				}
 			}
 		}
 	}
-
-	// Import to EMD and Save
-	
-	emd_model->save(fbx_filename + ".emd");
-	delete emd_model;
-	
-	getchar();
 
 	lScene->Destroy();
 	return 0;

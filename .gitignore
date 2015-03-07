@@ -6,7 +6,6 @@
 *.user
 *.sln.docstates
 *.cpk
-cpkpack.exe
 
 # Build results
 [Dd]ebug/
