@@ -1,7 +1,8 @@
 #ifndef LIBXENOVERSE_EMD_H_INCLUDED
 #define LIBXENOVERSE_EMD_H_INCLUDED
 
-#define LIBXENOVERSE_EMD_SIGNATURE    "#EMD"
+#define LIBXENOVERSE_EMD_SIGNATURE           "#EMD"
+#define LIBXENOVERSE_EMD_SUBMESH_BONE_LIMIT  24
 
 namespace LibXenoverse {
 	class EMDVertex {
@@ -93,8 +94,18 @@ namespace LibXenoverse {
 			void getTotalData(list<EMDVertex *> *vertex_list, list<unsigned int> *face_list,
 				list<unsigned int> *submesh_vertex_counts, list<vector<string>> *submesh_bone_groups);
 
+			/** Get the best triangle list suited for the array of bone names.
+			    If there's no good triangle list that can fit all the bone names,
+				create a new one and return it.
+
+				A triangle list won't be fit for the bone names if it has reached 
+				the bone limit (24), so it's necessary to create new ones depending on
+				the bone count of the submesh.				
+			*/
+			EMDTriangles *getTriangleListFor(vector<string> bone_names);
+
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
-				void importFBX(FbxMesh *lMesh, int material_index, bool single_material);
+			void importFBX(FbxMesh *lMesh, int material_index, vector<string> &material_names, vector<vector<pair<double, FbxNode *>>> &control_points_skin_bindings);
 			#endif
 	};
 
