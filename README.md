@@ -9,11 +9,7 @@ You can also integrate LibXenoverse into your own applications if you wish to ad
 OS
 * Microsoft Windows (XP 32-bit or higher).
 
-#### Building
-- A solution for Visual Studio Community 2013. Only 32-bit Release and Debug builds supported for now.
-
-If the LIBXENOVERSE_FBX_SUPPORT preprocessor flag is defined, you'll need to download the latest version of the FBX SDK from Autodesk's website and change the include/lib directories accordingly. This flag enables the FBX Importing/Exporting functionality.
-
+#### [Building](https://github.com/DarioSamo/LibXenoverse/wiki#building)
 
 #### Builds
 Win32 builds of the tools are provided on the /bin/ directory.
