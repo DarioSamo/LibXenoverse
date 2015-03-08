@@ -33,7 +33,6 @@ namespace LibXenoverse {
 			FbxVector4 *control_points = lMesh->GetControlPoints();
 			int vertex_color_count = lMesh->GetElementVertexColorCount();
 
-
 			for (int lPolygonIndex = 0; lPolygonIndex < lPolygonCount; ++lPolygonIndex) {
 				if (lMaterialIndice) {
 					const int lMaterialIndex = lMaterialIndice->GetAt(lPolygonIndex);
@@ -42,6 +41,37 @@ namespace LibXenoverse {
 
 				int polygon_size = lMesh->GetPolygonSize(lPolygonIndex);
 				if (polygon_size == 3) {
+					EMDTriangles *triangle_list_ptr = NULL;
+
+					// Gather the bone names the 3 vertices use
+					vector<string> polygon_bone_names;
+					for (int j = 0; j < polygon_size; j++) {
+						int control_point_index = lMesh->GetPolygonVertex(lPolygonIndex, j);
+						vector<pair<double, FbxNode *>> &skin_bindings = control_points_skin_bindings[control_point_index];
+						
+						for (size_t s = 0; s < skin_bindings.size(); s++) {
+							if (s >= 4) break;
+
+							string bone_name = skin_bindings[s].second->GetName();
+							bool found = false;
+							for (size_t k = 0; k < polygon_bone_names.size(); k++) {
+								if (polygon_bone_names[k] == bone_name) {
+									found = true;
+									break;
+								}
+							}
+							if (!found) polygon_bone_names.push_back(bone_name);
+						}
+					}
+
+					// Add a failsafe bone in case no bones were detected for the current polygon
+					if (!polygon_bone_names.size()) {
+						polygon_bone_names.push_back("b_C_Spine2");
+					}
+
+					// Detect appropriate triangle list for these 3 vertices
+					triangle_list_ptr = getTriangleListFor(polygon_bone_names);
+
 					for (int j = 0; j < polygon_size; j++) {
 						int control_point_index = lMesh->GetPolygonVertex(lPolygonIndex, j);
 
@@ -73,34 +103,18 @@ namespace LibXenoverse {
 						}
 
 						vector<pair<double, FbxNode *>> &skin_bindings = control_points_skin_bindings[control_point_index];
-						vector<string> bone_names;
-
-						EMDTriangles *triangle_list_ptr = NULL;
-						if (skin_bindings.size()) {
-							// Gather bone names for the skin bindings of the current control point
-							// and try to get a matching triangle list
+						if (triangle_list_ptr) {
 							for (size_t s = 0; s < skin_bindings.size(); s++) {
-								if (s >= 4) break;
-
 								string bone_name = skin_bindings[s].second->GetName();
-								bone_names.push_back(bone_name);
-							}
-							triangle_list_ptr = getTriangleListFor(bone_names);
 
-							for (size_t s = 0; s < bone_names.size(); s++) {
 								for (size_t b = 0; b < triangle_list_ptr->bone_names.size(); b++) {
-									if (triangle_list_ptr->bone_names[b] == bone_names[s]) {
-										v.bone[3-s] = b;
+									if (triangle_list_ptr->bone_names[b] == bone_name) {
+										v.bone[3 - s] = b;
 										v.bone_weight[s] = (float)skin_bindings[s].first;
 										break;
 									}
 								}
 							}
-						}
-						else {
-							// Add a failsafe bone in case no bones were detected for the current submesh
-							bone_names.push_back("b_C_Spine2");
-							triangle_list_ptr = getTriangleListFor(bone_names);
 						}
 
 						// Detect for clones on current vertex list
