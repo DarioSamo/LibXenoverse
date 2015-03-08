@@ -78,7 +78,7 @@ int main(int argc, char** argv) {
 		lMeshNode->LclRotation.Set(FbxVector4(0, 0, 0));
 
 		// Create and attach Mesh
-		FbxMesh *lMesh = emd_model->exportFBX(scene);
+		FbxMesh *lMesh = emd_model->exportFBX(scene, lMeshNode);
 		lMeshNode->SetNodeAttribute(lMesh);
 
 		if (global_fbx_bones.size()) {

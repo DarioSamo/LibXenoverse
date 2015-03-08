@@ -27,6 +27,41 @@ namespace LibXenoverse {
 		return total_point_count;
 	}
 
+	void EMDSubmesh::getMaterialNames(vector<string> &material_names) {
+		bool found = false;
+		for (size_t i = 0; i < material_names.size(); i++) {
+			if (material_names[i] == name) {
+				found = true;
+				fbx_material_index = i;
+				break;
+			}
+		}
+
+		if (!found) {
+			fbx_material_index = material_names.size();
+			material_names.push_back(name);
+		}
+	}
+
+	void EMDMesh::getMaterialNames(vector<string> &material_names) {
+		for (size_t i = 0; i < submeshes.size(); i++) {
+			submeshes[i]->getMaterialNames(material_names);
+		}
+	}
+
+	void EMDModel::getMaterialNames(vector<string> &material_names) {
+		for (size_t i = 0; i < meshes.size(); i++) {
+			meshes[i]->getMaterialNames(material_names);
+		}
+	}
+
+	vector<string> EMD::getMaterialNames() {
+		vector<string> material_names;
+		for (size_t i = 0; i < models.size(); i++) {
+			models[i]->getMaterialNames(material_names);
+		}
+		return material_names;
+	}
 
 #ifdef LIBXENOVERSE_FBX_SUPPORT
 	void EMDTriangles::exportFBXSkin(vector<FbxCluster *> &skin_clusters, vector<EMDVertex> &vertex_pool, unsigned int &control_point_base) {
@@ -118,9 +153,9 @@ namespace LibXenoverse {
 		fbx_mesh->AddDeformer(lSkin);
 	}
 
-	void EMDTriangles::exportFBX(FbxMesh *lMesh, unsigned int &control_point_base) {
+	void EMDTriangles::exportFBX(FbxMesh *lMesh, unsigned int &control_point_base, int fbx_material_index) {
 		for (size_t i = 0; i < faces.size(); i += 3) {
-			lMesh->BeginPolygon();
+			lMesh->BeginPolygon(fbx_material_index);
 			lMesh->AddPolygon(control_point_base + faces[i]);
 			lMesh->AddPolygon(control_point_base + faces[i + 1]);
 			lMesh->AddPolygon(control_point_base + faces[i + 2]);
@@ -139,7 +174,7 @@ namespace LibXenoverse {
 		}
 
 		for (size_t i = 0; i < triangles.size(); i++) {
-			triangles[i].exportFBX(lMesh, control_point_base);
+			triangles[i].exportFBX(lMesh, control_point_base, fbx_material_index);
 		}
 
 		control_point_base += vertices.size();
@@ -157,7 +192,50 @@ namespace LibXenoverse {
 		}
 	}
 
-	FbxMesh *EMD::exportFBX(FbxScene *scene) {
+	FbxSurfacePhong *EMD::exportFBXMaterial(FbxScene *scene, string material_name) {
+		FbxSurfacePhong* lMaterial = NULL;
+
+		FbxString lMaterialName = material_name.c_str();
+		FbxString lShadingName = "Phong";
+		FbxDouble3 lBlack(0.0, 0.0, 0.0);
+		FbxDouble3 lDiffuseColor(1.0, 1.0, 1.0);
+
+		lMaterial = FbxSurfacePhong::Create(scene, lMaterialName.Buffer());
+		// Generate primary and secondary colors.
+		lMaterial->Emissive.Set(lBlack);
+		lMaterial->Ambient.Set(lBlack);
+		lMaterial->AmbientFactor.Set(1.0);
+		// Add texture for diffuse channel
+		lMaterial->Diffuse.Set(lDiffuseColor);
+		lMaterial->DiffuseFactor.Set(1.0);
+		lMaterial->ShadingModel.Set(lShadingName);
+		lMaterial->Shininess.Set(0.0);
+		lMaterial->Specular.Set(lBlack);
+		lMaterial->SpecularFactor.Set(0.0);
+
+		// Set texture properties.
+		/*
+		Texture *texture_unit = material->getTextureByUnit("diffuse");
+		if (texture_unit) {
+			FbxFileTexture* lTexture = FbxFileTexture::Create(scene, texture_unit->getTexset().c_str());
+			lTexture->SetFileName((material->getFolder() + texture_unit->getName() + ".dds").c_str());
+			lTexture->SetTextureUse(FbxTexture::eStandard);
+			lTexture->SetMappingType(FbxTexture::eUV);
+			lTexture->SetMaterialUse(FbxFileTexture::eModelMaterial);
+			lTexture->SetSwapUV(false);
+			lTexture->SetTranslation(0.0, 0.0);
+			lTexture->SetScale(1.0, 1.0);
+			lTexture->SetRotation(0.0, 0.0);
+			lTexture->UVSet.Set("DiffuseUV");
+			if (lMaterial) lMaterial->Diffuse.ConnectSrcObject(lTexture);
+		}
+		*/
+
+		return lMaterial;
+	}
+
+
+	FbxMesh *EMD::exportFBX(FbxScene *scene, FbxNode *lMeshNode) {
 		FbxMesh *lMesh = FbxMesh::Create(scene, "EMDFBXMeshNode");
 		if (!lMesh) {
 			return NULL;
@@ -174,6 +252,19 @@ namespace LibXenoverse {
 		FbxGeometryElementUV *lGeometryUVElement = lMesh->CreateElementUV("DiffuseUV");
 		lGeometryUVElement->SetMappingMode(FbxGeometryElement::eByControlPoint);
 		lGeometryUVElement->SetReferenceMode(FbxGeometryElement::eDirect);
+
+		FbxGeometryElementMaterial* lMaterialElement = lMesh->CreateElementMaterial();
+		lMaterialElement->SetMappingMode(FbxGeometryElement::eByPolygon);
+		lMaterialElement->SetReferenceMode(FbxGeometryElement::eIndexToDirect);
+
+		vector<string> material_names = getMaterialNames();
+		vector<FbxSurfacePhong *> materials;
+		materials.resize(material_names.size());
+
+		for (size_t i = 0; i < material_names.size(); i++) {
+			materials[i] = exportFBXMaterial(scene, material_names[i]);
+			lMeshNode->AddMaterial(materials[i]);
+		}
 
 		for (size_t i = 0; i < models.size(); i++) {
 			models[i]->exportFBX(lMesh, control_point_base, lGeometryElementNormal, lGeometryUVElement);

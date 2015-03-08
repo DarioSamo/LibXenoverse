@@ -58,7 +58,7 @@ namespace LibXenoverse {
 			void write(File *file);
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
-				void exportFBX(FbxMesh *lMesh, unsigned int &control_point_base);
+				void exportFBX(FbxMesh *lMesh, unsigned int &control_point_base, int fbx_material_index);
 				void exportFBXSkin(vector<FbxCluster *> &skin_clusters, vector<EMDVertex> &vertex_pool, unsigned int &control_point_base);
 			#endif
 	};
@@ -87,8 +87,10 @@ namespace LibXenoverse {
 			unsigned int vertex_size;
 
 			string name;
+			int fbx_material_index;
 		public:
 			EMDSubmesh() {
+				fbx_material_index = -1;
 			}
 
 			void read(File *file);
@@ -97,6 +99,7 @@ namespace LibXenoverse {
 			void setVertexScale(float scale);
 
 			unsigned int getTotalPointCount();
+			void getMaterialNames(vector<string> &material_names);
 
 			/** Get the best triangle list suited for the array of bone names.
 			    If there's no good triangle list that can fit all the bone names,
@@ -134,6 +137,7 @@ namespace LibXenoverse {
 			}
 			
 			unsigned int getTotalPointCount();
+			void getMaterialNames(vector<string> &material_names);
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
 				void importFBX(FbxNode *lNode);
@@ -163,6 +167,7 @@ namespace LibXenoverse {
 			}
 
 			unsigned int getTotalPointCount();
+			void getMaterialNames(vector<string> &material_names);
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
 				void importFBX(FbxNode *lNode);
@@ -188,13 +193,14 @@ namespace LibXenoverse {
 			void setVertexScale(float scale);
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
-				FbxMesh *exportFBX(FbxScene *scene);
+				FbxMesh *exportFBX(FbxScene *scene, FbxNode *lMeshNode);
 				void exportFBXSkin(FbxScene *scene, FbxMesh *fbx_mesh, vector<FbxNode *> &fbx_bones, FbxAMatrix skin_matrix);
-
+				FbxSurfacePhong *exportFBXMaterial(FbxScene *scene, string material_name);
 				void importFBX(FbxNode *lNode);
 			#endif
 
 			unsigned int getTotalPointCount();
+			vector<string> getMaterialNames();
 	};
 
 }
