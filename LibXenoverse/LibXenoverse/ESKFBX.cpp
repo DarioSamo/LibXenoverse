@@ -1,51 +1,5 @@
 namespace LibXenoverse {
 #ifdef LIBXENOVERSE_FBX_SUPPORT
-	/*
-
-	FbxNode *FBX::addHavokBone(FbxNode *parent_node, unsigned int parent_index, vector<FbxNode *> &skeleton_bones, hkaSkeleton *skeleton) {
-		FbxNode *root_bone = NULL;
-		for (int b = 0; b<skeleton->m_bones.getSize(); b++) {
-			hkaBone &bone = skeleton->m_bones[b];
-			string bone_name = bone.m_name;
-			size_t model_bone_index = 0;
-			bool found = false;
-
-			if (skeleton->m_parentIndices[b] != parent_index) {
-				continue;
-			}
-
-			FbxSkeleton* lSkeletonRootAttribute = FbxSkeleton::Create(scene, bone_name.c_str());
-			if (parent_index == -1) lSkeletonRootAttribute->SetSkeletonType(FbxSkeleton::eRoot);
-			else lSkeletonRootAttribute->SetSkeletonType(FbxSkeleton::eLimbNode);
-
-			FbxNode* bone_node = FbxNode::Create(scene, bone_name.c_str());
-			bone_node->SetNodeAttribute(lSkeletonRootAttribute);
-			root_bone = bone_node;
-
-			hkQsTransform ref = skeleton->m_referencePose[b];
-			bone_node->LclTranslation.Set(FbxVector4(ref.getTranslation()(0), ref.getTranslation()(1), ref.getTranslation()(2)));
-			//bone_node->LclScaling.Set(FbxVector4(ref.getScale()(0), ref.getScale()(1), ref.getScale()(2)));
-			FbxQuaternion lcl_quat(ref.getRotation()(0), ref.getRotation()(1), ref.getRotation()(2), ref.getRotation()(3));
-			FbxVector4 lcl_rotation;
-			lcl_rotation.SetXYZ(lcl_quat);
-			bone_node->LclRotation.Set(lcl_rotation);
-
-			skeleton_bones[b] = bone_node;
-			parent_node->AddChild(bone_node);
-
-			addHavokBone(bone_node, b, skeleton_bones, skeleton);
-		}
-		return root_bone;
-	}
-
-
-	// Create a skeleton with 2 segments.
-	FbxNode *FBX::addHavokSkeleton(vector<FbxNode *> &skeleton_bones, hkaSkeleton *skeleton) {
-		FbxNode *lRootNode = scene->GetRootNode();
-		FbxNode *skeleton_root_bone = addHavokBone(lRootNode, -1, skeleton_bones, skeleton);
-		return skeleton_root_bone;
-	}*/
-
 	void ESK::createFBXBone(FbxScene *scene, FbxNode *root_node, unsigned short parent_index, vector<FbxNode *> &fbx_bones) {
 		for (size_t b = 0; b < bones.size(); b++) {
 			ESKBone *bone = bones[b];
@@ -88,12 +42,12 @@ namespace LibXenoverse {
 
 			fbx_matrix.GetElements(pTranslation, pRotation, pShearing, pScaling, pSign);
 
-			bone_node->LclTranslation.Set(pTranslation*-1);
+			bone_node->LclTranslation.Set(pTranslation * -1);
 			bone_node->LclScaling.Set(pScaling);
 			FbxQuaternion lcl_quat(pRotation);
 			FbxVector4 lcl_rotation;
 			lcl_rotation.SetXYZ(lcl_quat);
-			bone_node->LclRotation.Set(lcl_rotation);
+			bone_node->LclRotation.Set(lcl_rotation * -1);
 
 			fbx_bones[b] = bone_node;
 			root_node->AddChild(bone_node);
