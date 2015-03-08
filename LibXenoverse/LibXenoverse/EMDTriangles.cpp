@@ -11,14 +11,17 @@ namespace LibXenoverse {
 		file->readInt32E(&face_table_address);
 		file->readInt32E(&face_name_table_address);
 
+		// Fail-safe in case it's 0, which it is in some files
+		if (!face_table_address) face_table_address = 16;
+
 		#ifdef LIBXENOVERSE_DEBUGGING_LOG
 		fprintf(global_debugging_log, "Triangle List Face Count: %d\n", face_count);
 		fprintf(global_debugging_log, "Triangle List Bone Count: %d\n", face_name_count);
+		fprintf(global_debugging_log, "Reading Triangles List at %d\n", base_face_address);
+		fprintf(global_debugging_log, "Submesh Face Count: %d\n", face_count);
+		fprintf(global_debugging_log, "Submesh Face Name Count: %d\n", face_name_count);
+		fprintf(global_debugging_log, "Reading faces at %d\n", base_face_address + face_table_address);
 		#endif
-
-		printf("Reading Triangles List at %d\n", base_face_address);
-		printf("Submesh Face Count: %d\n", face_count);
-		printf("Submesh Face Name Count: %d\n", face_name_count);
 
 		// Read Face Indices
 		faces.resize(face_count);

@@ -30,7 +30,7 @@ using namespace std;
 #ifndef LIBXENOVERSE_H_INCLUDED
 #define LIBXENOVERSE_H_INCLUDED
 
-//#define LIBXENOVERSE_DEBUGGING_LOG
+#define LIBXENOVERSE_DEBUGGING_LOG
 
 namespace LibXenoverse {
 	extern FILE *global_debugging_log;

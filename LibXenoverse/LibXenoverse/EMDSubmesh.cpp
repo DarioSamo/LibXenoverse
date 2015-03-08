@@ -91,6 +91,9 @@ namespace LibXenoverse {
 				file->goToAddress(base_submesh_address + submesh_offset_2 + 4);
 			}
 
+			#ifdef LIBXENOVERSE_DEBUGGING_LOG
+			fprintf(global_debugging_log, "Reading triangle list at %d from submesh\n", file->getCurrentAddress());
+			#endif
 			triangles[i].read(file);
 		}
 
