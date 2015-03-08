@@ -5,12 +5,9 @@ Simple library to handle Dragon Ball Xenoverse's file formats. Supports both lit
 
 You can also integrate LibXenoverse into your own applications if you wish to add support for these files on a custom game engine, previewer, plugin, etc. Simply build LibXenoverse.lib and link it.
 
-#### System Requirements
-OS
-* Microsoft Windows (XP 32-bit or higher).
-
+#### [Tools](https://github.com/DarioSamo/LibXenoverse/wiki#tools)
 #### [Building](https://github.com/DarioSamo/LibXenoverse/wiki#building)
-
+#### [Tutorials](https://github.com/DarioSamo/LibXenoverse/wiki#tutorials)
 #### Builds
 Win32 builds of the tools are provided on the /bin/ directory.
 
