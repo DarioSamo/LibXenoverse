@@ -77,9 +77,20 @@ namespace LibXenoverse {
 		triangles.resize(submesh_triangles_count);
 		for (size_t i = 0; i < submesh_triangles_count; i++) {
 			file->goToAddress(base_submesh_address + submesh_offset_2 + i*4);
+
+			printf("Reading Triangles address at %d\n", file->getCurrentAddress());
 			file->readInt32E(&address);
 
-			file->goToAddress(base_submesh_address + address);
+			if (address) file->goToAddress(base_submesh_address + address);
+			else {
+				if (submesh_triangles_count > 1) {
+					printf("More than 1 submesh triangle list but address is 0? Exception not handled.\n");
+					getchar();
+				}
+
+				file->goToAddress(base_submesh_address + submesh_offset_2 + 4);
+			}
+
 			triangles[i].read(file);
 		}
 

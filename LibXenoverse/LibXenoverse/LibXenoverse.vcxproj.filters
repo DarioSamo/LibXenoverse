@@ -98,9 +98,6 @@
     <ClCompile Include="EMD.cpp">
       <Filter>EMD</Filter>
     </ClCompile>
-    <ClCompile Include="EMDFBX.cpp">
-      <Filter>EMD</Filter>
-    </ClCompile>
     <ClCompile Include="EMDMesh.cpp">
       <Filter>EMD</Filter>
     </ClCompile>
@@ -147,6 +144,12 @@
       <Filter>AGD</Filter>
     </ClCompile>
     <ClCompile Include="EMDSubmeshDefinition.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDImportFBX.cpp">
+      <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDExportFBX.cpp">
       <Filter>EMD</Filter>
     </ClCompile>
   </ItemGroup>

@@ -16,6 +16,7 @@ namespace LibXenoverse {
 		fprintf(global_debugging_log, "Triangle List Bone Count: %d\n", face_name_count);
 		#endif
 
+		printf("Reading Triangles List at %d\n", base_face_address);
 		printf("Submesh Face Count: %d\n", face_count);
 		printf("Submesh Face Name Count: %d\n", face_name_count);
 

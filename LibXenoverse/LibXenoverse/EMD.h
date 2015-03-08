@@ -56,6 +56,11 @@ namespace LibXenoverse {
 
 			void read(File *file);
 			void write(File *file);
+
+			#ifdef LIBXENOVERSE_FBX_SUPPORT
+				void exportFBX(FbxMesh *lMesh, unsigned int &control_point_base);
+				void exportFBXSkin(vector<FbxCluster *> &skin_clusters, vector<EMDVertex> &vertex_pool, unsigned int &control_point_base);
+			#endif
 	};
 
 	class EMDSubmeshDefinition {
@@ -91,8 +96,7 @@ namespace LibXenoverse {
 
 			void setVertexScale(float scale);
 
-			void getTotalData(list<EMDVertex *> *vertex_list, list<unsigned int> *face_list,
-				list<unsigned int> *submesh_vertex_counts, list<vector<string>> *submesh_bone_groups);
+			unsigned int getTotalPointCount();
 
 			/** Get the best triangle list suited for the array of bone names.
 			    If there's no good triangle list that can fit all the bone names,
@@ -105,7 +109,9 @@ namespace LibXenoverse {
 			EMDTriangles *getTriangleListFor(vector<string> bone_names);
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
-			void importFBX(FbxMesh *lMesh, int material_index, FbxAMatrix transform_matrix, vector<string> &material_names, vector<vector<pair<double, FbxNode *>>> &control_points_skin_bindings);
+				void importFBX(FbxMesh *lMesh, int material_index, FbxAMatrix transform_matrix, vector<string> &material_names, vector<vector<pair<double, FbxNode *>>> &control_points_skin_bindings);
+				void exportFBX(FbxMesh *lMesh, unsigned int &control_point_base, FbxGeometryElementNormal *lGeometryElementNormal, FbxGeometryElementUV *lGeometryUVElement);
+				void exportFBXSkin(vector<FbxCluster *> &skin_clusters, unsigned int &control_point_base);
 			#endif
 	};
 
@@ -127,11 +133,12 @@ namespace LibXenoverse {
 				return name;
 			}
 			
-			void getTotalData(list<EMDVertex *> *vertex_list, list<unsigned int> *face_list,
-				list<unsigned int> *submesh_vertex_counts, list<vector<string>> *submesh_bone_groups);
+			unsigned int getTotalPointCount();
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
 				void importFBX(FbxNode *lNode);
+				void exportFBX(FbxMesh *lMesh, unsigned int &control_point_base, FbxGeometryElementNormal *lGeometryElementNormal, FbxGeometryElementUV *lGeometryUVElement);
+				void exportFBXSkin(vector<FbxCluster *> &skin_clusters, unsigned int &control_point_base);
 			#endif
 	};
 
@@ -155,11 +162,12 @@ namespace LibXenoverse {
 				return names;
 			}
 
-			void getTotalData(list<EMDVertex *> *vertex_list, list<unsigned int> *face_list,
-				list<unsigned int> *submesh_vertex_counts, list<vector<string>> *submesh_bone_groups);
+			unsigned int getTotalPointCount();
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
 				void importFBX(FbxNode *lNode);
+				void exportFBX(FbxMesh *lMesh, unsigned int &control_point_base, FbxGeometryElementNormal *lGeometryElementNormal, FbxGeometryElementUV *lGeometryUVElement);
+				void exportFBXSkin(vector<FbxCluster *> &skin_clusters, unsigned int &control_point_base);
 			#endif
 	};
 
@@ -180,15 +188,14 @@ namespace LibXenoverse {
 			void setVertexScale(float scale);
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
-				FbxMesh *createFBXMesh(FbxScene *scene);
-				void createFBXSkin(FbxScene *scene, FbxMesh *fbx_mesh, vector<FbxNode *> &fbx_bones, FbxAMatrix skin_matrix);
+				FbxMesh *exportFBX(FbxScene *scene);
+				void exportFBXSkin(FbxScene *scene, FbxMesh *fbx_mesh, vector<FbxNode *> &fbx_bones, FbxAMatrix skin_matrix);
 				vector<int> createFBXBoneMap(vector<string> bone_table, vector<FbxNode *> &fbx_bones);
 
 				void importFBX(FbxNode *lNode);
 			#endif
 
-			void getTotalData(list<EMDVertex *> *vertex_list, list<unsigned int> *face_list, 
-						      list<unsigned int> *submesh_vertex_counts, list<vector<string>> *submesh_bone_groups);
+			unsigned int getTotalPointCount();
 	};
 
 }

@@ -91,8 +91,9 @@
     <ClCompile Include="EMB.cpp" />
     <ClCompile Include="EMBFile.cpp" />
     <ClCompile Include="EMD.cpp" />
+    <ClCompile Include="EMDExportFBX.cpp" />
     <ClCompile Include="EMDSubmeshDefinition.cpp" />
-    <ClCompile Include="EMDFBX.cpp" />
+    <ClCompile Include="EMDImportFBX.cpp" />
     <ClCompile Include="EMDMesh.cpp" />
     <ClCompile Include="EMDModel.cpp" />
     <ClCompile Include="EMDSubmesh.cpp" />

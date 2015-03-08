@@ -78,14 +78,12 @@ int main(int argc, char** argv) {
 		lMeshNode->LclRotation.Set(FbxVector4(0, 0, 0));
 
 		// Create and attach Mesh
-		FbxMesh *lMesh = emd_model->createFBXMesh(scene);
+		FbxMesh *lMesh = emd_model->exportFBX(scene);
 		lMeshNode->SetNodeAttribute(lMesh);
 
-		/*
 		if (global_fbx_bones.size()) {
-			emd_model->createFBXSkin(scene, lMesh, global_fbx_bones, lMeshNode->EvaluateGlobalTransform());
+			emd_model->exportFBXSkin(scene, lMesh, global_fbx_bones, lMeshNode->EvaluateGlobalTransform());
 		}
-		*/
 
 		// Add node to scene
 		FbxNode *lRootNode = scene->GetRootNode();
