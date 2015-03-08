@@ -190,7 +190,6 @@ namespace LibXenoverse {
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
 				FbxMesh *exportFBX(FbxScene *scene);
 				void exportFBXSkin(FbxScene *scene, FbxMesh *fbx_mesh, vector<FbxNode *> &fbx_bones, FbxAMatrix skin_matrix);
-				vector<int> createFBXBoneMap(vector<string> bone_table, vector<FbxNode *> &fbx_bones);
 
 				void importFBX(FbxNode *lNode);
 			#endif
