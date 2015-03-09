@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv) {
 	if (argc < 2) {
-		printf("Usage: cbsxml file.emm\n");
+		printf("Usage: cbsxml file.cbs\n");
 		getchar();
 		return 1;
 	}
@@ -14,12 +14,14 @@ int main(int argc, char** argv) {
 		string new_name = cbs_filename;
 		new_name.resize(new_name.size() - 4);
 
-		LibXenoverse::CBS *emm_material = new LibXenoverse::CBS(cbs_filename);
-		emm_material->save(new_name);
+		LibXenoverse::CBS *cbs_table = new LibXenoverse::CBS(cbs_filename);
+		cbs_table->save(new_name);
 	}
 	else if (extension == "cbs") {
-		LibXenoverse::CBS *emm_material = new LibXenoverse::CBS(cbs_filename);
-		emm_material->saveXML(cbs_filename + ".xml");
+		LibXenoverse::CBS *cbs_table = new LibXenoverse::CBS(cbs_filename);
+		cbs_table->saveXML(cbs_filename + ".xml");
 	}
+
+	
 	return 0;
 }

@@ -23,6 +23,9 @@
 #define LIBXENOVERSE_FILE_READ_BINARY                        "rb"
 #define LIBXENOVERSE_FILE_WRITE_BINARY                       "wb"
 
+#define LIBXENOVERSE_LITTLE_ENDIAN                           0
+#define LIBXENOVERSE_BIG_ENDIAN                              1
+
 #include "stdio.h"
 #include <string>
 #include <list>
@@ -32,6 +35,14 @@ using namespace std;
 namespace LibXenoverse {
 	void endianSwap(unsigned int& x);
 	void endianSwap(int& x);
+
+	template <class internT, class externT, class stateT>
+	struct codecvt : std::codecvt<internT, externT, stateT>
+	{
+		~codecvt(){}
+	};
+
+	extern wstring_convert<codecvt<char16_t, char, mbstate_t>, char16_t> convert16;
 
 	class File {
 		protected:
@@ -50,7 +61,7 @@ namespace LibXenoverse {
 		public:
 			File(string filename, string mode);
 			void writeHeader(string new_signature, bool is_big_endian);
-			bool readHeader(string verify_signature);
+			bool readHeader(string verify_signature, int endianness=-1);
 
 			void setGlobalOffset(size_t v) {
 				global_offset = v;
@@ -85,6 +96,7 @@ namespace LibXenoverse {
 			void readUChar(unsigned char *dest);
 			void readString(string *dest);
 			void readString(string *dest, size_t n);
+			void readString16(u16string *dest);
 
 			void readInt16E(unsigned short *dest);
 			void readInt32E(unsigned int *dest);

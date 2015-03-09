@@ -1,9 +1,12 @@
 // Common Includes
 #include "stdio.h"
 #include <vector>
-#include "Files.h"
 #include "half.h"
 #include <sstream>
+#include <iostream>
+#include <locale>
+#include <string>
+#include <cvt/wstring>
 #include "windows.h"
 
 // TinyXML
@@ -18,12 +21,15 @@
 #endif
 
 // Xenoverse Includes
+#include "Files.h"
 #include "EMB.h"
 #include "EMD.h"
 #include "EMM.h"
 #include "ESK.h"
 #include "CBS.h"
+#include "CUS.h"
 #include "AGD.h"
+#include "MSG.h"
 
 using namespace std;
 

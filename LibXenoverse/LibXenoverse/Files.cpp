@@ -1,4 +1,6 @@
 namespace LibXenoverse {
+	wstring_convert<codecvt<char16_t, char, mbstate_t>, char16_t> convert16;
+
 	FILE *global_debugging_log = NULL;
 
 	void initializeDebuggingLog() {
@@ -162,6 +164,17 @@ namespace LibXenoverse {
 		*dest = "";
 		while (c && !endOfFile()) {
 			fread(&c, sizeof(char), 1, file_ptr);
+			if (c) *dest += c;
+		}
+	}
+
+
+	void File::readString16(u16string *dest) {
+		if (!readSafeCheck(dest)) return;
+		char16_t c = 1;
+		dest->clear();
+		while (c && !endOfFile()) {
+			fread(&c, sizeof(char16_t), 1, file_ptr);
 			if (c) *dest += c;
 		}
 	}
@@ -359,7 +372,7 @@ namespace LibXenoverse {
 		return sz;
 	}
 
-	bool File::readHeader(string verify_signature) {
+	bool File::readHeader(string verify_signature, int endianness) {
 		if (!file_ptr) {
 			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_FILE_HEADER);
 			return false;
@@ -370,14 +383,19 @@ namespace LibXenoverse {
 		read(signature, 4);
 
 		if (!strcmp(signature, verify_signature.c_str())) {
-			unsigned short endian_flag=0;
-			readInt16(&endian_flag);
+			if (endianness == -1) {
+				unsigned short endian_flag = 0;
+				readInt16(&endian_flag);
 
-			if (endian_flag == 0xFEFF) {
-				big_endian = true;
+				if (endian_flag == 0xFEFF) {
+					big_endian = true;
+				}
+				else if (endian_flag == 0xFFFE) {
+					big_endian = false;
+				}
 			}
-			else if (endian_flag == 0xFFFE) {
-				big_endian = false;
+			else {
+				big_endian = (endianness == 1);
 			}
 			return true;
 		}

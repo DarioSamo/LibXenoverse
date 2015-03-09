@@ -72,6 +72,7 @@
   <ItemGroup>
     <ClInclude Include="AGD.h" />
     <ClInclude Include="CBS.h" />
+    <ClInclude Include="CUS.h" />
     <ClInclude Include="EMB.h" />
     <ClInclude Include="EMD.h" />
     <ClInclude Include="EMM.h" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Files.h" />
     <ClInclude Include="half.h" />
     <ClInclude Include="LibXenoverse.h" />
+    <ClInclude Include="MSG.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="tinyxml\tinystr.h" />
     <ClInclude Include="tinyxml\tinyxml.h" />
@@ -88,6 +90,7 @@
     <ClCompile Include="AGDGrowth.cpp" />
     <ClCompile Include="CBS.cpp" />
     <ClCompile Include="CBSScale.cpp" />
+    <ClCompile Include="CUS.cpp" />
     <ClCompile Include="EMB.cpp" />
     <ClCompile Include="EMBFile.cpp" />
     <ClCompile Include="EMD.cpp" />
@@ -105,6 +108,9 @@
     <ClCompile Include="ESKFBX.cpp" />
     <ClCompile Include="Files.cpp" />
     <ClCompile Include="half.cpp" />
+    <ClCompile Include="MSG.cpp" />
+    <ClCompile Include="MSGEntry.cpp" />
+    <ClCompile Include="MSGSlot.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>

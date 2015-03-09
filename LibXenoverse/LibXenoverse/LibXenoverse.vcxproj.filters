@@ -34,6 +34,12 @@
     <Filter Include="AGD">
       <UniqueIdentifier>{021278b5-e7bf-4a38-bc7a-b4419148a08f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CUS">
+      <UniqueIdentifier>{16f0210b-bc65-43f6-b2bd-aa277bb96141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MSG">
+      <UniqueIdentifier>{edb3db64-6bbc-4172-b296-c806caf4913a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Files.h">
@@ -71,6 +77,12 @@
     </ClInclude>
     <ClInclude Include="AGD.h">
       <Filter>AGD</Filter>
+    </ClInclude>
+    <ClInclude Include="CUS.h">
+      <Filter>CUS</Filter>
+    </ClInclude>
+    <ClInclude Include="MSG.h">
+      <Filter>MSG</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +163,18 @@
     </ClCompile>
     <ClCompile Include="EMDExportFBX.cpp">
       <Filter>EMD</Filter>
+    </ClCompile>
+    <ClCompile Include="CUS.cpp">
+      <Filter>CUS</Filter>
+    </ClCompile>
+    <ClCompile Include="MSG.cpp">
+      <Filter>MSG</Filter>
+    </ClCompile>
+    <ClCompile Include="MSGEntry.cpp">
+      <Filter>MSG</Filter>
+    </ClCompile>
+    <ClCompile Include="MSGSlot.cpp">
+      <Filter>MSG</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
