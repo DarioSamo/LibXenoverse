@@ -1,0 +1,5 @@
+Qt
+http://qt-project.org/
+http://download.qt-project.org/official_releases/qt/5.4/5.4.1/qt-opensource-windows-x86-msvc2013_opengl-5.4.1.exe
+
+Put include and lib folder here. (They're located in QT_INSTALL_PATH\5.4\msvc2013_opengl)
