@@ -49,6 +49,8 @@ namespace LibXenoverse {
 
 			void addFile(string filename);
 			void addFolder(string folder);
+
+			bool detectFilenameMode();
 	};
 }
 

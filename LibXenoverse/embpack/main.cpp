@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 	else {
 		LibXenoverse::EMB *emb_pack = new LibXenoverse::EMB();
 		emb_pack->addFolder(pack_name + "/");
-		emb_pack->save(pack_name + ".emb", false);
+		emb_pack->save(pack_name + ".emb", emb_pack->detectFilenameMode());
 		delete emb_pack;
 	}
 

@@ -158,4 +158,20 @@ namespace LibXenoverse {
 			file.close();
 		}
 	}
+
+	bool EMB::detectFilenameMode() {
+		bool only_data_dds = true;
+		for (size_t i = 0; i < files.size(); i++) {
+			string name = files[i]->getName();
+			size_t data_found = name.find("DATA");
+			size_t dds_found = name.find(".dds");
+
+			if ((data_found == string::npos) || (dds_found == string::npos)) {
+				only_data_dds = false;
+				break;
+			}
+		}
+
+		return !only_data_dds;
+	}
 }
