@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
 
 	if (pack_name.find(".emb") != string::npos) {
 		LibXenoverse::EMB *emb_pack = new LibXenoverse::EMB(pack_name);
-		string name = LibXenoverse::nameFromFilenameNoExtension(pack_name);
+		string name = LibXenoverse::nameFromFilenameNoExtension(pack_name, true);
 		string folder = LibXenoverse::folderFromFilename(pack_name);
 
 		string new_folder = folder + name;

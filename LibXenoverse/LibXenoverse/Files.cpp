@@ -531,14 +531,17 @@ namespace LibXenoverse {
 		return false;
 	}
 
-	string extensionFromFilename(string filename) {
+	string extensionFromFilename(string filename, bool last_dot) {
 		string name = filename;
 		size_t sep = name.find_last_of("\\/");
 		if (sep != std::string::npos) {
 			name = name.substr(sep + 1, name.size() - sep - 1);
 		}
 	
-		size_t dot = name.find_first_of(".");
+		size_t dot = string::npos;
+		if (last_dot) dot = name.find_last_of(".");
+		else dot = name.find_first_of(".");
+
 		if (dot != string::npos) {
 			name = name.substr(dot+1, name.size()-dot-1);
 		}
@@ -558,14 +561,17 @@ namespace LibXenoverse {
 		return name;
 	}
 
-	string nameFromFilenameNoExtension(string filename) {
+	string nameFromFilenameNoExtension(string filename, bool last_dot) {
 		string name = filename;
 		size_t sep = name.find_last_of("\\/");
 		if (sep != std::string::npos) {
 			name = name.substr(sep + 1, name.size() - sep - 1);
 		}
 	
-		size_t dot = name.find_first_of(".");
+		size_t dot = string::npos;
+		if (last_dot) dot = name.find_last_of(".");
+		else dot = name.find_first_of(".");
+		
 		if (dot != string::npos) {
 			name = name.substr(0, dot);
 		}

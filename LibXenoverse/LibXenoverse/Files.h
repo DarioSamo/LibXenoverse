@@ -149,9 +149,9 @@ namespace LibXenoverse {
 	};
 
 	bool fileCheck(string filename);
-	string extensionFromFilename(string filename);
+	string extensionFromFilename(string filename, bool last_dot=false);
 	string nameFromFilename(string filename);
-	string nameFromFilenameNoExtension(string filename);
+	string nameFromFilenameNoExtension(string filename, bool last_dot=false);
 	string folderFromFilename(string filename);
 };
 
