@@ -77,9 +77,10 @@
     <ClInclude Include="EMD.h" />
     <ClInclude Include="EMM.h" />
     <ClInclude Include="ESK.h" />
-    <ClInclude Include="Files.h" />
+    <ClInclude Include="XenoFiles.h" />
     <ClInclude Include="half.h" />
     <ClInclude Include="LibXenoverse.h" />
+    <ClInclude Include="XenoMath.h" />
     <ClInclude Include="MSG.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="tinyxml\tinystr.h" />
@@ -106,8 +107,9 @@
     <ClCompile Include="ESK.cpp" />
     <ClCompile Include="ESKBone.cpp" />
     <ClCompile Include="ESKFBX.cpp" />
-    <ClCompile Include="Files.cpp" />
+    <ClCompile Include="XenoFiles.cpp" />
     <ClCompile Include="half.cpp" />
+    <ClCompile Include="XenoMath.cpp" />
     <ClCompile Include="MSG.cpp" />
     <ClCompile Include="MSGEntry.cpp" />
     <ClCompile Include="MSGSlot.cpp" />

@@ -77,11 +77,24 @@ namespace LibXenoverse {
 	};
 
 	class EMDSubmesh {
+		friend class EMDMesh;
+
 		protected:
 			vector<EMDVertex> vertices;
 			vector<EMDTriangles> triangles;
 			vector<EMDSubmeshDefinition> definitions;
-			float float_group[12];
+			float aabb_center_x;
+			float aabb_center_y;
+			float aabb_center_z;
+			float aabb_center_w;
+			float aabb_min_x;
+			float aabb_min_y;
+			float aabb_min_z;
+			float aabb_min_w;
+			float aabb_max_x;
+			float aabb_max_y;
+			float aabb_max_z;
+			float aabb_max_w;
 
 			unsigned int vertex_type_flag;
 			unsigned int vertex_size;
@@ -121,7 +134,18 @@ namespace LibXenoverse {
 	class EMDMesh {
 		protected:
 			vector<EMDSubmesh *> submeshes;
-			float float_group[12];
+			float aabb_center_x;
+			float aabb_center_y;
+			float aabb_center_z;
+			float aabb_center_w;
+			float aabb_min_x;
+			float aabb_min_y;
+			float aabb_min_z;
+			float aabb_min_w;
+			float aabb_max_x;
+			float aabb_max_y;
+			float aabb_max_z;
+			float aabb_max_w;
 			string name;
 		public:
 			EMDMesh() {

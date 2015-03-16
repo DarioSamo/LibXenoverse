@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="tinyxml">
-      <UniqueIdentifier>{b3684e13-e2da-4b9b-b3f9-81896efaf6bd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="EMD">
       <UniqueIdentifier>{13b17b19-50e4-4847-a0a9-796c77f66dec}</UniqueIdentifier>
     </Filter>
@@ -40,25 +37,25 @@
     <Filter Include="MSG">
       <UniqueIdentifier>{edb3db64-6bbc-4172-b296-c806caf4913a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{07f1a1e0-b1f1-4844-8680-7ea1a660a047}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External">
+      <UniqueIdentifier>{2144ae5c-ad6d-43c8-87b6-bc5d0fbbfeeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="External\tinyxml">
+      <UniqueIdentifier>{b3684e13-e2da-4b9b-b3f9-81896efaf6bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PCH">
+      <UniqueIdentifier>{24c3ea28-cb31-4052-8ebe-ca67a55cc1d7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Files.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="half.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tinyxml\tinystr.h">
-      <Filter>tinyxml</Filter>
+      <Filter>External\tinyxml</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml\tinyxml.h">
-      <Filter>tinyxml</Filter>
-    </ClInclude>
-    <ClInclude Include="LibXenoverse.h">
-      <Filter>Header Files</Filter>
+      <Filter>External\tinyxml</Filter>
     </ClInclude>
     <ClInclude Include="EMD.h">
       <Filter>EMD</Filter>
@@ -84,28 +81,34 @@
     <ClInclude Include="MSG.h">
       <Filter>MSG</Filter>
     </ClInclude>
+    <ClInclude Include="half.h">
+      <Filter>External</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>PCH</Filter>
+    </ClInclude>
+    <ClInclude Include="LibXenoverse.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="XenoMath.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="XenoFiles.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Files.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="half.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tinyxml\tinyxml.cpp">
-      <Filter>tinyxml</Filter>
+      <Filter>External\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml\tinyxmlerror.cpp">
-      <Filter>tinyxml</Filter>
+      <Filter>External\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml\tinyxmlparser.cpp">
-      <Filter>tinyxml</Filter>
+      <Filter>External\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml\tinystr.cpp">
-      <Filter>tinyxml</Filter>
+      <Filter>External\tinyxml</Filter>
     </ClCompile>
     <ClCompile Include="EMD.cpp">
       <Filter>EMD</Filter>
@@ -175,6 +178,18 @@
     </ClCompile>
     <ClCompile Include="MSGSlot.cpp">
       <Filter>MSG</Filter>
+    </ClCompile>
+    <ClCompile Include="half.cpp">
+      <Filter>External</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>PCH</Filter>
+    </ClCompile>
+    <ClCompile Include="XenoMath.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="XenoFiles.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

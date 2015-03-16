@@ -17,8 +17,10 @@ namespace LibXenoverse {
 		file->readInt16E(&unknown_total);
 		file->readInt16E(&model_total);
 
-		printf("Total Unknown: %d\n", unknown_total);
-		printf("Total Models: %d\n", model_total);
+		#ifdef LIBXENOVERSE_DEBUGGING_LOG
+		fprintf(global_debugging_log, "Total Unknown: %d\n", unknown_total);
+		fprintf(global_debugging_log, "Total Models: %d\n", model_total);
+		#endif
 
 		unsigned int root_model_address = 0;
 		unsigned int root_names_address = 0;

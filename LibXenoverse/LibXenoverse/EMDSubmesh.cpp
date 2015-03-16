@@ -6,17 +6,24 @@ namespace LibXenoverse {
 		// Read Submesh
 		printf("\nReading Submesh at %d\n", base_submesh_address);
 
-		for (size_t x = 0; x < 12; x++) {
-			file->readFloat32E(&float_group[x]);
-			printf("%f ", float_group[x]);
-			if ((x + 1) % 4 == 0) printf("\n");
-		}
+		file->readFloat32E(&aabb_center_x);
+		file->readFloat32E(&aabb_center_y);
+		file->readFloat32E(&aabb_center_z);
+		file->readFloat32E(&aabb_center_w);
+		file->readFloat32E(&aabb_min_x);
+		file->readFloat32E(&aabb_min_y);
+		file->readFloat32E(&aabb_min_z);
+		file->readFloat32E(&aabb_min_w);
+		file->readFloat32E(&aabb_max_x);
+		file->readFloat32E(&aabb_max_y);
+		file->readFloat32E(&aabb_max_z);
+		file->readFloat32E(&aabb_max_w);
 
 		#ifdef LIBXENOVERSE_DEBUGGING_LOG
 		fprintf(global_debugging_log, "Submesh Floats\n");
-		fprintf(global_debugging_log, "%f %f %f %f\n", float_group[0], float_group[1], float_group[2], float_group[3]);
-		fprintf(global_debugging_log, "%f %f %f %f\n", float_group[4], float_group[5], float_group[6], float_group[7]);
-		fprintf(global_debugging_log, "%f %f %f %f\n\n", float_group[8], float_group[9], float_group[10], float_group[11]);
+		fprintf(global_debugging_log, "%f %f %f %f\n", aabb_center_x, aabb_center_y, aabb_center_z, aabb_center_w);
+		fprintf(global_debugging_log, "%f %f %f %f\n", aabb_min_x, aabb_min_y, aabb_min_z, aabb_min_w);
+		fprintf(global_debugging_log, "%f %f %f %f\n\n", aabb_max_x, aabb_max_y, aabb_max_z, aabb_max_w);
 		#endif
 
 		unsigned int vertex_count = 0;
@@ -52,12 +59,17 @@ namespace LibXenoverse {
 			getchar();
 		}
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "Submesh Triangles Count: %d\n", submesh_triangles_count);
-		#endif
-
 		file->goToAddress(base_submesh_address + submesh_name_address);
 		file->readString(&name);
+
+		// There are invalid material names in some meshes which Dimps left broken in the final release
+		// Use a placeholder string instead
+		if (!name.size()) name = "null";
+
+		#ifdef LIBXENOVERSE_DEBUGGING_LOG
+		fprintf(global_debugging_log, "Submesh Triangles Count: %d\n", submesh_triangles_count);
+		fprintf(global_debugging_log, "Submesh Material Name: %s\n", name.c_str());
+		#endif
 
 		printf("Submesh Name: %s\n", name.c_str());
 		printf("Submesh Unknown 1: %d\n", vertex_type_flag);
@@ -97,18 +109,39 @@ namespace LibXenoverse {
 			triangles[i].read(file);
 		}
 
+		AABB vertex_aabb;
+
 		// Read Vertices
 		vertices.resize(vertex_count);
 		for (size_t v = 0; v < vertex_count; v++) {
 			file->goToAddress(base_submesh_address + vertex_address + v*vertex_size);
 			vertices[v].read(file, vertex_type_flag);
+			vertex_aabb.addPoint(vertices[v].x, vertices[v].y, vertices[v].z);
 		}
+
+		#ifdef LIBXENOVERSE_DEBUGGING_LOG
+		fprintf(global_debugging_log, "Submesh AABB Coordinates: %f %f %f %f %f %f\n", vertex_aabb.start_x, vertex_aabb.start_y, vertex_aabb.start_z,
+																		   vertex_aabb.end_x, vertex_aabb.end_y, vertex_aabb.end_z);
+		fprintf(global_debugging_log, "Submesh AABB Size: %f %f %f\n", vertex_aabb.sizeX(), vertex_aabb.sizeY(), vertex_aabb.sizeZ());
+		#endif
 	}
 
 
 	void EMDSubmesh::write(File *file) {
 		unsigned int base_submesh_address = file->getCurrentAddress();
-		for (size_t x = 0; x < 12; x++) file->writeFloat32E(&float_group[x]);
+
+		file->writeFloat32E(&aabb_center_x);
+		file->writeFloat32E(&aabb_center_y);
+		file->writeFloat32E(&aabb_center_z);
+		file->writeFloat32E(&aabb_center_w);
+		file->writeFloat32E(&aabb_min_x);
+		file->writeFloat32E(&aabb_min_y);
+		file->writeFloat32E(&aabb_min_z);
+		file->writeFloat32E(&aabb_min_w);
+		file->writeFloat32E(&aabb_max_x);
+		file->writeFloat32E(&aabb_max_y);
+		file->writeFloat32E(&aabb_max_z);
+		file->writeFloat32E(&aabb_max_w);
 
 		file->writeNull(32);
 

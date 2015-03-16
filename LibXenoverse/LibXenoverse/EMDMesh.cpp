@@ -4,18 +4,18 @@ namespace LibXenoverse {
 		unsigned int base_mesh_address = file->getCurrentAddress();
 		printf("Reading Mesh at %d\n", base_mesh_address);
 
-		for (size_t x = 0; x < 12; x++) {
-			file->readFloat32E(&float_group[x]);
-			printf("%f ", float_group[x]);
-			if ((x + 1) % 4 == 0) printf("\n");
-		}
-
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "Mesh Floats\n");
-		fprintf(global_debugging_log, "%f %f %f %f\n", float_group[0], float_group[1], float_group[2], float_group[3]);
-		fprintf(global_debugging_log, "%f %f %f %f\n", float_group[4], float_group[5], float_group[6], float_group[7]);
-		fprintf(global_debugging_log, "%f %f %f %f\n\n", float_group[8], float_group[9], float_group[10], float_group[11]);
-		#endif
+		file->readFloat32E(&aabb_center_x);
+		file->readFloat32E(&aabb_center_y);
+		file->readFloat32E(&aabb_center_z);
+		file->readFloat32E(&aabb_center_w);
+		file->readFloat32E(&aabb_min_x);
+		file->readFloat32E(&aabb_min_y);
+		file->readFloat32E(&aabb_min_z);
+		file->readFloat32E(&aabb_min_w);
+		file->readFloat32E(&aabb_max_x);
+		file->readFloat32E(&aabb_max_y);
+		file->readFloat32E(&aabb_max_z);
+		file->readFloat32E(&aabb_max_w);
 
 		unsigned int mesh_name_offset = 0;
 		unsigned short unknown_total = 0;
@@ -28,11 +28,18 @@ namespace LibXenoverse {
 		file->readInt32E(&submesh_table_address);
 
 		file->goToAddress(base_mesh_address + mesh_name_offset);
-
 		file->readString(&name);
-		printf("Mesh Name: %s\n", name.c_str());
-		printf("\nSubmesh Total: %d\n", submesh_total);
 
+		#ifdef LIBXENOVERSE_DEBUGGING_LOG
+		fprintf(global_debugging_log, "Mesh Floats\n");
+		fprintf(global_debugging_log, "%f %f %f %f\n", aabb_center_x, aabb_center_y, aabb_center_z, aabb_center_w);
+		fprintf(global_debugging_log, "%f %f %f %f\n", aabb_min_x, aabb_min_y, aabb_min_z, aabb_min_w);
+		fprintf(global_debugging_log, "%f %f %f %f\n\n", aabb_max_x, aabb_max_y, aabb_max_z, aabb_max_w);
+
+		fprintf(global_debugging_log, "Mesh Name: %s\n", name.c_str());
+		fprintf(global_debugging_log, "\nSubmesh Total: %d\n", submesh_total);
+		#endif
+		
 		for (size_t k = 0; k < submesh_total; k++) {
 			file->goToAddress(base_mesh_address + submesh_table_address + k * 4);
 			file->readInt32E(&address);
@@ -50,7 +57,18 @@ namespace LibXenoverse {
 	void EMDMesh::write(File *file) {
 		unsigned int base_mesh_address = file->getCurrentAddress();
 
-		for (size_t x = 0; x < 12; x++) file->writeFloat32E(&float_group[x]);
+		file->writeFloat32E(&aabb_center_x);
+		file->writeFloat32E(&aabb_center_y);
+		file->writeFloat32E(&aabb_center_z);
+		file->writeFloat32E(&aabb_center_w);
+		file->writeFloat32E(&aabb_min_x);
+		file->writeFloat32E(&aabb_min_y);
+		file->writeFloat32E(&aabb_min_z);
+		file->writeFloat32E(&aabb_min_w);
+		file->writeFloat32E(&aabb_max_x);
+		file->writeFloat32E(&aabb_max_y);
+		file->writeFloat32E(&aabb_max_z);
+		file->writeFloat32E(&aabb_max_w);
 
 		unsigned int mesh_name_offset = 0;
 		unsigned short submesh_total = submeshes.size();

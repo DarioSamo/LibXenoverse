@@ -29,6 +29,7 @@ namespace LibXenoverse {
 		else add = true;
 
 		if (add) {
+			AABB vertex_aabb;
 			int control_points_count = lMesh->GetControlPointsCount();
 			FbxVector4 *control_points = lMesh->GetControlPoints();
 			int vertex_color_count = lMesh->GetElementVertexColorCount();
@@ -130,6 +131,7 @@ namespace LibXenoverse {
 						if (!clone) {
 							if (triangle_list_ptr) triangle_list_ptr->faces.push_back(vertices.size());
 							vertices.push_back(v);
+							vertex_aabb.addPoint(v.x, v.y, v.z);
 						}
 					}
 				}
@@ -147,9 +149,19 @@ namespace LibXenoverse {
 			definitions.push_back(definition);
 
 			// Fill Submesh Data
-			for (size_t i = 0; i < 12; i++) {
-				float_group[i] = 0.0f;
-			}
+			// FIXME: The Ws need to be figured out to know what they actually are
+			aabb_center_x = vertex_aabb.centerX();
+			aabb_center_y = vertex_aabb.centerY();
+			aabb_center_z = vertex_aabb.centerZ();
+			aabb_center_w = vertex_aabb.sizeX();
+			aabb_min_x = vertex_aabb.start_x;
+			aabb_min_y = vertex_aabb.start_y;
+			aabb_min_z = vertex_aabb.start_z;
+			aabb_min_w = vertex_aabb.sizeY();
+			aabb_max_x = vertex_aabb.end_x;
+			aabb_max_y = vertex_aabb.end_y;
+			aabb_max_z = vertex_aabb.end_z;
+			aabb_max_w = vertex_aabb.sizeZ();
 
 			vertex_type_flag = 0x8207;
 			vertex_size = 36;
@@ -211,10 +223,6 @@ namespace LibXenoverse {
 
 		name = ToString(lNode->GetName());
 
-		for (size_t i = 0; i < 12; i++) {
-			float_group[i] = 0.0f;
-		}
-
 		vector<string> material_names;
 		int material_count = lNode->GetMaterialCount();
 		for (int m = 0; m<material_count; m++) {
@@ -272,6 +280,27 @@ namespace LibXenoverse {
 			submesh->importFBX(lMesh, m, transform_matrix, material_names, control_points_skin_bindings);
 			submeshes.push_back(submesh);
 		}
+
+		// After Submeshes are imported, calculate new AABB
+		aabb_min_x = aabb_min_y = aabb_min_z = LIBXENOVERSE_AABB_MAX_START;
+		aabb_max_x = aabb_max_y = aabb_max_z = LIBXENOVERSE_AABB_MIN_END;
+		for (size_t i = 0; i < submeshes.size(); i++) {
+			if (submeshes[i]->aabb_max_x > aabb_max_x) aabb_max_x = submeshes[i]->aabb_max_x;
+			if (submeshes[i]->aabb_max_y > aabb_max_y) aabb_max_y = submeshes[i]->aabb_max_y;
+			if (submeshes[i]->aabb_max_z > aabb_max_z) aabb_max_z = submeshes[i]->aabb_max_z;
+
+			if (submeshes[i]->aabb_min_x < aabb_min_x) aabb_min_x = submeshes[i]->aabb_min_x;
+			if (submeshes[i]->aabb_min_y < aabb_min_y) aabb_min_y = submeshes[i]->aabb_min_y;
+			if (submeshes[i]->aabb_min_z < aabb_min_z) aabb_min_z = submeshes[i]->aabb_min_z;
+
+			if (submeshes[i]->aabb_center_w > aabb_center_w) aabb_center_w = submeshes[i]->aabb_center_w;
+			if (submeshes[i]->aabb_min_w    > aabb_min_w)    aabb_min_w    = submeshes[i]->aabb_min_w;
+			if (submeshes[i]->aabb_max_w    > aabb_max_w)    aabb_max_w    = submeshes[i]->aabb_max_w;
+		}
+
+		aabb_center_x = (aabb_max_x + aabb_min_x) / 2.0f;
+		aabb_center_y = (aabb_max_y + aabb_min_y) / 2.0f;
+		aabb_center_z = (aabb_max_z + aabb_min_z) / 2.0f;
 	}
 
 	void EMDModel::importFBX(FbxNode *lNode) {

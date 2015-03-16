@@ -7,6 +7,8 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
+	LibXenoverse::initializeDebuggingLog();
+
 	string material_filename = ToString(argv[1]);
 	string material_name = LibXenoverse::nameFromFilenameNoExtension(material_filename);
 	string extension = LibXenoverse::extensionFromFilename(material_filename);

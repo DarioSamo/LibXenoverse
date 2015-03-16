@@ -45,6 +45,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cusxml", "cusxml\cusxml.vcx
 		{4002449E-E580-472F-84B2-81EEE5991C3F} = {4002449E-E580-472F-84B2-81EEE5991C3F}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cmdtest", "cmdtest\cmdtest.vcxproj", "{F3D5B84C-C3D8-4F26-B3DF-405A6F2A6DA5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4002449E-E580-472F-84B2-81EEE5991C3F} = {4002449E-E580-472F-84B2-81EEE5991C3F}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -87,6 +92,10 @@ Global
 		{C22ACEEB-04B0-48A9-9749-3BDEAAFC34DE}.Debug|Win32.Build.0 = Debug|Win32
 		{C22ACEEB-04B0-48A9-9749-3BDEAAFC34DE}.Release|Win32.ActiveCfg = Release|Win32
 		{C22ACEEB-04B0-48A9-9749-3BDEAAFC34DE}.Release|Win32.Build.0 = Release|Win32
+		{F3D5B84C-C3D8-4F26-B3DF-405A6F2A6DA5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3D5B84C-C3D8-4F26-B3DF-405A6F2A6DA5}.Debug|Win32.Build.0 = Debug|Win32
+		{F3D5B84C-C3D8-4F26-B3DF-405A6F2A6DA5}.Release|Win32.ActiveCfg = Release|Win32
+		{F3D5B84C-C3D8-4F26-B3DF-405A6F2A6DA5}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

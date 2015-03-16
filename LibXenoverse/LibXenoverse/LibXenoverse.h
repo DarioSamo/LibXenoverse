@@ -21,7 +21,7 @@
 #endif
 
 // Xenoverse Includes
-#include "Files.h"
+#include "XenoFiles.h"
 #include "EMB.h"
 #include "EMD.h"
 #include "EMM.h"
@@ -30,6 +30,7 @@
 #include "CUS.h"
 #include "AGD.h"
 #include "MSG.h"
+#include "XenoMath.h"
 
 using namespace std;
 

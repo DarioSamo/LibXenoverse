@@ -7,6 +7,8 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
+	LibXenoverse::initializeDebuggingLog();
+
 	string pack_name = ToString(argv[1]);
 
 	if (pack_name.find(".emb") != string::npos) {

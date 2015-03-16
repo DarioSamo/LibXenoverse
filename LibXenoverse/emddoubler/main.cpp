@@ -1,6 +1,8 @@
 #include "LibXenoverse.h"
 
 int main(int argc, char** argv) {
+	LibXenoverse::initializeDebuggingLog();
+
 	WIN32_FIND_DATA FindFileData;
 	HANDLE hFind;
 	hFind = FindFirstFile("chara/*", &FindFileData);

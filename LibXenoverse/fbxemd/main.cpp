@@ -7,6 +7,8 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
+	LibXenoverse::initializeDebuggingLog();
+
 	// Create FBX SDK
 	FbxManager *sdk_manager = FbxManager::Create();
 	FbxIOSettings *ios = FbxIOSettings::Create(sdk_manager, IOSROOT);
