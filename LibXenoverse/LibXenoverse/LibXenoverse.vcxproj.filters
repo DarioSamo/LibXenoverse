@@ -49,6 +49,9 @@
     <Filter Include="PCH">
       <UniqueIdentifier>{24c3ea28-cb31-4052-8ebe-ca67a55cc1d7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EMZ">
+      <UniqueIdentifier>{3d21a801-901f-4614-96f0-7e23efebf440}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tinyxml\tinystr.h">
@@ -95,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="XenoFiles.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="EMZ.h">
+      <Filter>EMZ</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="XenoFiles.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="EMZ.cpp">
+      <Filter>EMZ</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -20,17 +20,23 @@
 
 #endif
 
+#ifdef LIBXENOVERSE_ZLIB_SUPPORT
+// ZLIB Includes
+#include "zlib.h"
+#endif
+
 // Xenoverse Includes
 #include "XenoFiles.h"
+#include "XenoMath.h"
+#include "AGD.h"
+#include "CBS.h"
+#include "CUS.h"
 #include "EMB.h"
 #include "EMD.h"
 #include "EMM.h"
+#include "EMZ.h"
 #include "ESK.h"
-#include "CBS.h"
-#include "CUS.h"
-#include "AGD.h"
 #include "MSG.h"
-#include "XenoMath.h"
 
 using namespace std;
 

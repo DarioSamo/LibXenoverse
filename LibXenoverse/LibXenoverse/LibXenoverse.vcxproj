@@ -58,9 +58,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>LIBXENOVERSE_FBX_SUPPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LIBXENOVERSE_FBX_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>../../depends/fbxsdk/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../depends/fbxsdk/include;../../depends/zlib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
@@ -76,6 +76,7 @@
     <ClInclude Include="EMB.h" />
     <ClInclude Include="EMD.h" />
     <ClInclude Include="EMM.h" />
+    <ClInclude Include="EMZ.h" />
     <ClInclude Include="ESK.h" />
     <ClInclude Include="XenoFiles.h" />
     <ClInclude Include="half.h" />
@@ -104,6 +105,7 @@
     <ClCompile Include="EMDTriangles.cpp" />
     <ClCompile Include="EMDVertex.cpp" />
     <ClCompile Include="EMM.cpp" />
+    <ClCompile Include="EMZ.cpp" />
     <ClCompile Include="ESK.cpp" />
     <ClCompile Include="ESKBone.cpp" />
     <ClCompile Include="ESKFBX.cpp" />

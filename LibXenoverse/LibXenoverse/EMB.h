@@ -2,6 +2,7 @@
 #define LIBXENOVERSE_EMB_H_INCLUDED
 
 #define LIBXENOVERSE_EMB_SIGNATURE    "#EMB"
+#define LIBXENOVERSE_EMB_EXTENSION    ".emb"
 
 namespace LibXenoverse {
 	class EMBFile {
