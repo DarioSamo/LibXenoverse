@@ -55,6 +55,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "emzpack", "emzpack\emzpack.
 		{4002449E-E580-472F-84B2-81EEE5991C3F} = {4002449E-E580-472F-84B2-81EEE5991C3F}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hlslasm", "hlslasm\hlslasm.vcxproj", "{095A79D4-A430-4A22-ABF6-0192B3B590F4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4002449E-E580-472F-84B2-81EEE5991C3F} = {4002449E-E580-472F-84B2-81EEE5991C3F}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -105,6 +110,10 @@ Global
 		{88D916CA-BCBF-4ACF-AFB2-118CD62A20F6}.Debug|Win32.Build.0 = Debug|Win32
 		{88D916CA-BCBF-4ACF-AFB2-118CD62A20F6}.Release|Win32.ActiveCfg = Release|Win32
 		{88D916CA-BCBF-4ACF-AFB2-118CD62A20F6}.Release|Win32.Build.0 = Release|Win32
+		{095A79D4-A430-4A22-ABF6-0192B3B590F4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{095A79D4-A430-4A22-ABF6-0192B3B590F4}.Debug|Win32.Build.0 = Debug|Win32
+		{095A79D4-A430-4A22-ABF6-0192B3B590F4}.Release|Win32.ActiveCfg = Release|Win32
+		{095A79D4-A430-4A22-ABF6-0192B3B590F4}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

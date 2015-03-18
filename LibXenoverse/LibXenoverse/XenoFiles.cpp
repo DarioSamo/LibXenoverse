@@ -587,4 +587,30 @@ namespace LibXenoverse {
 
 		return "";
 	}
+
+	char *getBytesFrom(string filename, size_t &data_size) {
+		File file(filename, LIBXENOVERSE_FILE_READ_BINARY);
+
+		if (file.valid()) {
+			data_size = file.getFileSize();
+			char *data = new char[data_size];
+			file.read(data, data_size);
+			file.close();
+			return data;
+		}
+
+		data_size = 0;
+		return NULL;
+	}
+
+	bool writeBytesTo(string filename, char *data, size_t data_size) {
+		File file(filename, LIBXENOVERSE_FILE_WRITE_BINARY);
+		if (file.valid()) {
+			file.write(data, data_size);
+			file.close();
+			return true;
+		}
+
+		return false;
+	}
 }

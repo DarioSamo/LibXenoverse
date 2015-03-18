@@ -58,7 +58,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>LIBXENOVERSE_FBX_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LIBXENOVERSE_FBX_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;LIBXENOVERSE_DXSDK_SUPPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>../../depends/fbxsdk/include;../../depends/zlib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
@@ -78,6 +78,7 @@
     <ClInclude Include="EMM.h" />
     <ClInclude Include="EMZ.h" />
     <ClInclude Include="ESK.h" />
+    <ClInclude Include="HLSLASM.h" />
     <ClInclude Include="XenoFiles.h" />
     <ClInclude Include="half.h" />
     <ClInclude Include="LibXenoverse.h" />
@@ -109,6 +110,7 @@
     <ClCompile Include="ESK.cpp" />
     <ClCompile Include="ESKBone.cpp" />
     <ClCompile Include="ESKFBX.cpp" />
+    <ClCompile Include="HLSLASM.cpp" />
     <ClCompile Include="XenoFiles.cpp" />
     <ClCompile Include="half.cpp" />
     <ClCompile Include="XenoMath.cpp" />

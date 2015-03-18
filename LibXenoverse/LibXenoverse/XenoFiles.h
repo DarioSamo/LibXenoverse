@@ -153,6 +153,8 @@ namespace LibXenoverse {
 	string nameFromFilename(string filename);
 	string nameFromFilenameNoExtension(string filename, bool last_dot=false);
 	string folderFromFilename(string filename);
+	char *getBytesFrom(string filename, size_t &data_size);
+	bool writeBytesTo(string filename, char *data, size_t data_size);
 };
 
 #endif

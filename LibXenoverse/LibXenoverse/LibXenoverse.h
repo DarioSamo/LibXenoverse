@@ -14,10 +14,8 @@
 
 // FBX Includes
 #ifdef LIBXENOVERSE_FBX_SUPPORT
-
 #include <fbxsdk.h>
 #include <fbxsdk/fileio/fbxiosettings.h>
-
 #endif
 
 #ifdef LIBXENOVERSE_ZLIB_SUPPORT
@@ -25,9 +23,14 @@
 #include "zlib.h"
 #endif
 
+#ifdef LIBXENOVERSE_DXSDK_SUPPORT
+#include "D3Dcompiler.h"
+#endif
+
 // Xenoverse Includes
 #include "XenoFiles.h"
 #include "XenoMath.h"
+#include "HLSLASM.h"
 #include "AGD.h"
 #include "CBS.h"
 #include "CUS.h"
