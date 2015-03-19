@@ -1,3 +1,7 @@
 *
 !.gitignore
 !*.exe
+!*.dll
+!resources/
+!plugins.cfg
+!resources.cfg

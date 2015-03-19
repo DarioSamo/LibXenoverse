@@ -1,7 +1,7 @@
 #ifdef LIBXENOVERSE_ZLIB_SUPPORT
 
 namespace LibXenoverse {
-	EMZ::EMZ(string filename) {
+	bool EMZ::load(string filename) {
 		File file(filename, LIBXENOVERSE_FILE_READ_BINARY);
 		if (file.valid() && file.readHeader(LIBXENOVERSE_EMZ_SIGNATURE, LIBXENOVERSE_LITTLE_ENDIAN)) {
 			// Read Header
@@ -58,11 +58,14 @@ namespace LibXenoverse {
 				inflateEnd(&zstream);
 			}
 			else {
-				return;
+				return false;
 			}
 
 			delete [] compressed_data;
 		}
+		else return false;
+
+		return true;
 	}
 
 

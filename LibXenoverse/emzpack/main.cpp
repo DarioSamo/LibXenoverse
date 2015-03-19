@@ -14,7 +14,8 @@ int main(int argc, char** argv) {
 	string name = LibXenoverse::nameFromFilenameNoExtension(pack_name);
 
 	if (pack_name.find(".emz") != string::npos) {
-		LibXenoverse::EMZ *emz_pack = new LibXenoverse::EMZ(pack_name);
+		LibXenoverse::EMZ *emz_pack = new LibXenoverse::EMZ();
+		emz_pack->load(pack_name);
 		string new_extension = emz_pack->detectNewExtension();
 		string new_filename = folder + name + new_extension;
 		emz_pack->saveUncompressed(new_filename);

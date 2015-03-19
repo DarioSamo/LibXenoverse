@@ -1,10 +1,15 @@
 namespace LibXenoverse {
-	EMD::EMD(string filename) {
+	bool EMD::load(string filename) {
+		name = nameFromFilenameNoExtension(filename, true);
+
 		File file(filename, LIBXENOVERSE_FILE_READ_BINARY);
 		if (file.valid() && file.readHeader(LIBXENOVERSE_EMD_SIGNATURE)) {
 			read(&file);
 			file.close();
 		}
+		else return false;
+
+		return true;
 	}
 
 	void EMD::read(File *file) {

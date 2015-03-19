@@ -16,11 +16,13 @@ int main(int argc, char** argv) {
 		string new_name = agd_filename;
 		new_name.resize(new_name.size() - 4);
 
-		LibXenoverse::AGD *agd_table = new LibXenoverse::AGD(agd_filename);
+		LibXenoverse::AGD *agd_table = new LibXenoverse::AGD();
+		agd_table->load(agd_filename);
 		agd_table->save(new_name);
 	}
 	else if (extension == "agd") {
-		LibXenoverse::AGD *agd_table = new LibXenoverse::AGD(agd_filename);
+		LibXenoverse::AGD *agd_table = new LibXenoverse::AGD();
+		agd_table->load(agd_filename);
 		agd_table->saveXML(agd_filename + ".xml");
 	}
 	return 0;

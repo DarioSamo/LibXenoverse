@@ -17,6 +17,10 @@ namespace LibXenoverse {
 			void readXML(TiXmlElement *root);
 			void write(File *file);
 			void writeXML(TiXmlElement *root);
+
+			float valueFloat() {
+				return *(float *)(&value);
+			}
 	};
 
 	class EMMMaterial {
@@ -28,6 +32,18 @@ namespace LibXenoverse {
 			EMMMaterial() {
 			}
 
+			string getName() {
+				return string(name);
+			}
+
+			string getShaderName() {
+				return string(shader_name);
+			}
+
+			vector<EMMParameter *> &getParameters() {
+				return parameters;
+			}
+
 			void read(File *file);
 			void readXML(TiXmlElement *root);
 			void write(File *file);
@@ -37,11 +53,12 @@ namespace LibXenoverse {
 	class EMM {
 		protected:
 			vector<EMMMaterial *> materials;
+			string name;
 		public:
 			EMM() {
 			}
 
-			EMM(string filename);
+			bool load(string filename);
 			void save(string filename, bool big_endian=false);
 			void saveXML(string filename);
 

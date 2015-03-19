@@ -1,10 +1,13 @@
 namespace LibXenoverse {
-	ESK::ESK(string filename) {
+	bool ESK::load(string filename) {
 		File file(filename, LIBXENOVERSE_FILE_READ_BINARY);
 		if (file.valid() && file.readHeader(LIBXENOVERSE_ESK_SIGNATURE)) {
 			read(&file);
 			file.close();
 		}
+		else return false;
+
+		return true;
 	}
 
 	void ESK::read(File *file) {

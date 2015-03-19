@@ -23,8 +23,10 @@
 #include "zlib.h"
 #endif
 
-#ifdef LIBXENOVERSE_DXSDK_SUPPORT
+#ifdef LIBXENOVERSE_WINSDK_SUPPORT
 #include "D3Dcompiler.h"
+#include <d3d9.h>
+#include <d3dx9.h>
 #endif
 
 // Xenoverse Includes
@@ -32,6 +34,7 @@
 #include "XenoMath.h"
 #include "HLSLASM.h"
 #include "AGD.h"
+#include "BCS.h"
 #include "CBS.h"
 #include "CUS.h"
 #include "EMB.h"
@@ -46,7 +49,7 @@ using namespace std;
 #ifndef LIBXENOVERSE_H_INCLUDED
 #define LIBXENOVERSE_H_INCLUDED
 
-//#define LIBXENOVERSE_DEBUGGING_LOG
+#define LIBXENOVERSE_DEBUGGING_LOG
 
 namespace LibXenoverse {
 	extern FILE *global_debugging_log;

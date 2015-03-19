@@ -17,11 +17,13 @@ int main(int argc, char** argv) {
 		string new_name = material_filename;
 		new_name.resize(new_name.size() - 4);
 
-		LibXenoverse::EMM *emm_material = new LibXenoverse::EMM(material_filename);
+		LibXenoverse::EMM *emm_material = new LibXenoverse::EMM();
+		emm_material->load(material_filename);
 		emm_material->save(new_name);
 	}
 	else if (extension == "emm") {
-		LibXenoverse::EMM *emm_material = new LibXenoverse::EMM(material_filename);
+		LibXenoverse::EMM *emm_material = new LibXenoverse::EMM();
+		emm_material->load(material_filename);
 		emm_material->saveXML(material_filename + ".xml");
 	}
 	return 0;

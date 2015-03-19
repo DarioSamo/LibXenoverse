@@ -1,6 +1,10 @@
 namespace LibXenoverse {
 #ifdef LIBXENOVERSE_FBX_SUPPORT
 	void EMDSubmesh::importFBX(FbxMesh *lMesh, int material_index, FbxAMatrix transform_matrix, vector<string> &material_names, vector<vector<pair<double, FbxNode *>>> &control_points_skin_bindings) {
+		// FBX Mesh UV Sets
+		FbxStringList uv_sets;
+		lMesh->GetUVSetNames(uv_sets);
+
 		// Scan FBX Mesh for vertices on the current material index
 		int lPolygonCount = lMesh->GetPolygonCount();
 		FbxLayerElementArrayTemplate<int>* lMaterialIndice = NULL;
@@ -91,16 +95,17 @@ namespace LibXenoverse {
 						v.ny = (float)normal[1];
 						v.nz = (float)normal[2];
 
-						FbxStringList uv_sets;
-						lMesh->GetUVSetNames(uv_sets);
-
 						for (int set = 0; set < uv_sets.GetCount(); set++) {
 							if (set > 1) break;
 							FbxVector2 uv;
 							bool no_uv;
 							lMesh->GetPolygonVertexUV(lPolygonIndex, j, uv_sets[set].Buffer(), uv, no_uv);
 							v.u = (float) uv[0];
-							v.v = 1.0f - (float) uv[1];
+							v.v = 1.0f + (float) uv[1];
+
+							#ifdef LIBXENOVERSE_DEBUGGING_LOG
+							fprintf(global_debugging_log, "UV: %d %d %f %f %d\n", lPolygonIndex, j, v.u, v.v, no_uv);
+							#endif
 						}
 
 						vector<pair<double, FbxNode *>> &skin_bindings = control_points_skin_bindings[control_point_index];

@@ -1,5 +1,7 @@
 namespace LibXenoverse {
-	EMB::EMB(string filename) {
+	bool EMB::load(string filename) {
+		name = nameFromFilenameNoExtension(filename, true);
+
 		File file(filename, LIBXENOVERSE_FILE_READ_BINARY);
 		if (file.valid() && file.readHeader(LIBXENOVERSE_EMB_SIGNATURE)) {
 			file.goToAddress(0xC);
@@ -56,6 +58,9 @@ namespace LibXenoverse {
 
 			file.close();
 		}
+		else return false;
+
+		return true;
 	}
 
 	void EMB::extract(string folder) {

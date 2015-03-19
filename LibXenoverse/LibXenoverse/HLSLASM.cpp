@@ -1,4 +1,4 @@
-#ifdef LIBXENOVERSE_DXSDK_SUPPORT
+#ifdef LIBXENOVERSE_WINSDK_SUPPORT
 
 namespace LibXenoverse {
 	char *HLSLASM::assembleFromFile(string filename, size_t &data_size) {

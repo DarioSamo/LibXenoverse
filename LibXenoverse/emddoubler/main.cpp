@@ -39,7 +39,8 @@ int main(int argc, char** argv) {
 
 					string model_filename = ToString(result_file);
 					if (LibXenoverse::fileCheck(model_filename)) {
-						LibXenoverse::EMD *emd_model = new LibXenoverse::EMD(model_filename);
+						LibXenoverse::EMD *emd_model = new LibXenoverse::EMD();
+						emd_model->load(model_filename);
 						float scale = 0.25f + ((rand() % 2000) / 1000.0f);
 						emd_model->setVertexScale(scale);
 						emd_model->save(model_filename);

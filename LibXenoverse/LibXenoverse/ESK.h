@@ -31,7 +31,7 @@ namespace LibXenoverse {
 			ESK() {
 			}
 
-			ESK(string filename);
+			bool load(string filename);
 			void save(string filename, bool big_endian = false);
 
 			void read(File *file);

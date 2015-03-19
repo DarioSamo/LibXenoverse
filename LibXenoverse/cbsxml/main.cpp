@@ -16,11 +16,13 @@ int main(int argc, char** argv) {
 		string new_name = cbs_filename;
 		new_name.resize(new_name.size() - 4);
 
-		LibXenoverse::CBS *cbs_table = new LibXenoverse::CBS(cbs_filename);
+		LibXenoverse::CBS *cbs_table = new LibXenoverse::CBS();
+		cbs_table->load(cbs_filename);
 		cbs_table->save(new_name);
 	}
 	else if (extension == "cbs") {
-		LibXenoverse::CBS *cbs_table = new LibXenoverse::CBS(cbs_filename);
+		LibXenoverse::CBS *cbs_table = new LibXenoverse::CBS();
+		cbs_table->load(cbs_filename);
 		cbs_table->saveXML(cbs_filename + ".xml");
 	}
 

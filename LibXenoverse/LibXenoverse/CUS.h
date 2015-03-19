@@ -10,7 +10,7 @@ namespace LibXenoverse {
 			CUS() {
 			}
 
-			CUS(string filename);
+			bool load(string filename);
 			void save(string filename, bool big_endian = false);
 			void saveXML(string filename);
 

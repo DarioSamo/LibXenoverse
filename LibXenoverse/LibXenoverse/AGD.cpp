@@ -1,9 +1,9 @@
 namespace LibXenoverse {
-	AGD::AGD(string filename) {
+	bool AGD::load(string filename) {
 		if (filename.find(".xml") != string::npos) {
 			TiXmlDocument doc(filename);
 			if (!doc.LoadFile()) {
-				return;
+				return false;
 			}
 
 			TiXmlHandle hDoc(&doc);
@@ -12,7 +12,7 @@ namespace LibXenoverse {
 
 			pElem = hDoc.FirstChildElement().Element();
 			if (!pElem) {
-				return;
+				return false;
 			}
 
 			unsigned int base_xp = 0;
@@ -36,7 +36,10 @@ namespace LibXenoverse {
 				read(&file);
 				file.close();
 			}
+			else return false;
 		}
+
+		return true;
 	}
 
 	void AGD::read(File *file) {

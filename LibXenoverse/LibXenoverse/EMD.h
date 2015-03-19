@@ -6,12 +6,15 @@
 
 namespace LibXenoverse {
 	class EMDVertex {
+		friend class EMD;
+
 		public:
 			float x, y, z;
+			float bone_weight[4];
+			unsigned char bone[4];
 			float nx, ny, nz;
 			float u, v;
-			unsigned char bone[4];
-			float bone_weight[4];
+			
 
 			EMDVertex() {
 			}
@@ -47,6 +50,8 @@ namespace LibXenoverse {
 	};
 
 	class EMDTriangles {
+		friend class EMD;
+
 		public:
 			vector<unsigned short> faces;
 			vector<string> bone_names;
@@ -64,6 +69,8 @@ namespace LibXenoverse {
 	};
 
 	class EMDSubmeshDefinition {
+		friend class EMD;
+
 		public:
 			unsigned int flag;
 			float a;
@@ -77,6 +84,7 @@ namespace LibXenoverse {
 	};
 
 	class EMDSubmesh {
+		friend class EMD;
 		friend class EMDMesh;
 
 		protected:
@@ -114,6 +122,18 @@ namespace LibXenoverse {
 			unsigned int getTotalPointCount();
 			void getMaterialNames(vector<string> &material_names);
 
+			string getMaterialName() {
+				return name;
+			}
+
+			vector<EMDVertex> &getVertices() {
+				return vertices;
+			}
+			
+			vector<EMDTriangles> &getTriangles() {
+				return triangles;
+			}
+
 			/** Get the best triangle list suited for the array of bone names.
 			    If there's no good triangle list that can fit all the bone names,
 				create a new one and return it.
@@ -132,6 +152,8 @@ namespace LibXenoverse {
 	};
 
 	class EMDMesh {
+		friend class EMD;
+
 		protected:
 			vector<EMDSubmesh *> submeshes;
 			float aabb_center_x;
@@ -163,6 +185,10 @@ namespace LibXenoverse {
 			unsigned int getTotalPointCount();
 			void getMaterialNames(vector<string> &material_names);
 
+			vector<EMDSubmesh *> &getSubmeshes() {
+				return submeshes;
+			}
+
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
 				void importFBX(FbxNode *lNode);
 				void exportFBX(FbxMesh *lMesh, unsigned int &control_point_base, FbxGeometryElementNormal *lGeometryElementNormal, FbxGeometryElementUV *lGeometryUVElement);
@@ -171,6 +197,8 @@ namespace LibXenoverse {
 	};
 
 	class EMDModel {
+		friend class EMD;
+
 		protected:
 			vector<EMDMesh *> meshes;
 		public:
@@ -190,6 +218,10 @@ namespace LibXenoverse {
 				return names;
 			}
 
+			vector<EMDMesh *> &getMeshes() {
+				return meshes;
+			}
+
 			unsigned int getTotalPointCount();
 			void getMaterialNames(vector<string> &material_names);
 
@@ -204,11 +236,12 @@ namespace LibXenoverse {
 		protected:
 			vector<EMDModel *> models;
 			vector<string> model_names;
+			string name;
 		public:
 			EMD() {
 			}
 
-			EMD(string filename);
+			bool load(string filename);
 			void save(string filename, bool big_endian = false);
 
 			void read(File *file);

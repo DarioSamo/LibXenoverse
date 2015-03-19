@@ -1,0 +1,2 @@
+#include "resource.h"
+IDI_XENOVIEWER_ICON ICON DISCARDABLE "xenoviewer.ico"

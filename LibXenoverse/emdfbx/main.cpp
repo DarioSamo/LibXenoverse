@@ -56,7 +56,8 @@ int main(int argc, char** argv) {
 	FbxScene *scene = FbxScene::Create(sdk_manager, "EMDFBXScene");
 
 	for (size_t i = 0; i < skeleton_filenames.size(); i++) {
-		LibXenoverse::ESK *esk_skeleton = new LibXenoverse::ESK(skeleton_filenames[i]);
+		LibXenoverse::ESK *esk_skeleton = new LibXenoverse::ESK();
+		esk_skeleton->load(skeleton_filenames[i]);
 		vector<FbxNode *> fbx_bones = esk_skeleton->createFBXSkeleton(scene);
 
 		for (size_t j = 0; j < fbx_bones.size(); j++) {
@@ -66,7 +67,8 @@ int main(int argc, char** argv) {
 
 	for (size_t i = 0; i < model_filenames.size(); i++) {
 		string node_name = LibXenoverse::nameFromFilenameNoExtension(model_filenames[i]);
-		LibXenoverse::EMD *emd_model = new LibXenoverse::EMD(model_filenames[i]);
+		LibXenoverse::EMD *emd_model = new LibXenoverse::EMD();
+		emd_model->load(model_filenames[i]);
 
 		// Fill Scene
 		FbxNode *lMeshNode = NULL;

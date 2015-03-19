@@ -58,7 +58,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>LIBXENOVERSE_FBX_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;LIBXENOVERSE_DXSDK_SUPPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LIBXENOVERSE_FBX_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;LIBXENOVERSE_WINSDK_SUPPORT;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalIncludeDirectories>../../depends/fbxsdk/include;../../depends/zlib/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
@@ -71,6 +71,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AGD.h" />
+    <ClInclude Include="BCS.h" />
     <ClInclude Include="CBS.h" />
     <ClInclude Include="CUS.h" />
     <ClInclude Include="EMB.h" />
@@ -91,6 +92,7 @@
   <ItemGroup>
     <ClCompile Include="AGD.cpp" />
     <ClCompile Include="AGDGrowth.cpp" />
+    <ClCompile Include="BCS.cpp" />
     <ClCompile Include="CBS.cpp" />
     <ClCompile Include="CBSScale.cpp" />
     <ClCompile Include="CUS.cpp" />

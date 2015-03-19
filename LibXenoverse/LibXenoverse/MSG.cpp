@@ -1,11 +1,14 @@
 namespace LibXenoverse {
-	MSG::MSG(string filename) {
+	bool MSG::load(string filename) {
 		File file(filename, LIBXENOVERSE_FILE_READ_BINARY);
 
 		if (file.valid() && file.readHeader(LIBXENOVERSE_MSG_SIGNATURE, LIBXENOVERSE_LITTLE_ENDIAN)) {
 			read(&file);
 			file.close();
 		}
+		else return false;
+
+		return true;
 	}
 
 	void MSG::read(File *file) {

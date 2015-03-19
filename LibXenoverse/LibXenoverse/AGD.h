@@ -27,7 +27,7 @@ namespace LibXenoverse {
 		AGD() {
 		}
 
-		AGD(string filename);
+		bool load(string filename);
 		void save(string filename, bool big_endian = false);
 		void saveXML(string filename);
 

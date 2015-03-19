@@ -51,7 +51,7 @@ namespace LibXenoverse {
 		MSG() {
 		}
 
-		MSG(string filename);
+		bool load(string filename);
 		void save(string filename, bool big_endian = false);
 		void read(File *file);
 		void write(File *file);

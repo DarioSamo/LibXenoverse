@@ -21,7 +21,7 @@ namespace LibXenoverse {
 			delete data;
 		}
 
-		EMZ(string filename);
+		bool load(string filename);
 		void saveUncompressed(string filename);
 
 		string detectNewExtension();

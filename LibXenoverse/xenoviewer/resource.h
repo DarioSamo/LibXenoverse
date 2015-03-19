@@ -1,0 +1,1 @@
+#define IDI_XENOVIEWER_ICON  2

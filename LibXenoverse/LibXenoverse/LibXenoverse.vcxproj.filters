@@ -43,6 +43,9 @@
     <Filter Include="XPU/XVU">
       <UniqueIdentifier>{e0805bd5-7f85-4939-a055-25ff22805ae8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="BCS">
+      <UniqueIdentifier>{adde8076-db0f-4316-bfa8-e424e306bbd8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tinyxml\tinystr.h">
@@ -95,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="HLSLASM.h">
       <Filter>XPU/XVU</Filter>
+    </ClInclude>
+    <ClInclude Include="BCS.h">
+      <Filter>BCS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -196,6 +202,9 @@
     </ClCompile>
     <ClCompile Include="HLSLASM.cpp">
       <Filter>XPU/XVU</Filter>
+    </ClCompile>
+    <ClCompile Include="BCS.cpp">
+      <Filter>BCS</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

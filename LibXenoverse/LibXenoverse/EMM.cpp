@@ -1,11 +1,13 @@
 
 
 namespace LibXenoverse {
-	EMM::EMM(string filename) {
+	bool EMM::load(string filename) {
+		name = nameFromFilenameNoExtension(filename, true);
+
 		if (filename.find(".xml") != string::npos) {
 			TiXmlDocument doc(filename);
 			if (!doc.LoadFile()) {
-				return;
+				return false;
 			}
 
 			TiXmlHandle hDoc(&doc);
@@ -14,7 +16,7 @@ namespace LibXenoverse {
 
 			pElem = hDoc.FirstChildElement().Element();
 			if (!pElem) {
-				return;
+				return false;
 			}
 
 			pElem = pElem->FirstChildElement();
@@ -35,7 +37,10 @@ namespace LibXenoverse {
 				read(&file);
 				file.close();
 			}
+			else return false;
 		}
+
+		return true;
 	}
 
 	void EMMParameter::readXML(TiXmlElement *root) {

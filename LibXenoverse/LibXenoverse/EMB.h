@@ -34,17 +34,22 @@ namespace LibXenoverse {
 			size_t getSize() {
 				return data_size;
 			}
+
+			char *getData() {
+				return data;
+			}
 	};
 
 
 	class EMB {
 		protected:
 			vector<EMBFile *> files;
+			string name;
 		public:
 			EMB() {
 			}
 
-			EMB(string filename);
+			bool load(string filename);
 			void extract(string folder);
 			void save(string filename, bool enable_filenames = true, bool big_endian = false);
 
