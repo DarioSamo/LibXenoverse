@@ -93,6 +93,7 @@
     <ClCompile Include="AGD.cpp" />
     <ClCompile Include="AGDGrowth.cpp" />
     <ClCompile Include="BCS.cpp" />
+    <ClCompile Include="BCSSection.cpp" />
     <ClCompile Include="CBS.cpp" />
     <ClCompile Include="CBSScale.cpp" />
     <ClCompile Include="CUS.cpp" />

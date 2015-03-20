@@ -206,5 +206,8 @@
     <ClCompile Include="BCS.cpp">
       <Filter>BCS</Filter>
     </ClCompile>
+    <ClCompile Include="BCSSection.cpp">
+      <Filter>BCS</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

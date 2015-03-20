@@ -21,8 +21,17 @@ namespace LibXenoverse {
 			delete data;
 		}
 
+		void setDataPtr(unsigned char *data_p, unsigned int data_size_p) {
+			data = data_p;
+			data_size = data_size_p;
+		}
+
 		bool load(string filename);
+		void save(string filename);
 		void saveUncompressed(string filename);
+
+		void read(File *file);
+		void write(File *file);
 
 		string detectNewExtension();
 	};

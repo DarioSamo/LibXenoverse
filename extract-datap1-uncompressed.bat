@@ -1,0 +1,1 @@
+cpkpack.exe -x datap1.cpk datap1
