@@ -48,7 +48,6 @@ namespace LibXenoverse {
 		global_offset = 0;
 
 		if (!file_ptr) {
-			//addErrorMessage(FILE_NOT_FOUND, LIBXENOVERSE_FILE_H_ERROR_READ_FILE_BEFORE + filename + LIBXENOVERSE_FILE_H_ERROR_READ_FILE_AFTER);
 			return;
 		}
 	}
@@ -58,7 +57,6 @@ namespace LibXenoverse {
 			return feof(file_ptr);
 		}
 		else {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_READ_FILE_NULL);
 			return true;
 		}
 	}
@@ -73,17 +71,14 @@ namespace LibXenoverse {
 			fclose(file_ptr);
 		}
 		else {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_FILE_CLOSING);
 		}
 	}
 
 	bool File::readSafeCheck(void *dest) {
 		if (!file_ptr) {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_READ_FILE_NULL);
 			return false;
 		}
 		if (!dest) {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_READ_NULL);
 			return false;
 		}
 
@@ -333,6 +328,10 @@ namespace LibXenoverse {
 		}
 	}
 
+	void File::writeText(const char *dest) {
+		fprintf(file_ptr, dest);
+	}
+
 	size_t File::fixPadding(size_t multiple) {
 		size_t address=getCurrentAddress();
 		size_t extra=multiple - (address%multiple);
@@ -361,7 +360,6 @@ namespace LibXenoverse {
 
 	size_t File::getFileSize() {
 		if (!file_ptr) {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_FILE_HEADER);
 			return 0;
 		}
 
@@ -374,7 +372,6 @@ namespace LibXenoverse {
 
 	bool File::readHeader(string verify_signature, int endianness) {
 		if (!file_ptr) {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_FILE_HEADER);
 			return false;
 		}
 
@@ -406,7 +403,6 @@ namespace LibXenoverse {
 
 	void File::writeHeader(string new_signature, bool is_big_endian) {
 		if (!file_ptr) {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_FILE_HEADER);
 			return;
 		}
 
@@ -425,7 +421,6 @@ namespace LibXenoverse {
 			return ftell(file_ptr)-global_offset;
 		}
 		else {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_FILE_GET_ADDRESS);
 			return 0;
 		}
 	}
@@ -435,7 +430,6 @@ namespace LibXenoverse {
 			fseek(file_ptr, address+global_offset, SEEK_SET);
 		}
 		else {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_FILE_BOOKMARK);
 		}
 	}
 
@@ -444,7 +438,6 @@ namespace LibXenoverse {
 			fseek(file_ptr, address, SEEK_CUR);
 		}
 		else {
-			//addErrorMessage(NULL_REFERENCE, LIBXENOVERSE_FILE_H_ERROR_FILE_BOOKMARK);
 		}
 	}
 
@@ -607,6 +600,17 @@ namespace LibXenoverse {
 		File file(filename, LIBXENOVERSE_FILE_WRITE_BINARY);
 		if (file.valid()) {
 			file.write(data, data_size);
+			file.close();
+			return true;
+		}
+
+		return false;
+	}
+
+	bool writeTextTo(string filename, char *data, size_t data_size) {
+		File file(filename, LIBXENOVERSE_FILE_WRITE_BINARY);
+		if (file.valid()) {
+			file.writeText(data);
 			file.close();
 			return true;
 		}

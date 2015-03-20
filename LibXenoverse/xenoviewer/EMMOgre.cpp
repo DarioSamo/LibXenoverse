@@ -89,7 +89,7 @@ Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 		fp_parameters->setConstant(139, Ogre::Vector4(1));  //   g_vParam3_PS         c139     1
 		fp_parameters->setConstant(140, Ogre::Vector4(1));  //   g_vParam4_PS         c140     1
 		fp_parameters->setConstant(141, Ogre::Vector4(1));  //   g_vParam5_PS         c141     1
-		fp_parameters->setConstant(143, Ogre::Vector4(1.0, 1.0, 1.0, 0.1));  //   g_vParam7_PS         c143     1
+		fp_parameters->setConstant(143, Ogre::Vector4(0.0, 23.25581, 0.045871, 0.0));  //   g_vParam7_PS         c143     1
 	}
 
 	pass->setVertexProgram(vertex_shader_name);

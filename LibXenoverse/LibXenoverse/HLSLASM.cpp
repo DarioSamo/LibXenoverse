@@ -13,9 +13,22 @@ namespace LibXenoverse {
 			return NULL;
 		}
 
-		// FIXME: Implement Assembler
+		// Compile shader
+		LPD3DXBUFFER psBuffer = NULL;
+		LPD3DXBUFFER errorBuffer = NULL;
+		HRESULT hr = D3DXAssembleShader(data, data_size, NULL, NULL, 0, &psBuffer, &errorBuffer);
+		if (hr != D3D_OK) {
+			printf("Failed compiling pixel shader %08X\n", hr);
+			getchar();
 
-		return NULL;
+			#ifdef LIBXENOVERSE_DEBUGGING_LOG
+			fwrite((errorBuffer)->GetBufferPointer(), (errorBuffer)->GetBufferSize(), 1, global_debugging_log);
+			#endif
+			return NULL;
+		}
+
+		data_size = (psBuffer)->GetBufferSize();
+		return (char *)(psBuffer)->GetBufferPointer();
 	}
 
 	char *HLSLASM::disassembleFromFile(string filename, size_t &data_size) {

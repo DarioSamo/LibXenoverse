@@ -120,6 +120,7 @@ namespace LibXenoverse {
 			void writeFloat16(float *dest);
 			void writeFloat16BE(float *dest);
 			void writeNull(size_t size);
+			void writeText(const char *dest);
 
 			void writeInt16E(unsigned short *dest);
 			void writeInt32E(unsigned int *dest);
@@ -155,6 +156,7 @@ namespace LibXenoverse {
 	string folderFromFilename(string filename);
 	char *getBytesFrom(string filename, size_t &data_size);
 	bool writeBytesTo(string filename, char *data, size_t data_size);
+	bool writeTextTo(string filename, char *data, size_t data_size);
 };
 
 #endif
