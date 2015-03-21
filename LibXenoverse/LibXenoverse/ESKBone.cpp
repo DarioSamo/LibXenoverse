@@ -2,7 +2,9 @@ namespace LibXenoverse {
 	void ESKBone::readName(File *file) {
 		file->readString(&name);
 
-		printf("Bone - %s\n", name.c_str());
+		#ifdef LIBXENOVERSE_DEBUGGING_LOG
+		fprintf(global_debugging_log, "Bone - %s\n", name.c_str());
+		#endif
 	}
 
 	void ESKBone::readIndices(File *file) {
@@ -15,12 +17,8 @@ namespace LibXenoverse {
 	}
 
 	void ESKBone::readMatrix(File *file) {
-		//printf("Bone Matrix:\n");
-
 		for (size_t i = 0; i < 16; i++) {
 			file->readFloat32E(&transform_matrix[i]);
-			//printf("%f ", transform_matrix[i]);
-			//if (((i + 1) % 4) == 0) printf("\n");
 		}
 	}
 

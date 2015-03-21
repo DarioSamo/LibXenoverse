@@ -1,5 +1,7 @@
 namespace LibXenoverse {
 	bool ESK::load(string filename) {
+		name = nameFromFilenameNoExtension(filename, true);
+
 		File file(filename, LIBXENOVERSE_FILE_READ_BINARY);
 		if (file.valid() && file.readHeader(LIBXENOVERSE_ESK_SIGNATURE)) {
 			read(&file);

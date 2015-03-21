@@ -27,8 +27,10 @@ namespace LibXenoverse {
 	class ESK {
 		protected:
 			vector<ESKBone *> bones;
+			string name;
 		public:
 			ESK() {
+				name = "";
 			}
 
 			bool load(string filename);
@@ -36,6 +38,10 @@ namespace LibXenoverse {
 
 			void read(File *file);
 			void write(File *file);
+
+			string getName() {
+				return name;
+			}
 
 #ifdef LIBXENOVERSE_FBX_SUPPORT
 			void createFBXBone(FbxScene *scene, FbxNode *root_node, unsigned short parent_index, vector<FbxNode *> &fbx_bones);

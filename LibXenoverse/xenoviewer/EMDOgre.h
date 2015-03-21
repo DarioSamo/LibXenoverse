@@ -1,3 +1,4 @@
+#include "ESKOgre.h"
 #include "EMBOgre.h"
 
 #ifndef EMDOGRE_H_INCLUDED
@@ -8,6 +9,7 @@ class EMDOgre : public EMD {
 		bool mesh_resources_created;
 		EMBOgre *texture_pack;
 		EMBOgre *texture_dyt_pack;
+		ESKOgre *skeleton;
 	public:
 		EMDOgre();
 
@@ -17,6 +19,9 @@ class EMDOgre : public EMD {
 		Ogre::SceneNode *createOgreSceneNodeModel(EMDModel *model, Ogre::SceneNode *parent, Ogre::SceneManager *scene_manager);
 		Ogre::SceneNode *createOgreSceneNode(Ogre::SceneManager *scene_manager, EMBOgre *texture_pack_p = NULL, EMBOgre *texture_dyt_pack_p = NULL);
 
+		void setSkeleton(ESKOgre *v) {
+			skeleton = v;
+		}
 };
 
 #endif

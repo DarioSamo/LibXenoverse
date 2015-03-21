@@ -2,6 +2,7 @@
 #include "EMDOgre.h"
 #include "EMMOgre.h"
 #include "EMBOgre.h"
+#include "ESKOgre.h"
 
 
 //---------------------------------------------------------------------------
@@ -32,6 +33,8 @@ void XenoviewerApplication::createScene(void)
 	vector<string> shader_names;
 	shader_names.push_back("adam_shader/shader_age_ps.emb");
 	shader_names.push_back("adam_shader/shader_age_vs.emb");
+	shader_names.push_back("adam_shader/shader_default_ps.emb");
+	shader_names.push_back("adam_shader/shader_default_vs.emb");
 	for (size_t i = 0; i < shader_names.size(); i++) {
 		EMBOgre *shader_pack = new EMBOgre();
 		if (shader_pack->load(shader_names[i])) {
@@ -44,15 +47,29 @@ void XenoviewerApplication::createScene(void)
 	string character_name = "GOK";
 	string character_index = "000";
 	string character_prefix = folder + character_name + "/" + character_name + "_" + character_index;
+	string skeleton_filename = character_prefix + ".esk";
+
+	ESKOgre *skeleton = NULL; 
+	/*
+	skeleton = new ESKOgre();
+	if (skeleton->load(skeleton_filename)) {
+		skeleton->createOgreSkeleton();
+	}
+	else {
+		delete skeleton;
+		skeleton = NULL;
+	}
+	*/
 
 	vector<string> model_names;
 	model_names.push_back(character_prefix + "_Bust");
 	model_names.push_back(character_prefix + "_Boots");
 	model_names.push_back(character_prefix + "_Face_base");
 	model_names.push_back(character_prefix + "_Face_eye");
+	model_names.push_back(character_prefix + "_Face_forehead");
 	model_names.push_back(character_prefix + "_Pants");
 	model_names.push_back(character_prefix + "_Rist");
-
+	
 	for (size_t i = 0; i < model_names.size(); i++) {
 		string emb_filename = model_names[i] + ".emb";
 		string emb_dyt_filename = model_names[i] + ".dyt.emb";
@@ -86,6 +103,8 @@ void XenoviewerApplication::createScene(void)
 		
 		EMDOgre *model = new EMDOgre();
 		if (model->load(model_names[i] + ".emd")) {
+			if (skeleton) model->setSkeleton(skeleton);
+
 			Ogre::SceneNode *emd_root_node = model->createOgreSceneNode(mSceneMgr, texture_pack, texture_dyt_pack);
 			emd_root_node->setScale(10.0, 10.0, 10.0);
 		}
@@ -98,6 +117,15 @@ void XenoviewerApplication::createScene(void)
 		delete texture_pack;
 		delete texture_dyt_pack;
 		delete material;
+	}
+
+	if (skeleton->getSharedEntity()) {
+		/*
+		Ogre::SkeletonInstance *instance=skeleton->getSharedEntity()->getSkeleton();
+		Ogre::Bone *bone = instance->getBone("b_L_Arm1");
+		bone->setManuallyControlled(true);
+		bone->setPosition(0.2, -0.2, 0.0);
+		*/
 	}
 }
 //---------------------------------------------------------------------------

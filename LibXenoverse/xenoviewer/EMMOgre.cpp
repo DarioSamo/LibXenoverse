@@ -26,8 +26,10 @@ Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 	string pixel_shader_name = shader_name + "_PS";
 	string vertex_shader_name = shader_name + "_W_VS";
 
-	pass->setFragmentProgram(pixel_shader_name);
-	if (pass->hasFragmentProgram()) {
+	bool pixel_shader_exists = Ogre::GpuProgramManager::getSingleton().resourceExists(pixel_shader_name);
+	if (pixel_shader_exists) {
+		pass->setFragmentProgram(pixel_shader_name);
+
 		Ogre::GpuProgramParametersSharedPtr fp_parameters = pass->getFragmentProgramParameters();
 		fp_parameters->setTransposeMatrices(false);
 
@@ -96,8 +98,9 @@ Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 		fp_parameters->setConstant(143, Ogre::Vector4(0.0, 23.25581, 0.045871, 0.0));  // Toon Detail Parameter
 	}
 
-	pass->setVertexProgram(vertex_shader_name);
-	if (pass->hasVertexProgram()) {
+	bool vertex_shader_exists = Ogre::GpuProgramManager::getSingleton().resourceExists(vertex_shader_name);
+	if (vertex_shader_exists) {
+		pass->setVertexProgram(vertex_shader_name);
 		Ogre::GpuProgramParametersSharedPtr vp_parameters = pass->getVertexProgramParameters();
 		vp_parameters->setTransposeMatrices(false);
 

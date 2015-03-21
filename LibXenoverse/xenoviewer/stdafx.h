@@ -10,11 +10,17 @@
 #include <OgreTextureManager.h>
 #include <OgreMaterialManager.h>
 #include <OgreMeshManager.h>
+#include <OgreSkeletonManager.h>
 #include <OgreMesh.h>
 #include <OgreSubmesh.h>
+#include <OgreSkeleton.h>
+#include <OgreSkeletonInstance.h>
+#include <OgreBone.h>
 #include <OgreMaterial.h>
 #include <OgreTechnique.h>
 #include <OgrePass.h>
+#include <OgreMath.h>
+#include <OgreMatrix4.h>
 #include <OgreGpuProgramManager.h>
 #include <OgreRenderObjectListener.h>
 

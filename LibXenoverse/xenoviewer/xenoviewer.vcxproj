@@ -81,6 +81,7 @@
     <ClInclude Include="EMDOgre.h" />
     <ClInclude Include="EMDRenderObjectListener.h" />
     <ClInclude Include="EMMOgre.h" />
+    <ClInclude Include="ESKOgre.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="XenoviewerApplication.h" />
@@ -91,6 +92,7 @@
     <ClCompile Include="EMDOgre.cpp" />
     <ClCompile Include="EMDRenderObjectListener.cpp" />
     <ClCompile Include="EMMOgre.cpp" />
+    <ClCompile Include="ESKOgre.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>

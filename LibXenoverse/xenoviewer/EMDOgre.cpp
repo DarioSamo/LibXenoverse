@@ -5,8 +5,8 @@
 EMDOgre::EMDOgre() {
 	mesh_resources_created = false;
 	texture_pack = NULL;
+	skeleton = NULL;
 }
-
 
 Ogre::SubMesh *EMDOgre::createOgreSubmesh(EMDTriangles *triangles, Ogre::MeshPtr mesh) {
 	Ogre::SubMesh *sub = mesh->createSubMesh();
@@ -33,11 +33,9 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 	LibXenoverse::AABB mesh_aabb;
 	mesh_aabb.reset();
 
-	/*
-	if (skeleton_name.size()) {
-	ogre_mesh->setSkeletonName(skeleton_name);
+	if (skeleton) {
+		ogre_mesh->setSkeletonName(skeleton->getName());
 	}
-	*/
 
 	// Create Vertex Pool
 	vector<EMDVertex> submesh_vertices = submesh->getVertices();
@@ -60,7 +58,7 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 	// Create Submeshes for each Triangle List
 	vector<EMDTriangles> submesh_triangles = submesh->getTriangles();
 	for (size_t i = 0; i < submesh_triangles.size(); i++) {
-		Ogre::SubMesh *sub=createOgreSubmesh(&submesh_triangles[i], ogre_mesh);
+		Ogre::SubMesh *sub = createOgreSubmesh(&submesh_triangles[i], ogre_mesh);
 	}
 
 	// Create Shared Vertex Data for all submeshes
@@ -84,6 +82,69 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 	vbuf->writeData(0, vbuf->getSizeInBytes(), vertices, true);
 	Ogre::VertexBufferBinding* bind = vertex_data->vertexBufferBinding;
 	bind->setBinding(0, vbuf);
+
+
+	// Create Bone Assignments if Skeleton name exists
+	if (skeleton) {
+		Ogre::Skeleton *ogre_skeleton = skeleton->getOgreSkeleton();
+		if (ogre_skeleton) {
+			for (size_t i = 0; i < submesh_triangles.size(); i++) {
+				EMDTriangles *triangles = &submesh_triangles[i];
+				vector<unsigned int> vertex_indices;
+				size_t face_count = triangles->faces.size();
+
+				// Make a list of all vertex indices being used in the submesh
+				vertex_indices.reserve(face_count);
+				for (size_t j = 0; j < face_count; j++) {
+					bool found = false;
+
+					for (size_t k = 0; k < vertex_indices.size(); k++) {
+						if (vertex_indices[k] == triangles->faces[j]) {
+							found = true;
+							break;
+						}
+					}
+
+					if (!found) vertex_indices.push_back(triangles->faces[j]);
+				}
+
+				// Build Bone Mapping Table
+				vector<unsigned short> bone_table;
+				bone_table.resize(triangles->bone_names.size());
+
+				for (size_t j = 0; j < bone_table.size(); j++) {
+					string bone_name = triangles->bone_names[j];
+
+					if (ogre_skeleton->hasBone(bone_name)) {
+						Ogre::Bone *mBone = ogre_skeleton->getBone(bone_name);
+						bone_table[j] = mBone->getHandle();
+					}
+				}
+
+				// Add bone assignments to all the vertices that were found
+				for (size_t j = 0; j < vertex_indices.size(); j++) {
+					Ogre::VertexBoneAssignment vba;
+					vba.vertexIndex = vertex_indices[j];
+					EMDVertex *vertex = &submesh_vertices[vba.vertexIndex];
+
+					for (size_t k = 0; k < 4; k++) {
+						unsigned char bone_index = vertex->bone[3 - k];
+						float bone_weight = vertex->bone_weight[k];
+
+						if (bone_weight > 0.0f) {
+							vba.boneIndex = bone_table[bone_index];
+							vba.weight = bone_weight;
+							ogre_mesh->addBoneAssignment(vba);
+						}
+					}
+				}
+			}
+
+			// Apply changes, build the buffer
+			ogre_mesh->_compileBoneAssignments();
+			ogre_mesh->sharedVertexData->reorganiseBuffers(decl->getAutoOrganisedDeclaration(true, false, false));
+		}
+	}
 
 	ogre_mesh->_setBounds(Ogre::AxisAlignedBox(mesh_aabb.start_x, mesh_aabb.start_y, mesh_aabb.start_z, mesh_aabb.end_x, mesh_aabb.end_y, mesh_aabb.end_z));
 	ogre_mesh->_setBoundingSphereRadius(mesh_aabb.sizeMax() / 2);
@@ -113,6 +174,7 @@ Ogre::SceneNode *EMDOgre::createOgreSceneNodeModel(EMDModel *model, Ogre::SceneN
 			Ogre::Entity *entity = scene_manager->createEntity(meshes[i]->getName() + "_" + submeshes[j]->getMaterialName());
 			entity->setMaterialName(name + "_" + submeshes[j]->getMaterialName());
 
+			// Create Render Object Listeners depending on submesh definitions
 			vector<EMDSubmeshDefinition> definitions = submeshes[j]->getDefinitions();
 			if (texture_pack && texture_dyt_pack) {
 				vector<Ogre::TexturePtr> textures = texture_pack->getOgreTextures();
@@ -120,15 +182,30 @@ Ogre::SceneNode *EMDOgre::createOgreSceneNodeModel(EMDModel *model, Ogre::SceneN
 
 				for (size_t k = 0; k < definitions.size(); k++) {
 					unsigned short texture_index = definitions[k].tex_index;
+					unsigned short dyt_texture_index = definitions[k].tex_index;
 
-					if (texture_index < textures.size()) {
-						EMDRenderObject *emd_render_object = new EMDRenderObject(textures[texture_index], textures_dyt[texture_index]);
-						EMDRenderObjectAssignVisitor visitor(emd_render_object);
-						entity->visitRenderables(&visitor);
-					}
+					if (texture_index >= textures.size()) texture_index = textures.size()-1;
+					if (dyt_texture_index >= textures_dyt.size()) dyt_texture_index = textures_dyt.size() - 1;
+
+					EMDRenderObject *emd_render_object = new EMDRenderObject(textures[texture_index], textures_dyt[dyt_texture_index]);
+					EMDRenderObjectAssignVisitor visitor(emd_render_object);
+					entity->visitRenderables(&visitor);
+
 					break; // FIXME: Figure out why there's multiple definitions
 				}
 			}
+
+			// Share Skeleton Instances
+			if (skeleton) {
+				Ogre::Entity *shared_entity = skeleton->getSharedEntity();
+				if (!shared_entity) {
+					skeleton->setSharedEntity(entity);
+				}
+				else if (entity->hasSkeleton()) {
+					entity->shareSkeletonInstanceWith(shared_entity);
+				}
+			}
+
 			model_node->attachObject(entity);
 		}
 	}
