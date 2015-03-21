@@ -47,4 +47,8 @@ namespace LibXenoverse {
 		if (aabb.end_y > end_y) end_y = aabb.end_y;
 		if (aabb.end_z > end_z) end_z = aabb.end_z;
 	}
+
+	float lerp(float a, float b, float f) {
+		return a + f * (b - a);
+	}
 };

@@ -46,6 +46,9 @@
     <Filter Include="BCS">
       <UniqueIdentifier>{adde8076-db0f-4316-bfa8-e424e306bbd8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EAN">
+      <UniqueIdentifier>{b0cc70f8-f1d8-49fa-b5c3-24c867793c6a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tinyxml\tinystr.h">
@@ -101,6 +104,9 @@
     </ClInclude>
     <ClInclude Include="BCS.h">
       <Filter>BCS</Filter>
+    </ClInclude>
+    <ClInclude Include="EAN.h">
+      <Filter>EAN</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -208,6 +214,27 @@
     </ClCompile>
     <ClCompile Include="BCSSection.cpp">
       <Filter>BCS</Filter>
+    </ClCompile>
+    <ClCompile Include="EAN.cpp">
+      <Filter>EAN</Filter>
+    </ClCompile>
+    <ClCompile Include="EANAnimation.cpp">
+      <Filter>EAN</Filter>
+    </ClCompile>
+    <ClCompile Include="EANAnimationNode.cpp">
+      <Filter>EAN</Filter>
+    </ClCompile>
+    <ClCompile Include="EANKeyframe.cpp">
+      <Filter>EAN</Filter>
+    </ClCompile>
+    <ClCompile Include="EANKeyframedAnimation.cpp">
+      <Filter>EAN</Filter>
+    </ClCompile>
+    <ClCompile Include="EANSkeleton.cpp">
+      <Filter>EAN</Filter>
+    </ClCompile>
+    <ClCompile Include="EANBone.cpp">
+      <Filter>EAN</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

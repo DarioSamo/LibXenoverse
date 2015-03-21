@@ -29,9 +29,7 @@ namespace LibXenoverse {
 
 		bone_weight[0] = 1.0f - bone_weight[3] - bone_weight[2] - bone_weight[1];
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "%d %d %d %d - %f %f %f %f\n", bone[0], bone[1], bone[2], bone[3], bone_weight[0], bone_weight[1], bone_weight[2], bone_weight[3]);
-		#endif
+		LOG_DEBUG("%d %d %d %d - %f %f %f %f\n", bone[0], bone[1], bone[2], bone[3], bone_weight[0], bone_weight[1], bone_weight[2], bone_weight[3]);
 	}
 
 

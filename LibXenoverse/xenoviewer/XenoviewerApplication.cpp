@@ -3,6 +3,7 @@
 #include "EMMOgre.h"
 #include "EMBOgre.h"
 #include "ESKOgre.h"
+#include "EANOgre.h"
 
 
 //---------------------------------------------------------------------------
@@ -48,9 +49,9 @@ void XenoviewerApplication::createScene(void)
 	string character_index = "000";
 	string character_prefix = folder + character_name + "/" + character_name + "_" + character_index;
 	string skeleton_filename = character_prefix + ".esk";
+	string animation_filename = "000_GOK_KMH.ean";
 
 	ESKOgre *skeleton = NULL; 
-	/*
 	skeleton = new ESKOgre();
 	if (skeleton->load(skeleton_filename)) {
 		skeleton->createOgreSkeleton();
@@ -59,7 +60,18 @@ void XenoviewerApplication::createScene(void)
 		delete skeleton;
 		skeleton = NULL;
 	}
-	*/
+
+	
+	EANOgre *animation = NULL;
+	animation = new EANOgre();
+	if (animation->load(animation_filename)) {
+		animation->setSkeleton(skeleton);
+		animation->createOgreAnimations();
+	}
+	else {
+		delete animation;
+		animation = NULL;
+	}
 
 	vector<string> model_names;
 	model_names.push_back(character_prefix + "_Bust");
@@ -103,10 +115,11 @@ void XenoviewerApplication::createScene(void)
 		
 		EMDOgre *model = new EMDOgre();
 		if (model->load(model_names[i] + ".emd")) {
-			if (skeleton) model->setSkeleton(skeleton);
+			if (skeleton) {
+				model->setSkeleton(skeleton);
+			}
 
 			Ogre::SceneNode *emd_root_node = model->createOgreSceneNode(mSceneMgr, texture_pack, texture_dyt_pack);
-			emd_root_node->setScale(10.0, 10.0, 10.0);
 		}
 		else {
 			delete model;
@@ -119,15 +132,48 @@ void XenoviewerApplication::createScene(void)
 		delete material;
 	}
 
-	if (skeleton->getSharedEntity()) {
+	current_animation_state = NULL;
+
+	Ogre::Entity *entity = skeleton->getSharedEntity();
+	if (entity && animation) {
 		/*
-		Ogre::SkeletonInstance *instance=skeleton->getSharedEntity()->getSkeleton();
-		Ogre::Bone *bone = instance->getBone("b_L_Arm1");
-		bone->setManuallyControlled(true);
-		bone->setPosition(0.2, -0.2, 0.0);
+		skeleton_debug = new SkeletonDebug(entity, mSceneMgr, mCamera, 0.01);
+		skeleton_debug->showBones(true);
+		skeleton_debug->showNames(true);
+		skeleton_debug->showAxes(true);
 		*/
+
+		vector<EANAnimation> &animations = animation->getAnimations();
+
+		if (animations.size()) {
+			string animation_name = animations[0].getName();
+			if (entity->hasAnimationState(animation_name)) {
+				current_animation_state = entity->getAnimationState(animation_name);
+				current_animation_state->setLoop(true);
+				current_animation_state->setEnabled(true);
+			}
+		}
 	}
 }
+
+
+bool XenoviewerApplication::frameRenderingQueued(const Ogre::FrameEvent& evt) {
+	if (!BaseApplication::frameRenderingQueued(evt)) {
+		return false;
+	}
+
+	if (current_animation_state) {
+		current_animation_state->addTime(evt.timeSinceLastFrame);
+	}
+
+	if (skeleton_debug) {
+		skeleton_debug->update();
+	}
+
+	return true;
+}
+
+
 //---------------------------------------------------------------------------
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32

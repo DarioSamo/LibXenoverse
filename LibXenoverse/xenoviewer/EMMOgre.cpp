@@ -95,7 +95,7 @@ Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 		fp_parameters->setConstant(139, Ogre::Vector4(1.0));  //   Color Multiplier
 		fp_parameters->setConstant(140, Ogre::Vector4(0.0));  //   g_vParam4_PS         c140     1
 		fp_parameters->setConstant(141, Ogre::Vector4(0.0));  //   g_vParam5_PS         c141     1
-		fp_parameters->setConstant(143, Ogre::Vector4(0.0, 23.25581, 0.045871, 0.0));  // Toon Detail Parameter
+		fp_parameters->setConstant(143, Ogre::Vector4(0.0, 23.2558, 0.04587, 0.0));  // Toon Detail Parameter
 	}
 
 	bool vertex_shader_exists = Ogre::GpuProgramManager::getSingleton().resourceExists(vertex_shader_name);

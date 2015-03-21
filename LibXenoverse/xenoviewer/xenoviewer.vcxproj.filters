@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="SkeletonDebug">
+      <UniqueIdentifier>{fdc291c9-b05c-48eb-9b17-e5340d5a8bde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc">
@@ -47,6 +50,15 @@
     <ClInclude Include="ESKOgre.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EANOgre.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SkeletonDebug.h">
+      <Filter>SkeletonDebug</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjectTextDisplay.h">
+      <Filter>SkeletonDebug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseApplication.cpp">
@@ -72,6 +84,15 @@
     </ClCompile>
     <ClCompile Include="ESKOgre.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EANOgre.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectTextDisplay.cpp">
+      <Filter>SkeletonDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="SkeletonDebug.cpp">
+      <Filter>SkeletonDebug</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

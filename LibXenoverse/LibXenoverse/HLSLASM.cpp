@@ -20,10 +20,6 @@ namespace LibXenoverse {
 		if (hr != D3D_OK) {
 			printf("Failed compiling pixel shader %08X\n", hr);
 			getchar();
-
-			#ifdef LIBXENOVERSE_DEBUGGING_LOG
-			fwrite((errorBuffer)->GetBufferPointer(), (errorBuffer)->GetBufferSize(), 1, global_debugging_log);
-			#endif
 			return NULL;
 		}
 

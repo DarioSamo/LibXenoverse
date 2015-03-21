@@ -103,9 +103,7 @@ namespace LibXenoverse {
 							v.u = (float) uv[0];
 							v.v = 1.0f + (float) uv[1];
 
-							#ifdef LIBXENOVERSE_DEBUGGING_LOG
-							fprintf(global_debugging_log, "UV: %d %d %f %f %d\n", lPolygonIndex, j, v.u, v.v, no_uv);
-							#endif
+							LOG_DEBUG("UV: %d %d %f %f %d\n", lPolygonIndex, j, v.u, v.v, no_uv);
 						}
 
 						vector<pair<double, FbxNode *>> &skin_bindings = control_points_skin_bindings[control_point_index];

@@ -37,6 +37,7 @@
 #include "BCS.h"
 #include "CBS.h"
 #include "CUS.h"
+#include "EAN.h"
 #include "EMB.h"
 #include "EMD.h"
 #include "EMM.h"
@@ -50,6 +51,12 @@ using namespace std;
 #define LIBXENOVERSE_H_INCLUDED
 
 #define LIBXENOVERSE_DEBUGGING_LOG
+
+#ifdef LIBXENOVERSE_DEBUGGING_LOG
+#define LOG_DEBUG(fmt, ...) if (global_debugging_log) fprintf(global_debugging_log, fmt, __VA_ARGS__)
+#else
+#define LOG_DEBUG()
+#endif
 
 namespace LibXenoverse {
 	extern FILE *global_debugging_log;

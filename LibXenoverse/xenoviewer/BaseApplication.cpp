@@ -73,10 +73,11 @@ void BaseApplication::chooseSceneManager(void)
 void BaseApplication::createCamera(void)
 {
     mCamera = mSceneMgr->createCamera("PlayerCam");
-    mCamera->setPosition(Ogre::Vector3(0,0,-30));
+    mCamera->setPosition(Ogre::Vector3(0,0,-3));
     mCamera->lookAt(Ogre::Vector3(0,0,0));
-    mCamera->setNearClipDistance(1);
+    mCamera->setNearClipDistance(0.1);
     mCameraMan = new OgreBites::SdkCameraMan(mCamera);
+	mCameraMan->setTopSpeed(mCameraMan->getTopSpeed() / 10.0);
 }
 //---------------------------------------------------------------------------
 void BaseApplication::createFrameListener(void)

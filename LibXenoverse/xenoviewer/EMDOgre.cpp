@@ -115,9 +115,13 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 				for (size_t j = 0; j < bone_table.size(); j++) {
 					string bone_name = triangles->bone_names[j];
 
+					LOG_DEBUG("Bone Skin Table %d: %s\n", j, bone_name.c_str());
 					if (ogre_skeleton->hasBone(bone_name)) {
 						Ogre::Bone *mBone = ogre_skeleton->getBone(bone_name);
 						bone_table[j] = mBone->getHandle();
+					}
+					else {
+						LOG_DEBUG("Couldn't find %s in ogre skeleton!\n", bone_name.c_str());
 					}
 				}
 
@@ -146,8 +150,9 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 		}
 	}
 
-	ogre_mesh->_setBounds(Ogre::AxisAlignedBox(mesh_aabb.start_x, mesh_aabb.start_y, mesh_aabb.start_z, mesh_aabb.end_x, mesh_aabb.end_y, mesh_aabb.end_z));
-	ogre_mesh->_setBoundingSphereRadius(mesh_aabb.sizeMax() / 2);
+	//ogre_mesh->_setBounds(Ogre::AxisAlignedBox(mesh_aabb.start_x, mesh_aabb.start_y, mesh_aabb.start_z, mesh_aabb.end_x, mesh_aabb.end_y, mesh_aabb.end_z));
+	ogre_mesh->_setBounds(Ogre::AxisAlignedBox(-10, -10, -10, 10, 10, 10));
+	ogre_mesh->_setBoundingSphereRadius(mesh_aabb.sizeMax());
 	ogre_mesh->load();
 
 	free(vertices);

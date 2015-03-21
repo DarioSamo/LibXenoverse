@@ -30,15 +30,13 @@ namespace LibXenoverse {
 		file->goToAddress(base_mesh_address + mesh_name_offset);
 		file->readString(&name);
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "Mesh Floats\n");
-		fprintf(global_debugging_log, "%f %f %f %f\n", aabb_center_x, aabb_center_y, aabb_center_z, aabb_center_w);
-		fprintf(global_debugging_log, "%f %f %f %f\n", aabb_min_x, aabb_min_y, aabb_min_z, aabb_min_w);
-		fprintf(global_debugging_log, "%f %f %f %f\n\n", aabb_max_x, aabb_max_y, aabb_max_z, aabb_max_w);
+		LOG_DEBUG("Mesh Floats\n");
+		LOG_DEBUG("%f %f %f %f\n", aabb_center_x, aabb_center_y, aabb_center_z, aabb_center_w);
+		LOG_DEBUG("%f %f %f %f\n", aabb_min_x, aabb_min_y, aabb_min_z, aabb_min_w);
+		LOG_DEBUG("%f %f %f %f\n\n", aabb_max_x, aabb_max_y, aabb_max_z, aabb_max_w);
 
-		fprintf(global_debugging_log, "Mesh Name: %s\n", name.c_str());
-		fprintf(global_debugging_log, "\nSubmesh Total: %d\n", submesh_total);
-		#endif
+		LOG_DEBUG("Mesh Name: %s\n", name.c_str());
+		LOG_DEBUG("\nSubmesh Total: %d\n", submesh_total);
 		
 		for (size_t k = 0; k < submesh_total; k++) {
 			file->goToAddress(base_mesh_address + submesh_table_address + k * 4);

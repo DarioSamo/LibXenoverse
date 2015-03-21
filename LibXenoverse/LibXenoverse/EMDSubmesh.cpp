@@ -19,12 +19,10 @@ namespace LibXenoverse {
 		file->readFloat32E(&aabb_max_z);
 		file->readFloat32E(&aabb_max_w);
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "Submesh Floats\n");
-		fprintf(global_debugging_log, "%f %f %f %f\n", aabb_center_x, aabb_center_y, aabb_center_z, aabb_center_w);
-		fprintf(global_debugging_log, "%f %f %f %f\n", aabb_min_x, aabb_min_y, aabb_min_z, aabb_min_w);
-		fprintf(global_debugging_log, "%f %f %f %f\n\n", aabb_max_x, aabb_max_y, aabb_max_z, aabb_max_w);
-		#endif
+		LOG_DEBUG("Submesh Floats\n");
+		LOG_DEBUG("%f %f %f %f\n", aabb_center_x, aabb_center_y, aabb_center_z, aabb_center_w);
+		LOG_DEBUG("%f %f %f %f\n", aabb_min_x, aabb_min_y, aabb_min_z, aabb_min_w);
+		LOG_DEBUG("%f %f %f %f\n\n", aabb_max_x, aabb_max_y, aabb_max_z, aabb_max_w);
 
 		unsigned int vertex_count = 0;
 		unsigned int vertex_address = 0;
@@ -66,11 +64,9 @@ namespace LibXenoverse {
 		// Use a placeholder string instead
 		if (!name.size()) name = "null";
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "Submesh Triangles Count: %d\n", submesh_triangles_count);
-		fprintf(global_debugging_log, "Submesh Material Name: %s\n", name.c_str());
-		fprintf(global_debugging_log, "Submesh Definitions: %d\n", submesh_definition_count);
-		#endif
+		LOG_DEBUG("Submesh Triangles Count: %d\n", submesh_triangles_count);
+		LOG_DEBUG("Submesh Material Name: %s\n", name.c_str());
+		LOG_DEBUG("Submesh Definitions: %d\n", submesh_definition_count);
 
 		printf("Submesh Name: %s\n", name.c_str());
 		printf("Submesh Unknown 1: %d\n", vertex_type_flag);
@@ -104,9 +100,7 @@ namespace LibXenoverse {
 				file->goToAddress(base_submesh_address + submesh_offset_2 + 4);
 			}
 
-			#ifdef LIBXENOVERSE_DEBUGGING_LOG
-			fprintf(global_debugging_log, "Reading triangle list at %d from submesh\n", file->getCurrentAddress());
-			#endif
+			LOG_DEBUG("Reading triangle list at %d from submesh\n", file->getCurrentAddress());
 			triangles[i].read(file);
 		}
 
@@ -120,11 +114,9 @@ namespace LibXenoverse {
 			vertex_aabb.addPoint(vertices[v].x, vertices[v].y, vertices[v].z);
 		}
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "Submesh AABB Coordinates: %f %f %f %f %f %f\n", vertex_aabb.start_x, vertex_aabb.start_y, vertex_aabb.start_z,
+		LOG_DEBUG("Submesh AABB Coordinates: %f %f %f %f %f %f\n", vertex_aabb.start_x, vertex_aabb.start_y, vertex_aabb.start_z,
 																		   vertex_aabb.end_x, vertex_aabb.end_y, vertex_aabb.end_z);
-		fprintf(global_debugging_log, "Submesh AABB Size: %f %f %f\n", vertex_aabb.sizeX(), vertex_aabb.sizeY(), vertex_aabb.sizeZ());
-		#endif
+		LOG_DEBUG("Submesh AABB Size: %f %f %f\n", vertex_aabb.sizeX(), vertex_aabb.sizeY(), vertex_aabb.sizeZ());
 	}
 
 

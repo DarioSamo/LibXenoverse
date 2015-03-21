@@ -87,6 +87,8 @@ namespace LibXenoverse {
 			end_z += v;
 		}
 	};
+
+	float lerp(float a, float b, float f);
 };
 
 #endif

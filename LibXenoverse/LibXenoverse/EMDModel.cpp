@@ -9,9 +9,7 @@ namespace LibXenoverse {
 		file->readInt16E(&mesh_total);
 		file->readInt32E(&mesh_table_address);
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "\n\nModel - Mesh Count: %d\n", mesh_total);
-		#endif
+		LOG_DEBUG("\n\nModel - Mesh Count: %d\n", mesh_total);
 
 		for (size_t j = 0; j < mesh_total; j++) {
 			file->goToAddress(base_model_address + mesh_table_address + j * 4);

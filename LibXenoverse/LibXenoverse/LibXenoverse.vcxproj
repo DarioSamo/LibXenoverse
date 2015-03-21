@@ -74,6 +74,7 @@
     <ClInclude Include="BCS.h" />
     <ClInclude Include="CBS.h" />
     <ClInclude Include="CUS.h" />
+    <ClInclude Include="EAN.h" />
     <ClInclude Include="EMB.h" />
     <ClInclude Include="EMD.h" />
     <ClInclude Include="EMM.h" />
@@ -97,6 +98,13 @@
     <ClCompile Include="CBS.cpp" />
     <ClCompile Include="CBSScale.cpp" />
     <ClCompile Include="CUS.cpp" />
+    <ClCompile Include="EAN.cpp" />
+    <ClCompile Include="EANAnimation.cpp" />
+    <ClCompile Include="EANKeyframedAnimation.cpp" />
+    <ClCompile Include="EANKeyframe.cpp" />
+    <ClCompile Include="EANAnimationNode.cpp" />
+    <ClCompile Include="EANSkeleton.cpp" />
+    <ClCompile Include="EANBone.cpp" />
     <ClCompile Include="EMB.cpp" />
     <ClCompile Include="EMBFile.cpp" />
     <ClCompile Include="EMD.cpp" />

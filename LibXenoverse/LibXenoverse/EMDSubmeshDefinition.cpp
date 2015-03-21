@@ -7,9 +7,7 @@ namespace LibXenoverse {
 		file->readFloat32E(&a);
 		file->readFloat32E(&b);
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "Submesh Definition: %d %d %d %d %f %f\n", flag_1, tex_index, flag_2, flag_3, a, b);
-		#endif
+		LOG_DEBUG("Submesh Definition: %d %d %d %d %f %f\n", flag_1, tex_index, flag_2, flag_3, a, b);
 	}
 
 	void EMDSubmeshDefinition::write(File *file) {

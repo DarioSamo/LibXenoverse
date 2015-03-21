@@ -21,6 +21,7 @@
 #include <OgrePass.h>
 #include <OgreMath.h>
 #include <OgreMatrix4.h>
+#include <OgreKeyFrame.h>
 #include <OgreGpuProgramManager.h>
 #include <OgreRenderObjectListener.h>
 

@@ -2,9 +2,7 @@ namespace LibXenoverse {
 	void ESKBone::readName(File *file) {
 		file->readString(&name);
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "Bone - %s\n", name.c_str());
-		#endif
+		LOG_DEBUG("Bone - %s\n", name.c_str());
 	}
 
 	void ESKBone::readIndices(File *file) {

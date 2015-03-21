@@ -14,14 +14,10 @@ namespace LibXenoverse {
 		// Fail-safe in case it's 0, which it is in some files
 		if (!face_table_address) face_table_address = 16;
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "Triangle List Face Count: %d\n", face_count);
-		fprintf(global_debugging_log, "Triangle List Bone Count: %d\n", face_name_count);
-		fprintf(global_debugging_log, "Reading Triangles List at %d\n", base_face_address);
-		fprintf(global_debugging_log, "Submesh Face Count: %d\n", face_count);
-		fprintf(global_debugging_log, "Submesh Face Name Count: %d\n", face_name_count);
-		fprintf(global_debugging_log, "Reading faces at %d\n", base_face_address + face_table_address);
-		#endif
+		LOG_DEBUG("Reading Triangle List at %d\n", base_face_address);
+		LOG_DEBUG("Triangle List Face Count: %d\n", face_count);
+		LOG_DEBUG("Triangle List Bone Count: %d\n", face_name_count);
+		LOG_DEBUG("Reading faces at %d\n", base_face_address + face_table_address);
 
 		// Read Face Indices
 		faces.resize(face_count);
@@ -31,19 +27,16 @@ namespace LibXenoverse {
 			unsigned short face = 0;
 			file->readInt16E(&face);
 			faces[n] = face;
-
-			#ifdef LIBXENOVERSE_DEBUGGING_LOG
-			fprintf(global_debugging_log, "%d ", face);
-			#endif
 		}
 
-		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		fprintf(global_debugging_log, "\n");
-		#endif
+		// Recalculate the value of face name table address because some files literally lie about the value for some reason
+		face_name_table_address = face_table_address + face_count * 2;
+		if ((face_name_table_address % 4) == 2) face_name_table_address += 2;
 
 		// Read Face Names
 		for (size_t n = 0; n < face_name_count; n++) {
 			unsigned int address = 0;
+			LOG_DEBUG("Reading bone name address for triangle list at %d\n", base_face_address + face_name_table_address + n * 4);
 			file->goToAddress(base_face_address + face_name_table_address + n * 4);
 			file->readInt32E(&address);
 			file->goToAddress(base_face_address + address);
@@ -52,7 +45,7 @@ namespace LibXenoverse {
 			file->readString(&face_name);
 			bone_names.push_back(face_name);
 
-			printf("Face Name %d: %s\n", n, face_name.c_str());
+			LOG_DEBUG("Bone name %d for Triangle List: %s\n", n, face_name.c_str());
 		}
 	}
 
