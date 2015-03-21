@@ -9,6 +9,11 @@
 //---------------------------------------------------------------------------
 XenoviewerApplication::XenoviewerApplication(void)
 {
+	current_animation_index = 0;
+	skeleton_debug = NULL;
+	current_animation_state = NULL;
+	animation = NULL;
+	entity = NULL;
 }
 //---------------------------------------------------------------------------
 XenoviewerApplication::~XenoviewerApplication(void)
@@ -49,7 +54,7 @@ void XenoviewerApplication::createScene(void)
 	string character_index = "000";
 	string character_prefix = folder + character_name + "/" + character_name + "_" + character_index;
 	string skeleton_filename = character_prefix + ".esk";
-	string animation_filename = "000_GOK_KMH.ean";
+	string animation_filename = "GOK/GOK.ean";
 
 	ESKOgre *skeleton = NULL; 
 	skeleton = new ESKOgre();
@@ -62,7 +67,6 @@ void XenoviewerApplication::createScene(void)
 	}
 
 	
-	EANOgre *animation = NULL;
 	animation = new EANOgre();
 	if (animation->load(animation_filename)) {
 		animation->setSkeleton(skeleton);
@@ -135,7 +139,7 @@ void XenoviewerApplication::createScene(void)
 
 	current_animation_state = NULL;
 
-	Ogre::Entity *entity = skeleton->getSharedEntity();
+	entity = skeleton->getSharedEntity();
 	if (entity && animation) {
 		/*
 		skeleton_debug = new SkeletonDebug(entity, mSceneMgr, mCamera, 0.01);
@@ -143,20 +147,26 @@ void XenoviewerApplication::createScene(void)
 		skeleton_debug->showNames(true);
 		skeleton_debug->showAxes(true);
 		*/
-
-		vector<EANAnimation> &animations = animation->getAnimations();
-
-		if (animations.size()) {
-			string animation_name = animations[0].getName();
-			if (entity->hasAnimationState(animation_name)) {
-				current_animation_state = entity->getAnimationState(animation_name);
-				current_animation_state->setLoop(true);
-				current_animation_state->setEnabled(true);
-			}
-		}
+		switchCurrentAnimation();
 	}
 }
 
+void XenoviewerApplication::switchCurrentAnimation() {
+	vector<EANAnimation> &animations = animation->getAnimations();
+	if (animations.size()) {
+		string animation_name = animations[current_animation_index].getName();
+		if (entity->hasAnimationState(animation_name)) {
+			if (current_animation_state) {
+				current_animation_state->setEnabled(false);
+				current_animation_state = NULL;
+			}
+
+			current_animation_state = entity->getAnimationState(animation_name);
+			current_animation_state->setLoop(true);
+			current_animation_state->setEnabled(true);
+		}
+	}
+}
 
 bool XenoviewerApplication::frameRenderingQueued(const Ogre::FrameEvent& evt) {
 	if (!BaseApplication::frameRenderingQueued(evt)) {
@@ -171,6 +181,31 @@ bool XenoviewerApplication::frameRenderingQueued(const Ogre::FrameEvent& evt) {
 		skeleton_debug->update();
 	}
 
+	return true;
+}
+
+bool XenoviewerApplication::keyPressed(const OIS::KeyEvent &arg) {
+	BaseApplication::keyPressed(arg);
+
+	if (entity && animation) {
+		if (arg.key == OIS::KC_Q) {
+			current_animation_index--;
+			if (current_animation_index < 0) {
+				current_animation_index = animation->getAnimations().size() - 1;
+			}
+
+			switchCurrentAnimation();
+		}
+
+		if (arg.key == OIS::KC_E) {
+			current_animation_index++;
+			if (current_animation_index >= animation->getAnimations().size()) {
+				current_animation_index = 0;
+			}
+
+			switchCurrentAnimation();
+		}
+	}
 	return true;
 }
 

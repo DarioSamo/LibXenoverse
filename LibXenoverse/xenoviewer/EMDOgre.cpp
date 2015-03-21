@@ -151,7 +151,7 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 	}
 
 	//ogre_mesh->_setBounds(Ogre::AxisAlignedBox(mesh_aabb.start_x, mesh_aabb.start_y, mesh_aabb.start_z, mesh_aabb.end_x, mesh_aabb.end_y, mesh_aabb.end_z));
-	ogre_mesh->_setBounds(Ogre::AxisAlignedBox(-10, -10, -10, 10, 10, 10));
+	ogre_mesh->_setBounds(Ogre::AxisAlignedBox(-1000, -1000, -1000, 1000, 1000, 1000));
 	ogre_mesh->_setBoundingSphereRadius(mesh_aabb.sizeMax());
 	ogre_mesh->load();
 
