@@ -1,5 +1,5 @@
 namespace LibXenoverse {
-	void EANAnimationNode::read(File *file, unsigned short animation_flag) {
+	void EANAnimationNode::read(File *file, unsigned char index_size, unsigned char keyframe_size) {
 		unsigned int base_animation_node_address = file->getCurrentAddress();
 
 		unsigned short keyframed_animation_count = 0;
@@ -17,7 +17,7 @@ namespace LibXenoverse {
 			file->readInt32E(&address);
 			file->goToAddress(base_animation_node_address + address);
 
-			keyframed_animations[i].read(file, animation_flag);
+			keyframed_animations[i].read(file, index_size, keyframe_size);
 		}
 	}
 

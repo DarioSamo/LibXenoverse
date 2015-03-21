@@ -1,5 +1,5 @@
 namespace LibXenoverse {
-	void EANKeyframedAnimation::read(File *file, unsigned short animation_flag) {
+	void EANKeyframedAnimation::read(File *file, unsigned char index_size, unsigned char keyframe_size) {
 		unsigned int base_keyframed_animation_address = file->getCurrentAddress();
 		unsigned int keyframes_count = 0;
 		unsigned int indices_offset = 0;
@@ -16,13 +16,13 @@ namespace LibXenoverse {
 
 		file->goToAddress(base_keyframed_animation_address + indices_offset);
 		for (size_t i = 0; i < keyframes_count; i++) {
-			keyframes[i].readFrame(file, animation_flag);
+			keyframes[i].readFrame(file, index_size);
 		}
 
 		LOG_DEBUG("  Keyframes (%d):\n", keyframes_count);
+		file->goToAddress(base_keyframed_animation_address + keyframes_offset);
 		for (size_t i = 0; i < keyframes_count; i++) {
-			file->goToAddress(base_keyframed_animation_address + keyframes_offset + i * 16);
-			keyframes[i].read(file);
+			keyframes[i].read(file, keyframe_size);
 		}
 		LOG_DEBUG("\n");
 	}

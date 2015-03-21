@@ -2,17 +2,17 @@ namespace LibXenoverse {
 	void EANAnimation::read(File *file) {
 		unsigned int base_animation_address = file->getCurrentAddress();
 
-		unsigned short unknown_flag = 0;
 		unsigned int nodes_count = 0;
 		unsigned int nodes_offset = 0;
-		file->readInt16E(&unknown_flag);
-		file->readInt16E(&flag);
+		file->moveAddress(2);
+		file->readUChar(&frame_index_size);
+		file->readUChar(&frame_float_size);
 		file->readInt32E(&frame_count);
 		file->readInt32E(&nodes_count);
 		file->readInt32E(&nodes_offset);
 
 		LOG_DEBUG("Reading Animation at %d\n", base_animation_address);
-		LOG_DEBUG("Animation Flags: %d %d\n", unknown_flag, flag);
+		LOG_DEBUG("Animation Data Sizes: %d %d\n", frame_index_size, frame_float_size);
 		LOG_DEBUG("Animation Frames: %d\n", frame_count);
 		LOG_DEBUG("Animation Nodes (%d):\n", nodes_count);
 		nodes.resize(nodes_count);
@@ -22,7 +22,7 @@ namespace LibXenoverse {
 			file->readInt32E(&address);
 			file->goToAddress(base_animation_address + address);
 
-			nodes[i].read(file, flag);
+			nodes[i].read(file, frame_index_size, frame_float_size);
 		}
 	}
 

@@ -8,6 +8,8 @@
 #define LIBXENOVERSE_EAN_KEYFRAMED_ANIMATION_FLAG_SCALE     1794
 
 namespace LibXenoverse {
+	class EANAnimation;
+
 	class EANBone {
 		protected:
 			unsigned short parent_index;
@@ -62,8 +64,8 @@ namespace LibXenoverse {
 		EANKeyframe() {
 		}
 
-		void read(File *file);
-		void readFrame(File *file, unsigned short animation_flag);
+		void read(File *file, unsigned char keyframe_size);
+		void readFrame(File *file, unsigned char index_size);
 		void write(File *file);
 
 		unsigned int &getFrame() {
@@ -95,7 +97,7 @@ namespace LibXenoverse {
 		EANKeyframedAnimation() {
 		}
 
-		void read(File *file, unsigned short animation_flag);
+		void read(File *file, unsigned char index_size, unsigned char keyframe_size);
 		void write(File *file);
 
 		void getInterpolatedFrame(unsigned int frame, float &x, float &y, float &z, float &w);
@@ -114,7 +116,7 @@ namespace LibXenoverse {
 		EANAnimationNode() {
 		}
 
-		void read(File *file, unsigned short animation_flag);
+		void read(File *file, unsigned char index_size, unsigned char keyframe_size);
 		void write(File *file);
 
 		unsigned int getBoneIndex() {
@@ -124,11 +126,14 @@ namespace LibXenoverse {
 		void getInterpolatedFrame(unsigned int frame, unsigned int flag, float &x, float &y, float &z, float &w);
 	};
 
+	
+
 	class EANAnimation {
 	protected:
 		string name;
 		vector<EANAnimationNode> nodes;
-		unsigned short flag;
+		unsigned char frame_index_size;
+		unsigned char frame_float_size;
 		unsigned int frame_count;
 	public:
 		EANAnimation() {
@@ -149,6 +154,14 @@ namespace LibXenoverse {
 
 		vector<EANAnimationNode> &getNodes() {
 			return nodes;
+		}
+
+		unsigned char &getFrameIndexSize() {
+			return frame_index_size;
+		}
+
+		unsigned char &getFrameFloatSize() {
+			return frame_index_size;
 		}
 	};
 

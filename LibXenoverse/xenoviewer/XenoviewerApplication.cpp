@@ -69,6 +69,7 @@ void XenoviewerApplication::createScene(void)
 		animation->createOgreAnimations();
 	}
 	else {
+		SHOW_SMSG("Couldn't load " + animation_filename + " for animation.");
 		delete animation;
 		animation = NULL;
 	}

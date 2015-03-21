@@ -70,3 +70,4 @@ using namespace LibXenoverse;
 
 #define XENOVIEWER_RESOURCE_GROUP  "General"
 #define SHOW_MSG(x)                MessageBox(NULL, x, "Info", MB_OK)
+#define SHOW_SMSG(x)               MessageBox(NULL, (x).c_str(), "Info", MB_OK)
