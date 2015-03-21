@@ -72,7 +72,10 @@ namespace LibXenoverse {
 		friend class EMD;
 
 		public:
-			unsigned int flag;
+			unsigned char flag_1;
+			unsigned char tex_index;
+			unsigned char flag_2;
+			unsigned char flag_3;
 			float a;
 			float b;
 
@@ -132,6 +135,10 @@ namespace LibXenoverse {
 			
 			vector<EMDTriangles> &getTriangles() {
 				return triangles;
+			}
+
+			vector<EMDSubmeshDefinition> &getDefinitions() {
+				return definitions;
 			}
 
 			/** Get the best triangle list suited for the array of bone names.

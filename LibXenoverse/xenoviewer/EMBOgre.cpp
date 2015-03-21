@@ -56,9 +56,13 @@ void EMBOgre::createOgreTexture(EMBFile *file, size_t index) {
 	Ogre::Image image;
 	image.load(data_stream, "DDS");
 	texture->loadImage(image);
+
+	ogre_textures[index] = texture;
 }
 
 void EMBOgre::createOgreTextures() {
+	ogre_textures.resize(files.size());
+
 	for (size_t i = 0; i < files.size(); i++) {
 		createOgreTexture(files[i], i);
 	}

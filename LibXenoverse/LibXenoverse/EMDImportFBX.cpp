@@ -145,7 +145,10 @@ namespace LibXenoverse {
 
 			// Fill Submesh Definitions
 			EMDSubmeshDefinition definition;
-			definition.flag = 0x22;
+			definition.flag_1 = 0;
+			definition.tex_index = 0;
+			definition.flag_2 = 0;
+			definition.flag_3 = 0x22;
 			definition.a = 1.0f;
 			definition.b = 1.0f;
 

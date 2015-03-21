@@ -1,8 +1,10 @@
 #include "EMDOgre.h"
+#include "EMDRenderObjectListener.h"
 
 
 EMDOgre::EMDOgre() {
 	mesh_resources_created = false;
+	texture_pack = NULL;
 }
 
 
@@ -109,14 +111,34 @@ Ogre::SceneNode *EMDOgre::createOgreSceneNodeModel(EMDModel *model, Ogre::SceneN
 
 		for (size_t j = 0; j < submeshes.size(); j++) {
 			Ogre::Entity *entity = scene_manager->createEntity(meshes[i]->getName() + "_" + submeshes[j]->getMaterialName());
-			entity->setMaterialName(name + "_" + submeshes[i]->getMaterialName());
+			entity->setMaterialName(name + "_" + submeshes[j]->getMaterialName());
+
+			vector<EMDSubmeshDefinition> definitions = submeshes[j]->getDefinitions();
+			if (texture_pack && texture_dyt_pack) {
+				vector<Ogre::TexturePtr> textures = texture_pack->getOgreTextures();
+				vector<Ogre::TexturePtr> textures_dyt = texture_dyt_pack->getOgreTextures();
+
+				for (size_t k = 0; k < definitions.size(); k++) {
+					unsigned short texture_index = definitions[k].tex_index;
+
+					if (texture_index < textures.size()) {
+						EMDRenderObject *emd_render_object = new EMDRenderObject(textures[texture_index], textures_dyt[texture_index]);
+						EMDRenderObjectAssignVisitor visitor(emd_render_object);
+						entity->visitRenderables(&visitor);
+					}
+					break; // FIXME: Figure out why there's multiple definitions
+				}
+			}
 			model_node->attachObject(entity);
 		}
 	}
 	return model_node;
 }
 
-Ogre::SceneNode *EMDOgre::createOgreSceneNode(Ogre::SceneManager *scene_manager) {
+Ogre::SceneNode *EMDOgre::createOgreSceneNode(Ogre::SceneManager *scene_manager, EMBOgre *texture_pack_p, EMBOgre *texture_dyt_pack_p) {
+	texture_pack = texture_pack_p;
+	texture_dyt_pack = texture_dyt_pack_p;
+
 	Ogre::SceneNode *parent_node = scene_manager->getRootSceneNode()->createChildSceneNode();
 	for (size_t i = 0; i < models.size(); i++) {
 		createOgreSceneNodeModel(models[i], parent_node, scene_manager);

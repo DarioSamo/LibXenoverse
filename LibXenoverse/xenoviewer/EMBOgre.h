@@ -20,7 +20,7 @@ class EMBOgreDataStream : public Ogre::DataStream {
 
 class EMBOgre : public EMB {
 protected:
-
+	vector<Ogre::TexturePtr> ogre_textures;
 public:
 	EMBOgre();
 
@@ -28,6 +28,10 @@ public:
 	void createOgreShader(EMBFile *file);
 	void createOgreTextures();
 	void createOgreShaders();
+
+	vector<Ogre::TexturePtr> getOgreTextures() {
+		return ogre_textures;
+	}
 };
 
 #endif

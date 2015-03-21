@@ -18,6 +18,9 @@ void XenoviewerApplication::createScene(void)
 {
 	LibXenoverse::initializeDebuggingLog();
 
+	emd_render_object_listener = new EMDRenderObjectListener();
+	mSceneMgr->addRenderObjectListener(emd_render_object_listener);
+
 	mSceneMgr->setAmbientLight(Ogre::ColourValue(0.25, 0.25, 0.25));
 
 	Ogre::Light *direct_light = mSceneMgr->createLight("Xenoviewer Direct Light");
@@ -38,8 +41,8 @@ void XenoviewerApplication::createScene(void)
 	}
 	
 	vector<string> model_names;
-	model_names.push_back("GOK/GOK_000_Boots");
 	model_names.push_back("GOK/GOK_000_Bust");
+	model_names.push_back("GOK/GOK_000_Boots");
 	model_names.push_back("GOK/GOK_000_Face_base");
 	model_names.push_back("GOK/GOK_000_Face_eye");
 	model_names.push_back("GOK/GOK_000_Pants");
@@ -53,26 +56,27 @@ void XenoviewerApplication::createScene(void)
 		if (texture_pack->load(emb_filename)) {
 			texture_pack->createOgreTextures();
 		}
-		delete texture_pack;
-
+		
 		EMBOgre *texture_dyt_pack = new EMBOgre();
 		if (texture_dyt_pack->load(emb_dyt_filename)) {
 			texture_dyt_pack->createOgreTextures();
 		}
-		delete texture_dyt_pack;
 
 		EMMOgre *material = new EMMOgre();
 		if (material->load(model_names[i] + ".emm")) {
 			material->createOgreMaterials();
 		}
-		delete material;
-
+		
 		EMDOgre *model = new EMDOgre();
 		if (model->load(model_names[i] + ".emd")) {
-			Ogre::SceneNode *emd_root_node = model->createOgreSceneNode(mSceneMgr);
+			Ogre::SceneNode *emd_root_node = model->createOgreSceneNode(mSceneMgr, texture_pack, texture_dyt_pack);
 			emd_root_node->setScale(10.0, 10.0, 10.0);
 		}
+
 		delete model;
+		delete texture_pack;
+		delete texture_dyt_pack;
+		delete material;
 	}
 }
 //---------------------------------------------------------------------------

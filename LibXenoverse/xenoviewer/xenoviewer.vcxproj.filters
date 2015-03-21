@@ -41,6 +41,9 @@
     <ClInclude Include="EMBOgre.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EMDRenderObjectListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseApplication.cpp">
@@ -59,6 +62,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EMBOgre.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EMDRenderObjectListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

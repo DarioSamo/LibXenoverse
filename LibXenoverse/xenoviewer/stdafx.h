@@ -16,6 +16,7 @@
 #include <OgreTechnique.h>
 #include <OgrePass.h>
 #include <OgreGpuProgramManager.h>
+#include <OgreRenderObjectListener.h>
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #  include <OIS/OISEvents.h>
@@ -61,3 +62,4 @@
 using namespace LibXenoverse;
 
 #define XENOVIEWER_RESOURCE_GROUP  "General"
+#define SHOW_MSG(x)                MessageBox(NULL, x, "Info", MB_OK)

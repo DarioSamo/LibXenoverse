@@ -69,6 +69,7 @@ namespace LibXenoverse {
 		#ifdef LIBXENOVERSE_DEBUGGING_LOG
 		fprintf(global_debugging_log, "Submesh Triangles Count: %d\n", submesh_triangles_count);
 		fprintf(global_debugging_log, "Submesh Material Name: %s\n", name.c_str());
+		fprintf(global_debugging_log, "Submesh Definitions: %d\n", submesh_definition_count);
 		#endif
 
 		printf("Submesh Name: %s\n", name.c_str());
