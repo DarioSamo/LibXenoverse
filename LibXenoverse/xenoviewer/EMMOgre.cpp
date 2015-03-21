@@ -72,23 +72,27 @@ Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 			if (parameter_name == "MatScale1W") MatScale1.w = parameters[i]->valueFloat();
 		}
 
-		fp_parameters->setConstant(51, Ogre::Vector4(0, 0, 0, 0));  //   g_vFadeMulti_PS      c51      1
-		fp_parameters->setConstant(52, Ogre::Vector4(0, 0, 0, 0));  //   g_vFadeRim_PS        c52      1
-		fp_parameters->setConstant(53, Ogre::Vector4(0, 0, 0, 0));  //   g_vFadeAdd_PS        c53      1
+		// Override Battle Damage
+		MatCol3.x = 0.0; // Scratch Mark Multiplier
+		MatCol3.y = 0.0; // Blood Mark Multiplier
+
+		fp_parameters->setConstant(51, Ogre::Vector4(0.0));  //   g_vFadeMulti_PS      c51      1
+		fp_parameters->setConstant(52, Ogre::Vector4(0.0));  //   g_vFadeRim_PS        c52      1
+		fp_parameters->setConstant(53, Ogre::Vector4(0.0));  //   g_vFadeAdd_PS        c53      1
 		fp_parameters->setAutoConstant(64, Ogre::GpuProgramParameters::ACT_LIGHT_POSITION, 0);  //   g_vLightVec0_PS      c64      1
-		fp_parameters->setConstant(84, MatCol0);  //   g_MaterialCol0_PS    c84      1
-		fp_parameters->setConstant(85, MatCol1);  //   g_MaterialCol1_PS    c85      1
-		fp_parameters->setConstant(86, MatCol2);  //   g_MaterialCol2_PS    c86      1
-		fp_parameters->setConstant(87, MatCol3);  //   g_MaterialCol3_PS    c87      1
-		fp_parameters->setConstant(92, MatScale0);  //   g_MaterialScale0_PS  c92      1
-		fp_parameters->setConstant(93, MatScale1);  //   g_MaterialScale1_PS  c93      1
+		fp_parameters->setConstant(84, MatCol0);
+		fp_parameters->setConstant(85, MatCol1);
+		fp_parameters->setConstant(86, MatCol2);
+		fp_parameters->setConstant(87, MatCol3);
+		fp_parameters->setConstant(92, MatScale0);
+		fp_parameters->setConstant(93, MatScale1);
 		fp_parameters->setConstant(105, Ogre::Vector4(0.0));  //   g_vColor0_PS         c105     1
-		fp_parameters->setConstant(106, Ogre::Vector4(1));  //   g_vColor1_PS         c106     1
-		fp_parameters->setConstant(107, Ogre::Vector4(1));  //   g_vColor2_PS         c107     1
-		fp_parameters->setConstant(117, Ogre::Vector4(1));  //   g_vColor12_PS        c117     1
-		fp_parameters->setConstant(139, Ogre::Vector4(1));  //   g_vParam3_PS         c139     1
-		fp_parameters->setConstant(140, Ogre::Vector4(1));  //   g_vParam4_PS         c140     1
-		fp_parameters->setConstant(141, Ogre::Vector4(1));  //   g_vParam5_PS         c141     1
+		fp_parameters->setConstant(106, Ogre::Vector4(0.0));  //   g_vColor1_PS         c106     1
+		fp_parameters->setConstant(107, Ogre::Vector4(0.0));  //   g_vColor2_PS         c107     1
+		fp_parameters->setConstant(117, Ogre::Vector4(0.0));  //   g_vColor12_PS        c117     1
+		fp_parameters->setConstant(139, Ogre::Vector4(1.0));  //   Color Multiplier
+		fp_parameters->setConstant(140, Ogre::Vector4(0.0));  //   g_vParam4_PS         c140     1
+		fp_parameters->setConstant(141, Ogre::Vector4(0.0));  //   g_vParam5_PS         c141     1
 		fp_parameters->setConstant(143, Ogre::Vector4(0.0, 23.25581, 0.045871, 0.0));  // Toon Detail Parameter
 	}
 

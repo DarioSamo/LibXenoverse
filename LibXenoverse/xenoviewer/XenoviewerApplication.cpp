@@ -40,13 +40,18 @@ void XenoviewerApplication::createScene(void)
 		delete shader_pack;
 	}
 	
+	string folder = "../data/data/chara/";
+	string character_name = "GOK";
+	string character_index = "000";
+	string character_prefix = folder + character_name + "/" + character_name + "_" + character_index;
+
 	vector<string> model_names;
-	model_names.push_back("GOK/GOK_000_Bust");
-	model_names.push_back("GOK/GOK_000_Boots");
-	model_names.push_back("GOK/GOK_000_Face_base");
-	model_names.push_back("GOK/GOK_000_Face_eye");
-	model_names.push_back("GOK/GOK_000_Pants");
-	model_names.push_back("GOK/GOK_000_Rist");
+	model_names.push_back(character_prefix + "_Bust");
+	model_names.push_back(character_prefix + "_Boots");
+	model_names.push_back(character_prefix + "_Face_base");
+	model_names.push_back(character_prefix + "_Face_eye");
+	model_names.push_back(character_prefix + "_Pants");
+	model_names.push_back(character_prefix + "_Rist");
 
 	for (size_t i = 0; i < model_names.size(); i++) {
 		string emb_filename = model_names[i] + ".emb";
@@ -56,21 +61,37 @@ void XenoviewerApplication::createScene(void)
 		if (texture_pack->load(emb_filename)) {
 			texture_pack->createOgreTextures();
 		}
+		else {
+			delete texture_pack;
+			texture_pack = NULL;
+		}
 		
 		EMBOgre *texture_dyt_pack = new EMBOgre();
 		if (texture_dyt_pack->load(emb_dyt_filename)) {
 			texture_dyt_pack->createOgreTextures();
+		}
+		else {
+			delete texture_dyt_pack;
+			texture_dyt_pack = NULL;
 		}
 
 		EMMOgre *material = new EMMOgre();
 		if (material->load(model_names[i] + ".emm")) {
 			material->createOgreMaterials();
 		}
+		else {
+			delete material;
+			material = NULL;
+		}
 		
 		EMDOgre *model = new EMDOgre();
 		if (model->load(model_names[i] + ".emd")) {
 			Ogre::SceneNode *emd_root_node = model->createOgreSceneNode(mSceneMgr, texture_pack, texture_dyt_pack);
 			emd_root_node->setScale(10.0, 10.0, 10.0);
+		}
+		else {
+			delete model;
+			model = NULL;
 		}
 
 		delete model;

@@ -7,7 +7,7 @@ void EMDRenderObjectListener::notifyRenderSingleObject(Ogre::Renderable *rend, c
 		EMDRenderObject *parameter = Ogre::any_cast<EMDRenderObject *>(any_ptr);
 		if (parameter) {
 			Ogre::Pass *edit_pass = const_cast<Ogre::Pass *>(pass);
-			if (edit_pass) {
+			if (edit_pass && (edit_pass->getNumTextureUnitStates() == 16)) {
 				Ogre::TextureUnitState *s1 = edit_pass->getTextureUnitState(1);
 				s1->setTexture(parameter->s1_ptr);
 
