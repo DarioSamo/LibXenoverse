@@ -2,6 +2,8 @@
 
 EMMOgre::EMMOgre() {
 	material_resources_created = false;
+	texture_pack = NULL;
+	texture_dyt_pack = NULL;
 }
 
 Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {

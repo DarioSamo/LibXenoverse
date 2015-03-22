@@ -41,14 +41,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
 #include "OgreWidget.h"
+#include "DocumentWindow.h"
 
 class QAction;
 class QMenu;
 class QPlainTextEdit;
 
-class MainWindow : public QMainWindow
+class MainWindow : public DocumentWindow
 {
 	Q_OBJECT
 
@@ -63,6 +63,7 @@ protected:
 	bool save();
 	void about();
 	void resetCamera();
+	bool openFiles(const QStringList& pathList);
 private:
 	void createActions();
 	void createMenus();

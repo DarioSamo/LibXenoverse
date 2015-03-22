@@ -1,16 +1,11 @@
 #ifndef QTOGRE_OGREWIDGET_H_
 #define QTOGRE_OGREWIDGET_H_
 
-#include <OgreCommon.h>
-#include <OgrePrerequisites.h>
-
-#include <QSettings>
-#include <QWidget>
-#include <QTimer>
-
-#include "SkeletonDebug.h"
-#include "EANOgre.h"
-#include "EMDRenderObjectListener.h"
+class EMDOgre;
+class ESKOgre;
+class EANOgre;
+class SkeletonDebug;
+class EMDRenderObjectListener;
 
 namespace QtOgre
 {
@@ -33,6 +28,12 @@ namespace QtOgre
 		Ogre::RenderWindow* mWindow;
 
 		void resetCamera();
+
+		void addFile(string filename);
+		void addFileEAN(string filename);
+		void addFileESK(string filename);
+		void addFileEMD(string filename);
+		void addFiles(const QStringList& pathList);
 	protected:
 		void paintEvent(QPaintEvent* evt);
 		void resizeEvent(QResizeEvent* evt);
@@ -51,6 +52,7 @@ namespace QtOgre
 		void createViewports();
 		void loadResources();
 		virtual void createScene();
+		void loadDebugModels();
 		virtual void destroyScene();
 		virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 		void switchCurrentAnimation();
@@ -85,6 +87,10 @@ namespace QtOgre
 		EANOgre *animation;
 		Ogre::Entity *entity;
 		EMDRenderObjectListener *emd_render_object_listener;
+
+		list<EMDOgre *> emd_list;
+		list<ESKOgre *> esk_list;
+		list<EANOgre *> ean_list;
 	};
 }
 

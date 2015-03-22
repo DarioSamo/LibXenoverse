@@ -156,3 +156,9 @@ void MainWindow::createMenus()
 void MainWindow::resetCamera() {
 	ogre_widget->resetCamera();
 }
+
+bool MainWindow::openFiles(const QStringList& pathList) {
+	bool success = true;
+	ogre_widget->addFiles(pathList);
+	return success;
+}

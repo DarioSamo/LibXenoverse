@@ -1,7 +1,8 @@
 #include "MainViewer.h"
 
 MainViewer::MainViewer(QWidget *parent)
-	: QWidget(parent)
-{
-	ui.setupUi(this);
+	: QWidget(parent) {
+	setupUi(this);
+
+	FileTree->acceptDrops();
 }

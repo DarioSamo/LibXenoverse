@@ -28,6 +28,8 @@
 #include <OgreRenderObjectListener.h>
 #include <OgreHardwarePixelBuffer.h>
 #include <OgreManualObject.h>
+#include <OgreCommon.h>
+#include <OgrePrerequisites.h>
 
 #include <QApplication>
 #include <QWidget>
@@ -41,6 +43,17 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QDragEnterEvent>
+#include <QDragLeaveEvent>
+#include <QDragMoveEvent>
+#include <QDropEvent>
+#include <QMimeData>
+#include <QUrl>
+#include <QList>
+#include <QMainWindow>
+#include <QSettings>
+#include <QWidget>
+#include <QTimer>
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #  include <OIS/OISEvents.h>
@@ -86,3 +99,6 @@ using namespace LibXenoverse;
 #define XENOVIEWER_RESOURCE_GROUP  "General"
 #define SHOW_MSG(x)                MessageBox(NULL, x, "Info", MB_OK)
 #define SHOW_SMSG(x)               MessageBox(NULL, (x).c_str(), "Info", MB_OK)
+#define SHOW_ERROR(x)			   QErrorMessage(x)
+
+void QErrorMessage(QString error_str);

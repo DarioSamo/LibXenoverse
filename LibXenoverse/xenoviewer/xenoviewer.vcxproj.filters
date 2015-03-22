@@ -101,6 +101,12 @@
     <ClCompile Include="ViewerGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DocumentWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="QMessageBoxes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="OgreWidget.h">
@@ -113,6 +119,9 @@
       <Filter>Qt Resources</Filter>
     </CustomBuild>
     <CustomBuild Include="MainViewer.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="DocumentWindow.h">
       <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>

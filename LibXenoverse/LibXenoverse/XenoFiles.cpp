@@ -572,6 +572,19 @@ namespace LibXenoverse {
 		return name;
 	}
 
+	string filenameNoExtension(string filename) {
+		string name = filename;
+
+		size_t dot = string::npos;
+		dot = name.find_last_of(".");
+
+		if (dot != string::npos) {
+			name = name.substr(0, dot);
+		}
+
+		return name;
+	}
+
 	string folderFromFilename(string filename) {
 		size_t sep = filename.find_last_of("\\/");
 		if (sep != std::string::npos) {

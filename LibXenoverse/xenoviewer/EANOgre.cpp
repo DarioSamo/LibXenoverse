@@ -1,7 +1,6 @@
 #include "EANOgre.h"
 
 EANOgre::EANOgre() {
-	animation_resources_created = false;
 	skeleton = NULL;
 	fps = 60.0f;
 }
@@ -49,8 +48,11 @@ Ogre::Animation *EANOgre::createOgreAnimation(EANAnimation *animation) {
 		return NULL;
 	}
 
-	Ogre::Animation* mAnim = ogre_skeleton->createAnimation(animation->getName(), (float)keyframes_count / fps);
+	if (ogre_skeleton->hasAnimation(animation->getName())) {
+		return NULL;
+	}
 
+	Ogre::Animation* mAnim = ogre_skeleton->createAnimation(animation->getName(), (float)keyframes_count / fps);
 	vector<EANAnimationNode> &nodes = animation->getNodes();
 	vector<EANBone> &bones = skeleton->getBones();
 
@@ -69,18 +71,10 @@ Ogre::Animation *EANOgre::createOgreAnimation(EANAnimation *animation) {
 	return mAnim;
 }
 
-void EANOgre::createOgreAnimations() {
-	if (!esk_skeleton) {
-		return;
-	}
+void EANOgre::createOgreAnimations(ESKOgre *v) {
+	esk_skeleton = v;
 
 	for (size_t i = 0; i < animations.size(); i++) {
-		Ogre::Animation *animation = createOgreAnimation(&animations[i]);
-
-		if (animation) {
-			ogre_animations.push_back(animation);
-		}
+		createOgreAnimation(&animations[i]);
 	}
-
-	animation_resources_created = true;
 }

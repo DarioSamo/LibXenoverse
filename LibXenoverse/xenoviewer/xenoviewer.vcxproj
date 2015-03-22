@@ -74,6 +74,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <CustomBuild Include="DocumentWindow.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+    </CustomBuild>
     <ClInclude Include="EANOgre.h" />
     <ClInclude Include="EMBOgre.h" />
     <ClInclude Include="EMDOgre.h" />
@@ -101,6 +106,7 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DocumentWindow.cpp" />
     <ClCompile Include="EANOgre.cpp" />
     <ClCompile Include="EMBOgre.cpp" />
     <ClCompile Include="EMDOgre.cpp" />
@@ -113,6 +119,7 @@
     <ClCompile Include="ObjectTextDisplay.cpp" />
     <ClCompile Include="OgreViewerWidget.cpp" />
     <ClCompile Include="OgreWidget.cpp" />
+    <ClCompile Include="QMessageBoxes.cpp" />
     <ClCompile Include="SkeletonDebug.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

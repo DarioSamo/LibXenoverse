@@ -1,11 +1,14 @@
 #include "EMDOgre.h"
+#include "EMMOgre.h"
+#include "EMBOgre.h"
+#include "ESKOgre.h"
 #include "EMDRenderObjectListener.h"
 
 
 EMDOgre::EMDOgre() {
 	mesh_resources_created = false;
-	texture_pack = NULL;
 	skeleton = NULL;
+	material_pack = NULL;
 }
 
 Ogre::SubMesh *EMDOgre::createOgreSubmesh(EMDTriangles *triangles, Ogre::MeshPtr mesh) {
@@ -181,6 +184,10 @@ Ogre::SceneNode *EMDOgre::createOgreSceneNodeModel(EMDModel *model, Ogre::SceneN
 
 			// Create Render Object Listeners depending on submesh definitions
 			vector<EMDSubmeshDefinition> definitions = submeshes[j]->getDefinitions();
+
+			EMBOgre *texture_pack = material_pack->getTexturePack();
+			EMBOgre *texture_dyt_pack = material_pack->getDYTTexturePack();
+
 			if (texture_pack && texture_dyt_pack) {
 				vector<Ogre::TexturePtr> textures = texture_pack->getOgreTextures();
 				vector<Ogre::TexturePtr> textures_dyt = texture_dyt_pack->getOgreTextures();
@@ -217,10 +224,7 @@ Ogre::SceneNode *EMDOgre::createOgreSceneNodeModel(EMDModel *model, Ogre::SceneN
 	return model_node;
 }
 
-Ogre::SceneNode *EMDOgre::createOgreSceneNode(Ogre::SceneManager *scene_manager, EMBOgre *texture_pack_p, EMBOgre *texture_dyt_pack_p) {
-	texture_pack = texture_pack_p;
-	texture_dyt_pack = texture_dyt_pack_p;
-
+Ogre::SceneNode *EMDOgre::createOgreSceneNode(Ogre::SceneManager *scene_manager) {
 	Ogre::SceneNode *parent_node = scene_manager->getRootSceneNode()->createChildSceneNode();
 	for (size_t i = 0; i < models.size(); i++) {
 		createOgreSceneNodeModel(models[i], parent_node, scene_manager);
