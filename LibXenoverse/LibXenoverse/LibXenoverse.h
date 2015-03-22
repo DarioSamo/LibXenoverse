@@ -50,7 +50,7 @@ using namespace std;
 #ifndef LIBXENOVERSE_H_INCLUDED
 #define LIBXENOVERSE_H_INCLUDED
 
-#define LIBXENOVERSE_DEBUGGING_LOG
+//#define LIBXENOVERSE_DEBUGGING_LOG
 
 #ifdef LIBXENOVERSE_DEBUGGING_LOG
 #define LOG_DEBUG(fmt, ...) if (global_debugging_log) fprintf(global_debugging_log, fmt, __VA_ARGS__)

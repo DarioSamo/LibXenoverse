@@ -14,7 +14,7 @@ Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 
 	// Force it to use 16 total texture units and full ambient lighting
 	for (size_t i = 0; i<16; i++) {
-		Ogre::TextureUnitState *texture_unit_state = pass->createTextureUnitState("notexture.dds");
+		Ogre::TextureUnitState *texture_unit_state = pass->createTextureUnitState("Blank");
 	}
 	pass->setAmbient(1.0, 1.0, 1.0);
 

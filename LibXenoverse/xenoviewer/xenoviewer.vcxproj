@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\bin\</OutDir>
-    <LibraryPath>../lib;../../depends/ogre/lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>../lib;../../depends/ogre/lib;../../depends/qt/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -59,7 +59,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../depends/qt/include;../../depends/qt/include/QtCore;../../depends/qt/include/QtWidgets;../../depends/qt/include/QtGui;../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <PreprocessorDefinitions>LIBXENOVERSE_WINSDK_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -69,40 +69,66 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>LibXenoverse.lib;d3dcompiler.lib;D3dx9.lib;OgreMain.lib;OgreOverlay.lib;OIS.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LibXenoverse.lib;d3dcompiler.lib;D3dx9.lib;OgreMain.lib;OgreOverlay.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BaseApplication.h" />
     <ClInclude Include="EANOgre.h" />
     <ClInclude Include="EMBOgre.h" />
     <ClInclude Include="EMDOgre.h" />
     <ClInclude Include="EMDRenderObjectListener.h" />
     <ClInclude Include="EMMOgre.h" />
     <ClInclude Include="ESKOgre.h" />
+    <CustomBuild Include="MainWindow.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="MainViewer.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+    </CustomBuild>
     <ClInclude Include="ObjectTextDisplay.h" />
+    <CustomBuild Include="OgreWidget.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+    </CustomBuild>
     <ClInclude Include="resource.h" />
     <ClInclude Include="SkeletonDebug.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="XenoviewerApplication.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseApplication.cpp" />
     <ClCompile Include="EANOgre.cpp" />
     <ClCompile Include="EMBOgre.cpp" />
     <ClCompile Include="EMDOgre.cpp" />
     <ClCompile Include="EMDRenderObjectListener.cpp" />
     <ClCompile Include="EMMOgre.cpp" />
     <ClCompile Include="ESKOgre.cpp" />
+    <ClCompile Include="MainViewer.cpp" />
+    <ClCompile Include="MainWindow.cpp" />
+    <ClCompile Include="mocs.cpp" />
     <ClCompile Include="ObjectTextDisplay.cpp" />
+    <ClCompile Include="OgreViewerWidget.cpp" />
+    <ClCompile Include="OgreWidget.cpp" />
     <ClCompile Include="SkeletonDebug.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="XenoviewerApplication.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="MainViewer.ui">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\uic.exe %(RootDir)%(Directory)%(Filename).ui -o %(RootDir)%(Directory)ui_%(Filename).h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)ui_%(Filename).h</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

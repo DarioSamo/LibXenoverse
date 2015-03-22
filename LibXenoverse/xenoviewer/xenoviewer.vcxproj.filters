@@ -16,6 +16,9 @@
     <Filter Include="SkeletonDebug">
       <UniqueIdentifier>{fdc291c9-b05c-48eb-9b17-e5340d5a8bde}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Qt Resources">
+      <UniqueIdentifier>{71957dcb-2e8d-463b-8574-0cba0a4fa5fd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc">
@@ -24,12 +27,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseApplication.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="XenoviewerApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EMDOgre.h">
@@ -61,12 +58,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="XenoviewerApplication.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EMDOgre.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -94,5 +85,37 @@
     <ClCompile Include="SkeletonDebug.cpp">
       <Filter>SkeletonDebug</Filter>
     </ClCompile>
+    <ClCompile Include="OgreWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mocs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OgreViewerWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MainViewer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="OgreWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MainWindow.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MainViewer.ui">
+      <Filter>Qt Resources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="MainViewer.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

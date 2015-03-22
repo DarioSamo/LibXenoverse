@@ -1,3 +1,5 @@
+#include "LibXenoverse.h"
+
 #include <OgreCamera.h>
 #include <OgreEntity.h>
 #include <OgreLogManager.h>
@@ -24,6 +26,20 @@
 #include <OgreKeyFrame.h>
 #include <OgreGpuProgramManager.h>
 #include <OgreRenderObjectListener.h>
+#include <OgreHardwarePixelBuffer.h>
+
+#include <QApplication>
+#include <QWidget>
+#include <QtGui>
+#include <QAction>
+#include <QMenu>
+#include <QMenuBar>
+#include <QToolBar>
+#include <QMessageBox>
+#include <QFileDialog>
+#include <QPushButton>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #  include <OIS/OISEvents.h>
@@ -64,8 +80,6 @@
 #  include "OgreStaticPluginLoader.h"
 #endif
 
-
-#include "LibXenoverse.h"
 using namespace LibXenoverse;
 
 #define XENOVIEWER_RESOURCE_GROUP  "General"
