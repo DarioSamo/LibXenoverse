@@ -27,6 +27,7 @@
 #include <OgreGpuProgramManager.h>
 #include <OgreRenderObjectListener.h>
 #include <OgreHardwarePixelBuffer.h>
+#include <OgreManualObject.h>
 
 #include <QApplication>
 #include <QWidget>

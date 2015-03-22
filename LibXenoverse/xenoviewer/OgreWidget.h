@@ -73,6 +73,7 @@ namespace QtOgre
 		float spin_y;
 		int last_mouse_x;
 		int last_mouse_y;
+		float zoom;
 
 		Ogre::Vector3 viewer_center;
 		float viewer_angle_x;

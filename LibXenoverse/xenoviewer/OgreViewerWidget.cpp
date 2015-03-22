@@ -3,6 +3,7 @@
 #include "EMBOgre.h"
 #include "ESKOgre.h"
 #include "EANOgre.h"
+#include "ViewerGrid.h"
 #include "OgreWidget.h"
 
 namespace QtOgre
@@ -19,6 +20,8 @@ namespace QtOgre
 		spin_y = 0.0f;
 
 		resetCamera();
+		ViewerGrid *viewer_grid = new ViewerGrid();
+		viewer_grid->createSceneNode(mSceneMgr);
 
 		LibXenoverse::initializeDebuggingLog();
 		// Create a blank texture
@@ -269,7 +272,9 @@ namespace QtOgre
 	}
 
 	void OgreWidget::zoomCamera(float delta) {
-		viewer_center += mCamera->getOrientation() * Ogre::Vector3(0.0, 0.0, delta * -0.004);
+		zoom += delta * -0.001f;
+
+		if (zoom < 0.01f) zoom = 0.01f;
 	}
 
 	void OgreWidget::repositionCamera() {
@@ -278,7 +283,7 @@ namespace QtOgre
 		rotation_x.FromAngleAxis(Ogre::Radian(viewer_angle_x), Ogre::Vector3::UNIT_Y);
 		rotation_y.FromAngleAxis(Ogre::Radian(viewer_angle_y), Ogre::Vector3::UNIT_X);
 
-		Ogre::Vector3 new_position = viewer_center + ((rotation_x * rotation_y) * Ogre::Vector3(0, 0, 3));
+		Ogre::Vector3 new_position = viewer_center + ((rotation_x * rotation_y) * Ogre::Vector3(0, 0, 3.0 * zoom));
 		mCamera->setPosition(new_position);
 		mCamera->lookAt(viewer_center);
 	}
@@ -287,5 +292,6 @@ namespace QtOgre
 		viewer_center = Ogre::Vector3(0, 0.5, 0);
 		viewer_angle_x = Ogre::Math::PI;
 		viewer_angle_y = 0.0f;
+		zoom = 1.0f;
 	}
 }
