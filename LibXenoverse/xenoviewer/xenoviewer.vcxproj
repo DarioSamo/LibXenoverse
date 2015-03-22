@@ -74,9 +74,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ResourceCompile Include="resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="EANOgre.h" />
     <ClInclude Include="EMBOgre.h" />
     <ClInclude Include="EMDOgre.h" />
@@ -100,7 +97,6 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
     </CustomBuild>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="SkeletonDebug.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
@@ -131,6 +127,9 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)ui_%(Filename).h</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="myapp.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
