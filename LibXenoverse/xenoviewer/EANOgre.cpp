@@ -30,7 +30,7 @@ Ogre::NodeAnimationTrack *EANOgre::createOgreAnimationTrack(Ogre::Animation *mAn
 		//LOG_DEBUG("Bone %s (%d) Position: %f %f %f vs %f %f %f\n", mBone->getName().c_str(), i, px, py, pz, (float)bone_position.x, (float)bone_position.y, (float)bone_position.z);
 		//LOG_DEBUG("Bone %s (%d) Rotation: %f %f %f %f vs %f %f %f %f\n", mBone->getName().c_str(), i, rx, ry, rz, rw, (float)bone_rotation.x, (float)bone_rotation.y, (float)bone_rotation.z, (float)bone_rotation.w);
 		//LOG_DEBUG("Bone %s (%d) Scale: %f %f %f\n", mBone->getName().c_str(), i, sx, sy, sz);
-
+		
 		rotation = bone_rotation.Inverse() * rotation;
 		
 		mKey->setTranslate(translate);

@@ -72,7 +72,7 @@ MainWindow::MainWindow()
 	createActions();
 	createMenus();
 
-	resize(QSize(1600, 800));
+	resize(QSize(1630, 800));
 	move(QPoint(160, 140));
 
 	connect(reset_camera_button, SIGNAL(released()), this, SLOT(resetCamera()));

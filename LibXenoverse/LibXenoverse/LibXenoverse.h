@@ -55,7 +55,7 @@ using namespace std;
 #ifdef LIBXENOVERSE_DEBUGGING_LOG
 #define LOG_DEBUG(fmt, ...) if (global_debugging_log) fprintf(global_debugging_log, fmt, __VA_ARGS__)
 #else
-#define LOG_DEBUG()
+#define LOG_DEBUG(fmt, ...)
 #endif
 
 namespace LibXenoverse {

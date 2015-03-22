@@ -4,3 +4,4 @@
 !*.dll
 !plugins.cfg
 !resources.cfg
+!/platforms/
