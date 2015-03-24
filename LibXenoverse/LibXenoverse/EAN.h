@@ -41,6 +41,7 @@ namespace LibXenoverse {
 	class EANSkeleton {
 	protected:
 		vector<EANBone> bones;
+		unsigned short flag;
 	public:
 		EANSkeleton() {
 		}
@@ -50,6 +51,10 @@ namespace LibXenoverse {
 
 		vector<EANBone> &getBones() {
 			return bones;
+		}
+
+		unsigned short getFlag() {
+			return flag;
 		}
 	};
 

@@ -3,11 +3,11 @@ namespace LibXenoverse {
 		unsigned int base_tree_address = file->getCurrentAddress();
 
 		unsigned short node_count = 0;
-		unsigned short unknown_count = 0;
 		file->readInt16E(&node_count);
-		file->readInt16E(&unknown_count);
+		file->readInt16E(&flag); // I don't think this flag controls the bone relation to the animations, 
+								 // but it's the only one I found to change between faces/regular ones
 
-		LOG_DEBUG("Skeleton Bone Count: %d %d\n", node_count, unknown_count);
+		LOG_DEBUG("Skeleton Bone Count: %d %d\n", node_count, flag);
 
 		unsigned int index_table_offset = 0;
 		unsigned int node_name_table_offset = 0;

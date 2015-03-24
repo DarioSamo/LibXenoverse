@@ -13,7 +13,6 @@ namespace LibXenoverse {
 		LOG_DEBUG("     %f, %f, %f, %f\n", matrix[0], matrix[1], matrix[2], matrix[3]);
 		LOG_DEBUG("     %f, %f, %f, %f\n", matrix[4], matrix[5], matrix[6], matrix[7]);
 		LOG_DEBUG("     %f, %f, %f, %f\n", matrix[8], matrix[9], matrix[10], matrix[11]);
-		LOG_DEBUG("     %f, %f, %f, %f\n", matrix[12], matrix[13], matrix[14], matrix[15]);
 	}
 
 	void EANBone::readIndices(File *file) {

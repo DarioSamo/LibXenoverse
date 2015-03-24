@@ -17,7 +17,7 @@ namespace QtOgre
 		initialiseOgre();
 
 		Ogre::NameValuePairList ogreWindowParams;
-		ogreWindowParams["FSAA"] = "8";
+		ogreWindowParams["FSAA"] = "8 (Quality)";
 		ogreWindowParams["vsync"] = "true";
 		ogreWindowParams["parentWindowHandle"] = Ogre::StringConverter::toString((unsigned long)this->parentWidget()->winId());
 
