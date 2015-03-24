@@ -72,15 +72,17 @@ SkeletonDebug::SkeletonDebug(Ogre::Entity* entity, Ogre::SceneManager *man, Ogre
 		ent = mSceneMan->createEntity("SkeletonDebug/AxesMesh");
 		tp = mEntity->attachObjectToBone(pBone->getName(), (Ogre::MovableObject*)ent);
 		// Make sure we don't wind up with tiny/giant axes and that one axis doesnt get squashed
-		tp->setScale((mScaleAxes / mEntity->getParentSceneNode()->getScale().x), (mScaleAxes / mEntity->getParentSceneNode()->getScale().y), (mScaleAxes / mEntity->getParentSceneNode()->getScale().z));
+		tp->setScale((mScaleAxes), (mScaleAxes), (mScaleAxes));
 		mAxisEntities.push_back(ent);
 
 		Ogre::String name = mEntity->getName() + "SkeletonDebug/BoneText/Bone_";
 		name += iBone;
+		/*
 		ObjectTextDisplay *overlay = new ObjectTextDisplay(name, pBone, mCamera, mEntity);
 		overlay->enable(true);
 		overlay->setText(pBone->getName());
 		mTextOverlays.push_back(overlay);
+		*/
 	}
 
 	showAxes(false);

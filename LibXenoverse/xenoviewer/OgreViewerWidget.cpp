@@ -22,13 +22,12 @@ namespace QtOgre
 		ESKOgre *skeleton = NULL;
 		skeleton = new ESKOgre();
 		if (skeleton->load(skeleton_filename)) {
-			skeleton->createOgreSkeleton();
+			skeleton->createOgreSkeleton(mSceneMgr);
 		}
 		else {
 			delete skeleton;
 			skeleton = NULL;
 		}
-
 
 		animation = new EANOgre();
 		if (animation->load(animation_filename)) {
@@ -102,12 +101,6 @@ namespace QtOgre
 			delete texture_dyt_pack;
 			delete material;
 		}
-
-		// Enable an animation if the package exists
-		entity = skeleton->getSharedEntity();
-		if (entity && animation) {
-			switchCurrentAnimation();
-		}
 	}
 
 	void OgreWidget::createScene(void) {
@@ -166,39 +159,82 @@ namespace QtOgre
 		shader_names.push_back("adam_shader/shader_age_vs.emb");
 		shader_names.push_back("adam_shader/shader_default_ps.emb");
 		shader_names.push_back("adam_shader/shader_default_vs.emb");
+
+		bool needs_install_shaders = false;
+		for (size_t i = 0; i < shader_names.size(); i++) {
+			if (!LibXenoverse::fileCheck(shader_names[i])) {
+				needs_install_shaders = true;
+				break;
+			}
+		}
+
+		if (needs_install_shaders) {
+			if (!installShaders()) {
+				return;
+			}
+		}
+
 		for (size_t i = 0; i < shader_names.size(); i++) {
 			EMBOgre *shader_pack = new EMBOgre();
 			if (shader_pack->load(shader_names[i])) {
 				shader_pack->createOgreShaders();
 			}
-			delete shader_pack;
-		}
-	}
-
-	void OgreWidget::switchCurrentAnimation() {
-		vector<EANAnimation> &animations = animation->getAnimations();
-		if (animations.size()) {
-			string animation_name = animations[current_animation_index].getName();
-			if (entity->hasAnimationState(animation_name)) {
-				if (current_animation_state) {
-					current_animation_state->setEnabled(false);
-					current_animation_state = NULL;
-				}
-
-				current_animation_state = entity->getAnimationState(animation_name);
-				current_animation_state->setLoop(true);
-				current_animation_state->setEnabled(true);
+			else {
+				SHOW_ERROR(QString("Couldn't load Shader Pack %1. File is either missing, open by another application, or corrupt.").arg(shader_names[i].c_str()));
 			}
 		}
+
+		//loadDebugModels();
 	}
 
 	bool OgreWidget::frameRenderingQueued(const Ogre::FrameEvent& evt) {
-		if (current_animation_state) {
-			current_animation_state->addTime(evt.timeSinceLastFrame);
+		for (list<EANOgre *>::iterator it = ean_list.begin(); it != ean_list.end(); it++) {
+			EANAnimation *force_animation = (*it)->toForceAnimation();
+
+			if (force_animation) {
+				for (list<ESKOgre *>::iterator it = esk_list.begin(); it != esk_list.end(); it++) {
+					(*it)->tagAnimationChange(force_animation);
+				}
+			}
 		}
 
-		if (skeleton_debug) {
-			skeleton_debug->update();
+		for (list<ESKOgre *>::iterator it = esk_list.begin(); it != esk_list.end();) {
+			if ((*it)->toDelete()) {
+				for (list<EMDOgre *>::iterator itm = emd_list.begin(); itm != emd_list.end(); itm++) {
+					if ((*itm)->getSkeleton() == *it) {
+						(*itm)->setSkeleton(NULL);
+						(*itm)->tagForRebuild();
+					}
+				}
+				delete *it;
+				it = esk_list.erase(it);
+				continue;
+			}
+
+			if ((*it)->changedAnimation()) {
+				(*it)->changeAnimation();
+			}
+
+			Ogre::AnimationState *state = (*it)->getCurrentAnimationState();
+			if (state) {
+				state->addTime(evt.timeSinceLastFrame);
+			}
+
+			it++;
+		}
+
+		for (list<EMDOgre *>::iterator it = emd_list.begin(); it != emd_list.end();) {
+			if ((*it)->toDelete()) {
+				delete *it;
+				it = emd_list.erase(it);
+				continue;
+			}
+
+			if ((*it)->toRebuild()) {
+				(*it)->rebuild();
+			}
+
+			it++;
 		}
 
 		repositionCamera();
@@ -233,23 +269,6 @@ namespace QtOgre
 
 		last_mouse_x = mouse_x;
 		last_mouse_y = mouse_y;
-	}
-
-	void OgreWidget::keyPressEvent(QKeyEvent * event) {
-		if (event->key() == Qt::Key_Left) {
-			current_animation_index--;
-			if (current_animation_index < 0) {
-				current_animation_index = animation->getAnimations().size() - 1;
-			}
-			switchCurrentAnimation();
-		}
-		if (event->key() == Qt::Key_Right) {
-			current_animation_index++;
-			if (current_animation_index >= animation->getAnimations().size()) {
-				current_animation_index = 0;
-			}
-			switchCurrentAnimation();
-		}
 	}
 
 	void OgreWidget::mouseReleaseEvent(QMouseEvent * event) {
@@ -305,17 +324,82 @@ namespace QtOgre
 		zoom = 1.0f;
 	}
 
-	void OgreWidget::addFileEAN(string filename) {
+	void OgreWidget::addFileEAN(string filename, list<EANOgre *> &target_ean_list) {
+		string ean_name = LibXenoverse::nameFromFilenameNoExtension(filename, true);
+
+		// Search for an EAN with the same name
+		for (list<EANOgre *>::iterator it = ean_list.begin(); it != ean_list.end(); it++) {
+			if ((*it)->getName() == ean_name) {
+				SHOW_ERROR("A EAN Animation Pack with the name " + QString(ean_name.c_str()) + " already exists! (FIXME: Implement prompt for replacing already loaded files)");
+				return;
+			}
+		}
+
+		EANOgre *animation = new EANOgre();
+		if (animation->load(filename)) {
+			for (list<ESKOgre *>::iterator it = esk_list.begin(); it != esk_list.end(); it++) {
+				animation->createOgreAnimations(*it);
+				(*it)->refreshAnimations();
+			}
+
+			ean_list.push_back(animation);
+			target_ean_list.push_back(animation);
+		}
+		else {
+			delete animation;
+			SHOW_ERROR("Invalid EAN Animation Pack. Is " + QString(filename.c_str()) + " valid?");
+			return;
+		}
 	}
 
-	void OgreWidget::addFileESK(string filename) {
-		
+	void OgreWidget::addFileESK(string filename, list<ESKOgre *> &target_esk_list) {
+		string esk_name = LibXenoverse::nameFromFilenameNoExtension(filename, true);
+
+		// Search for an ESK with the same name
+		for (list<ESKOgre *>::iterator it = esk_list.begin(); it != esk_list.end(); it++) {
+			if ((*it)->getName() == esk_name) {
+				SHOW_ERROR("A ESK Skeleton with the name " + QString(esk_name.c_str()) + " already exists! (FIXME: Implement prompt for replacing already loaded files)");
+				return;
+			}
+		}
+
+		ESKOgre *skeleton = new ESKOgre();
+		if (skeleton->load(filename)) {
+			skeleton->createOgreSkeleton(mSceneMgr);
+			esk_list.push_back(skeleton);
+			target_esk_list.push_back(skeleton);
+
+			for (list<EANOgre *>::iterator it = ean_list.begin(); it != ean_list.end(); it++) {
+				(*it)->createOgreAnimations(skeleton);
+			}
+
+			skeleton->refreshAnimations();
+		}
+		else {
+			delete skeleton;
+			SHOW_ERROR("Invalid ESK Skeleton. Is " + QString(filename.c_str()) + " valid?");
+			return;
+		}
 	}
 
-	void OgreWidget::addFileEMD(string filename) {
+	void OgreWidget::addFileEMD(string filename, list<EMDOgre *> &target_emd_list) {
 		string emb_filename     = LibXenoverse::filenameNoExtension(filename) + ".emb";
 		string emb_dyt_filename = LibXenoverse::filenameNoExtension(filename) + ".dyt.emb";
 		string emm_filename     = LibXenoverse::filenameNoExtension(filename) + ".emm";
+		string emd_name         = LibXenoverse::nameFromFilenameNoExtension(filename, true);
+
+		// Search for an EMD with the same name
+		for (list<EMDOgre *>::iterator it = emd_list.begin(); it != emd_list.end(); it++) {
+			if ((*it)->getName() == emd_name) {
+				SHOW_ERROR("A EMD Model Pack with the name " + QString(emd_name.c_str()) + " already exists! (FIXME: Implement prompt for replacing already loaded files)");
+				return;
+			}
+		}
+
+		EMBOgre *texture_pack = NULL;
+		EMBOgre *texture_dyt_pack = NULL;
+		EMMOgre *material = NULL;
+		EMDOgre *model = NULL;
 
 		if (!LibXenoverse::fileCheck(emb_filename)) {
 			SHOW_ERROR("No EMB Pack with the name " + QString(emb_filename.c_str()) + " found. Make sure it's on the same folder as the EMD file you're adding and it's not open by any other application!");
@@ -332,61 +416,67 @@ namespace QtOgre
 			return;
 		}
 
-		EMBOgre *texture_pack = new EMBOgre();
+		texture_pack = new EMBOgre();
 		if (texture_pack->load(emb_filename)) {
 			texture_pack->createOgreTextures();
 		}
 		else {
-			delete texture_pack;
 			SHOW_ERROR("Invalid EMB Texture Pack. Is " + QString(emb_filename.c_str()) + " valid?");
-			return;
+			goto abort_clean;
 		}
 
-		EMBOgre *texture_dyt_pack = new EMBOgre();
+		texture_dyt_pack = new EMBOgre();
 		if (texture_dyt_pack->load(emb_dyt_filename)) {
 			texture_dyt_pack->createOgreTextures();
 		}
 		else {
-			delete texture_dyt_pack;
 			SHOW_ERROR("Invalid EMB DYT Texture Pack. Is " + QString(emb_dyt_filename.c_str()) + " valid?");
-			return;
+			goto abort_clean;
 		}
 
-		EMMOgre *material = new EMMOgre();
+		material = new EMMOgre();
 		if (material->load(emm_filename)) {
 			material->setTexturePack(texture_pack);
 			material->setDYTTexturePack(texture_dyt_pack);
 			material->createOgreMaterials();
 		}
 		else {
-			delete material;
 			SHOW_ERROR("Invalid EMM Material Pack. Is " + QString(emm_filename.c_str()) + " valid?");
-			return;
+			goto abort_clean;
 		}
 
-		EMDOgre *model = new EMDOgre();
+		model = new EMDOgre();
 		if (model->load(filename)) {
 			model->setMaterialPack(material);
 			Ogre::SceneNode *emd_root_node = model->createOgreSceneNode(mSceneMgr);
+			emd_list.push_back(model);
+			target_emd_list.push_back(model);
 		}
 		else {
-			delete model;
 			SHOW_ERROR("Invalid EMD Model Pack. Is " + QString(filename.c_str()) + " valid?");
-			return;
+			goto abort_clean;
 		}
+		return;
+
+	abort_clean:
+		delete material;
+		delete texture_pack;
+		delete texture_dyt_pack;
+		delete model;
+		return;
 	}
 
-	void OgreWidget::addFile(string filename) {
+	void OgreWidget::addFile(string filename, list<EMDOgre *> &target_emd_list, list<ESKOgre *> &target_esk_list, list<EANOgre *> &target_ean_list) {
 		string extension = LibXenoverse::extensionFromFilename(filename, true);
 
 		if (extension == "emd") {
-			addFileEMD(filename);
+			addFileEMD(filename, target_emd_list);
 		}
 		else if (extension == "esk") {
-			addFileESK(filename);
+			addFileESK(filename, target_esk_list);
 		}
 		else if (extension == "ean") {
-			addFileEAN(filename);
+			addFileEAN(filename, target_ean_list);
 		}
 		else if (extension == "emb") {
 			SHOW_ERROR("EMB files are automatically loaded with the EMD file. Load the EMD file instead!");
@@ -399,10 +489,57 @@ namespace QtOgre
 		}
 	}
 
-	void OgreWidget::addFiles(const QStringList& pathList) {
+	void OgreWidget::addFiles(const QStringList& pathList, list<EMDOgre *> &target_emd_list, list<ESKOgre *> &target_esk_list, list<EANOgre *> &target_ean_list) {
 		for (QStringList::const_iterator it = pathList.begin(); it != pathList.end(); it++) {
 			string filename = (*it).toStdString();
-			addFile(filename);
+			addFile(filename, target_emd_list, target_esk_list, target_ean_list);
 		}
+	}
+
+	void OgreWidget::getItemLists(list<EMDOgre *> &target_emd_list, list<ESKOgre *> &target_esk_list, list<EANOgre *> &target_ean_list) {
+		target_emd_list = emd_list;
+		target_esk_list = esk_list;
+		target_ean_list = ean_list;
+	}
+
+	bool OgreWidget::installShaders() {
+		QFileDialog dialog(this);
+		dialog.setFileMode(QFileDialog::Directory);
+
+		QMessageBox::about(NULL, "Xenoviewer Installation", "For previewing materials correctly, Xenoviewer requires "
+								 "installing the game's shaders for the first time. Select the directory <b>adam_shader</b> "
+								 "inside the extracted contents of <b>data.cpk</b> after pressing 'Ok'.");
+
+		QString dir = QFileDialog::getExistingDirectory(this, "Choose Shader Folder");
+
+		if (dir.size()) {
+			// Make Shader Folder
+			QDir().mkdir("adam_shader");
+
+			string dir_std = dir.toStdString();
+
+			vector<string> shader_names;
+			shader_names.push_back("shader_age_ps");
+			shader_names.push_back("shader_age_vs");
+			shader_names.push_back("shader_default_ps");
+			shader_names.push_back("shader_default_vs");
+
+			for (size_t i = 0; i < shader_names.size(); i++) {
+				string full_path = dir_std + "/" + shader_names[i] + ".emz";
+
+				EMZ *emz_pack = new EMZ();
+				if (emz_pack->load(full_path)) {
+					string new_extension = emz_pack->detectNewExtension();
+					string new_filename = "adam_shader/" + shader_names[i] + new_extension;
+					emz_pack->saveUncompressed(new_filename);
+				}
+				delete emz_pack;
+			}
+		}
+		else {
+			return false;
+		}
+
+		return true;
 	}
 }

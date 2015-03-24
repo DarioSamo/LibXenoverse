@@ -126,7 +126,7 @@ namespace LibXenoverse {
 		void getInterpolatedFrame(unsigned int frame, unsigned int flag, float &x, float &y, float &z, float &w);
 	};
 
-	
+	class EAN;
 
 	class EANAnimation {
 	protected:
@@ -135,9 +135,19 @@ namespace LibXenoverse {
 		unsigned char frame_index_size;
 		unsigned char frame_float_size;
 		unsigned int frame_count;
+		EAN *parent;
 	public:
 		EANAnimation() {
 			name = "";
+			parent = NULL;
+		}
+
+		void setParent(EAN *v) {
+			parent = v;
+		}
+
+		EAN *getParent() {
+			return parent;
 		}
 
 		void read(File *file);
@@ -188,6 +198,10 @@ namespace LibXenoverse {
 
 		vector<EANAnimation> &getAnimations() {
 			return animations;
+		}
+
+		string getName() {
+			return name;
 		}
 	};
 }

@@ -3,12 +3,15 @@
 #include "EMBOgre.h"
 #include "ESKOgre.h"
 #include "EMDRenderObjectListener.h"
+#include "OgreCommon.h"
 
 
 EMDOgre::EMDOgre() {
 	mesh_resources_created = false;
 	skeleton = NULL;
 	material_pack = NULL;
+	to_rebuild = false;
+	to_delete = false;
 }
 
 Ogre::SubMesh *EMDOgre::createOgreSubmesh(EMDTriangles *triangles, Ogre::MeshPtr mesh) {
@@ -159,6 +162,8 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 	ogre_mesh->load();
 
 	free(vertices);
+
+	created_meshes.push_back(ogre_mesh_name);
 }
 
 
@@ -202,19 +207,16 @@ Ogre::SceneNode *EMDOgre::createOgreSceneNodeModel(EMDModel *model, Ogre::SceneN
 					EMDRenderObject *emd_render_object = new EMDRenderObject(textures[texture_index], textures_dyt[dyt_texture_index]);
 					EMDRenderObjectAssignVisitor visitor(emd_render_object);
 					entity->visitRenderables(&visitor);
+					created_render_objects.push_back(emd_render_object);
 
 					break; // FIXME: Figure out why there's multiple definitions
 				}
 			}
 
-			// Share Skeleton Instances
+			// Share Skeleton Instances with ESK's fake entity
 			if (skeleton) {
-				Ogre::Entity *shared_entity = skeleton->getSharedEntity();
-				if (!shared_entity) {
-					skeleton->setSharedEntity(entity);
-				}
-				else if (entity->hasSkeleton()) {
-					entity->shareSkeletonInstanceWith(shared_entity);
+				if (entity->hasSkeleton()) {
+					entity->shareSkeletonInstanceWith(skeleton->getEntity());
 				}
 			}
 
@@ -224,12 +226,59 @@ Ogre::SceneNode *EMDOgre::createOgreSceneNodeModel(EMDModel *model, Ogre::SceneN
 	return model_node;
 }
 
+void EMDOgre::createOgreSceneNodeEMD(Ogre::SceneNode *parent, Ogre::SceneManager *scene_manager) {
+	for (size_t i = 0; i < models.size(); i++) {
+		createOgreSceneNodeModel(models[i], parent, scene_manager);
+	}
+}
+
 Ogre::SceneNode *EMDOgre::createOgreSceneNode(Ogre::SceneManager *scene_manager) {
 	Ogre::SceneNode *parent_node = scene_manager->getRootSceneNode()->createChildSceneNode();
-	for (size_t i = 0; i < models.size(); i++) {
-		createOgreSceneNodeModel(models[i], parent_node, scene_manager);
+	createOgreSceneNodeEMD(parent_node, scene_manager);
+	mesh_resources_created = true;
+	scene_nodes.push_back(parent_node);
+	return parent_node;
+}
+
+void EMDOgre::cleanNodes(bool parent) {
+	for (list<EMDRenderObject *>::iterator it = created_render_objects.begin(); it != created_render_objects.end(); it++) {
+		delete *it;
+	}
+	created_render_objects.clear();
+
+	for (list<Ogre::SceneNode *>::iterator it = scene_nodes.begin(); it != scene_nodes.end(); it++) {
+		OgreUtil::destroySceneNodeChildren(*it);
+
+		if (parent) {
+			(*it)->getCreator()->destroySceneNode((*it));
+		}
+	}
+}
+
+void EMDOgre::destroyResources() {
+	if (mesh_resources_created) {
+		for (list<Ogre::String>::iterator it = created_meshes.begin(); it != created_meshes.end(); it++) {
+			Ogre::MeshManager::getSingleton().remove(*it);
+		}
 	}
 
-	mesh_resources_created = true;
-	return parent_node;
+	mesh_resources_created = false;
+}
+
+void EMDOgre::rebuild() {
+	cleanNodes();
+	destroyResources();
+
+	for (list<Ogre::SceneNode *>::iterator it = scene_nodes.begin(); it != scene_nodes.end(); it++) {
+		createOgreSceneNodeEMD(*it, (*it)->getCreator());
+		mesh_resources_created = true;
+	}
+
+	to_rebuild = false;
+}
+
+EMDOgre::~EMDOgre() {
+	destroyResources();
+	delete material_pack;
+	cleanNodes(true);
 }

@@ -265,6 +265,10 @@ namespace LibXenoverse {
 
 			unsigned int getTotalPointCount();
 			vector<string> getMaterialNames();
+
+			string getName() {
+				return name;
+			}
 	};
 
 }

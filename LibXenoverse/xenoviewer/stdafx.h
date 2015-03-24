@@ -32,6 +32,7 @@
 #include <OgrePrerequisites.h>
 
 #include <QApplication>
+#include <QDesktopWidget>
 #include <QWidget>
 #include <QtGui>
 #include <QAction>
@@ -54,6 +55,8 @@
 #include <QSettings>
 #include <QWidget>
 #include <QTimer>
+#include <QTreeWidget>
+#include <QtWin>
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #  include <OIS/OISEvents.h>

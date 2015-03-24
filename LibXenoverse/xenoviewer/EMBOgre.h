@@ -21,8 +21,10 @@ class EMBOgreDataStream : public Ogre::DataStream {
 class EMBOgre : public EMB {
 protected:
 	vector<Ogre::TexturePtr> ogre_textures;
+	vector<Ogre::GpuProgramPtr> ogre_shaders;
 public:
 	EMBOgre();
+	~EMBOgre();
 
 	void createOgreTexture(EMBFile *file, size_t index);
 	void createOgreShader(EMBFile *file);

@@ -48,6 +48,8 @@ namespace LibXenoverse {
 			address = 0;
 			file->readInt32E(&address);
 			file->goToAddress(address);
+
+			animations[i].setParent(this);
 			animations[i].read(file);
 		}
 	}

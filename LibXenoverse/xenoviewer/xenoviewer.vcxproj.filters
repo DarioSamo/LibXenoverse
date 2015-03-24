@@ -51,6 +51,15 @@
     <ClInclude Include="ViewerGrid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FileTreeItemWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileTreeWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OgreCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EMDOgre.cpp">
@@ -107,6 +116,18 @@
     <ClCompile Include="QMessageBoxes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FileTreeItemWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="res.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileTreeWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OgreCommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="OgreWidget.h">
@@ -123,6 +144,9 @@
     </CustomBuild>
     <CustomBuild Include="DocumentWindow.h">
       <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="xenoviewer.qrc">
+      <Filter>Qt Resources</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

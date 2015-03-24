@@ -40,7 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>..\..\bin\</OutDir>
-    <LibraryPath>../lib;../../depends/ogre/lib;../../depends/qt/lib;$(LibraryPath)</LibraryPath>
+    <LibraryPath>../lib;../../depends/ogre/lib;../../depends/qt/lib;../../depends/zlib/lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -59,9 +59,9 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>../../depends/qt/include;../../depends/qt/include/QtCore;../../depends/qt/include/QtWidgets;../../depends/qt/include/QtGui;../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../depends/qt/include;../../depends/qt/include/QtCore;../../depends/qt/include/QtGui;../../depends/qt/include/QtWidgets;../../depends/qt/include/QtWinExtras;../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../../depends/zlib/include;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <PreprocessorDefinitions>LIBXENOVERSE_WINSDK_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>LIBXENOVERSE_WINSDK_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <AdditionalOptions>/Zm300 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -69,7 +69,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>LibXenoverse.lib;d3dcompiler.lib;D3dx9.lib;OgreMain.lib;OgreOverlay.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LibXenoverse.lib;d3dcompiler.lib;D3dx9.lib;OgreMain.lib;OgreOverlay.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -85,6 +85,9 @@
     <ClInclude Include="EMDRenderObjectListener.h" />
     <ClInclude Include="EMMOgre.h" />
     <ClInclude Include="ESKOgre.h" />
+    <ClInclude Include="FileTreeItemWidget.h" />
+    <ClInclude Include="FileTreeWidget.h" />
+    <ClInclude Include="OgreCommon.h" />
     <ClInclude Include="ViewerGrid.h" />
     <CustomBuild Include="MainWindow.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
@@ -113,13 +116,17 @@
     <ClCompile Include="EMDRenderObjectListener.cpp" />
     <ClCompile Include="EMMOgre.cpp" />
     <ClCompile Include="ESKOgre.cpp" />
+    <ClCompile Include="FileTreeItemWidget.cpp" />
+    <ClCompile Include="FileTreeWidget.cpp" />
     <ClCompile Include="MainViewer.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="mocs.cpp" />
     <ClCompile Include="ObjectTextDisplay.cpp" />
+    <ClCompile Include="OgreCommon.cpp" />
     <ClCompile Include="OgreViewerWidget.cpp" />
     <ClCompile Include="OgreWidget.cpp" />
     <ClCompile Include="QMessageBoxes.cpp" />
+    <ClCompile Include="res.cpp" />
     <ClCompile Include="SkeletonDebug.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -137,6 +144,14 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="myapp.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="xenoviewer.qrc">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\rcc.exe %(RootDir)%(Directory)%(Filename).qrc -o %(RootDir)%(Directory)qrc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">RCC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)qrc_%(Filename).cpp</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

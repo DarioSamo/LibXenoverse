@@ -1,0 +1,17 @@
+<RCC>
+  <qresource>
+    <file>icons/open_files.png</file>
+    <file>icons/emd.png</file>
+    <file>icons/play.png</file>
+    <file>icons/pause.png</file>
+    <file>icons/next_frame.png</file>
+    <file>icons/previous_frame.png</file>
+    <file>icons/stop.png</file>
+    <file>icons/esk.png</file>
+    <file>icons/mesh.png</file>
+    <file>icons/model.png</file>
+    <file>icons/submesh.png</file>
+    <file>icons/animation.png</file>
+    <file>icons/animation_pack.png</file>
+  </qresource>
+</RCC>

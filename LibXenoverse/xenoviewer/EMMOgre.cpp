@@ -7,7 +7,9 @@ EMMOgre::EMMOgre() {
 }
 
 Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
-	Ogre::Material *compile_material = Ogre::MaterialManager::getSingleton().create(name + "_" + emm_material->getName(), XENOVIEWER_RESOURCE_GROUP).getPointer();
+	string ogre_material_name = name + "_" + emm_material->getName();
+
+	Ogre::Material *compile_material = Ogre::MaterialManager::getSingleton().create(ogre_material_name, XENOVIEWER_RESOURCE_GROUP).getPointer();
 	if (!compile_material) {
 		return NULL;
 	}
@@ -111,6 +113,7 @@ Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 		vp_parameters->setAutoConstant((size_t)104, Ogre::GpuProgramParameters::ACT_WORLD_MATRIX_ARRAY_3x4);
 	}
 
+	created_materials.push_back(ogre_material_name);
 	return compile_material;
 }
 
@@ -123,4 +126,19 @@ void EMMOgre::createOgreMaterials() {
 		createOgreMaterial(materials[i]);
 	}
 	material_resources_created = true;
+}
+
+void EMMOgre::destroyResources() {
+	// FIXME: Implement
+	material_resources_created = false;
+}
+
+EMMOgre::~EMMOgre() {
+	delete texture_pack;
+	delete texture_dyt_pack;
+
+	list<Ogre::String> created_materials;
+	for (list<Ogre::String>::iterator it = created_materials.begin(); it != created_materials.end(); it++) {
+		Ogre::MaterialManager::getSingleton().remove(*it);
+	}
 }

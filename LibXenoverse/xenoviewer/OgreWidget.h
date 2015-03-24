@@ -29,11 +29,16 @@ namespace QtOgre
 
 		void resetCamera();
 
-		void addFile(string filename);
-		void addFileEAN(string filename);
-		void addFileESK(string filename);
-		void addFileEMD(string filename);
-		void addFiles(const QStringList& pathList);
+		void addFile(string filename, list<EMDOgre *> &target_emd_list, list<ESKOgre *> &target_esk_list, list<EANOgre *> &target_ean_list);
+		void addFileEAN(string filename, list<EANOgre *> &target_ean_list);
+		void addFileESK(string filename, list<ESKOgre *> &target_esk_list);
+		void addFileEMD(string filename, list<EMDOgre *> &target_emd_list);
+		void addFiles(const QStringList& pathList, list<EMDOgre *> &target_emd_list, list<ESKOgre *> &target_esk_list, list<EANOgre *> &target_ean_list);
+
+		void getItemLists(list<EMDOgre *> &target_emd_list, list<ESKOgre *> &target_esk_list, list<EANOgre *> &target_ean_list);
+
+		void checkRebuild();
+		bool installShaders();
 	protected:
 		void paintEvent(QPaintEvent* evt);
 		void resizeEvent(QResizeEvent* evt);
@@ -41,8 +46,6 @@ namespace QtOgre
 		void mousePressEvent(QMouseEvent * event);
 		void mouseMoveEvent(QMouseEvent * event);
 		void mouseReleaseEvent(QMouseEvent * event);
-
-		void keyPressEvent(QKeyEvent * event);
 		void wheelEvent(QWheelEvent * event);
 	private:
 		void initialiseOgre();
@@ -55,7 +58,6 @@ namespace QtOgre
 		void loadDebugModels();
 		virtual void destroyScene();
 		virtual bool frameRenderingQueued(const Ogre::FrameEvent& evt);
-		void switchCurrentAnimation();
 		void repositionCamera();
 		QPaintEngine *paintEngine() const;
 		void spinCamera(float delta_x, float delta_y);

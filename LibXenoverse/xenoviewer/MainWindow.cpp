@@ -60,23 +60,21 @@ MainWindow::MainWindow()
 	view_widget->setLayout(view_widget_layout);
 
 	// Build Right Panel
-	MainViewer *main_viewer = new MainViewer(central_widget);
+	main_viewer = new MainViewer(central_widget);
 
 	// Build Main Central Widget
 	QHBoxLayout *main_horizontal_layout = new QHBoxLayout;
-	main_horizontal_layout->addWidget(view_widget);
 	main_horizontal_layout->addWidget(main_viewer);
+	main_horizontal_layout->addWidget(view_widget);
 	central_widget->setLayout(main_horizontal_layout);
 	setCentralWidget(central_widget);
 	
 	createActions();
 	createMenus();
 
-	resize(QSize(1630, 800));
-	move(QPoint(160, 140));
+	resize(QSize(1298, 800));
 
 	connect(reset_camera_button, SIGNAL(released()), this, SLOT(resetCamera()));
-
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -85,8 +83,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::open()
 {
-	QString fileName = QFileDialog::getOpenFileName(this);
-	if (!fileName.isEmpty()) {
+	QFileDialog dialog(this);
+	dialog.setFileMode(QFileDialog::ExistingFiles);
+	dialog.setNameFilter(trUtf8("DRAGON BALL XENOVERSE Formats (*.emd *.esk *.ean)"));
+	QStringList fileNames;
+	if (dialog.exec()) fileNames = dialog.selectedFiles();
+
+	if (!fileNames.isEmpty()) {
+		openFiles(fileNames);
 	}
 }
 
@@ -114,27 +118,25 @@ void MainWindow::about()
 
 void MainWindow::createActions()
 {
-	openAct = new QAction(QIcon(":/images/open.png"), tr("&Open..."), this);
+	openAct = new QAction(QIcon(":/icons/open_files.png"), tr("&Add Files..."), this);
 	openAct->setShortcuts(QKeySequence::Open);
-	openAct->setStatusTip(tr("Open an existing file"));
 	connect(openAct, SIGNAL(triggered()), this, SLOT(open()));
 
+	/*
 	saveAct = new QAction(QIcon(":/images/save.png"), tr("&Save..."), this);
 	saveAct->setShortcuts(QKeySequence::Save);
 	saveAct->setStatusTip(tr("Save the document to disk"));
 	connect(saveAct, SIGNAL(triggered()), this, SLOT(save()));
+	*/
 
 	exitAct = new QAction(tr("E&xit"), this);
 	exitAct->setShortcuts(QKeySequence::Quit);
-	exitAct->setStatusTip(tr("Exit the application"));
 	connect(exitAct, SIGNAL(triggered()), this, SLOT(close()));
 
 	aboutAct = new QAction(tr("&About"), this);
-	aboutAct->setStatusTip(tr("Show the application's About box"));
 	connect(aboutAct, SIGNAL(triggered()), this, SLOT(about()));
 
 	aboutQtAct = new QAction(tr("About &Qt"), this);
-	aboutQtAct->setStatusTip(tr("Show the Qt library's About box"));
 	connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 }
 
@@ -159,6 +161,25 @@ void MainWindow::resetCamera() {
 
 bool MainWindow::openFiles(const QStringList& pathList) {
 	bool success = true;
-	ogre_widget->addFiles(pathList);
+
+	list<EMDOgre *> new_emd_list;
+	list<ESKOgre *> new_esk_list;
+	list<EANOgre *> new_ean_list;
+
+	ogre_widget->addFiles(pathList, new_emd_list, new_esk_list, new_ean_list);
+	main_viewer->createFileTreeItems(new_emd_list, new_esk_list, new_ean_list);
 	return success;
+}
+
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
+	if (event->type() == QEvent::KeyPress)
+	{
+		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+		if (obj == main_viewer)
+		{
+			main_viewer->keyPressEvent(keyEvent);
+		}
+	}
+	return QObject::eventFilter(obj, event);
 }

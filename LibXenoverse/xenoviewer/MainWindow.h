@@ -47,6 +47,7 @@
 class QAction;
 class QMenu;
 class QPlainTextEdit;
+class MainViewer;
 
 class MainWindow : public DocumentWindow
 {
@@ -65,6 +66,7 @@ protected:
 	void resetCamera();
 	bool openFiles(const QStringList& pathList);
 private:
+	bool eventFilter(QObject *obj, QEvent *event);
 	void createActions();
 	void createMenus();
 	QMenu *fileMenu;
@@ -75,6 +77,7 @@ private:
 	QAction *aboutAct;
 	QAction *aboutQtAct;
 	QtOgre::OgreWidget *ogre_widget;
+	MainViewer *main_viewer;
 };
 
 #endif

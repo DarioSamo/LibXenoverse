@@ -1,9 +1,14 @@
 #include "ESKOgre.h"
+#include "OgreCommon.h"
 
 ESKOgre::ESKOgre() {
 	skeleton = NULL;
 	resources_created = false;
-	shared_entity = NULL;
+	skeleton_entity = NULL;
+	animation_to_change = NULL;
+	current_animation_state = NULL;
+	to_delete = false;
+	skeleton_node = NULL;
 }
 
 void ESKOgre::buildBone(unsigned short b, Ogre::Skeleton *ogre_skeleton, Ogre::Bone *parent_bone) {
@@ -49,30 +54,115 @@ void ESKOgre::buildBone(unsigned short b, Ogre::Skeleton *ogre_skeleton, Ogre::B
 			buildBone(i, ogre_skeleton, mBone);
 		}
 	}
+}
 
-	/*
-	Apparently these indices are also liars and sometimes not properly built
-	Use Parent Index searching instead as it's far more reliable
+void ESKOgre::createFakeEntity(Ogre::SceneManager *mSceneMgr) {
+	Ogre::MeshPtr msh = Ogre::MeshManager::getSingleton().createManual(name + "_skeleton", XENOVIEWER_RESOURCE_GROUP);
+	msh->setSkeletonName(name);
 
-	if ((bone->sibling_index != 0xFFFF) && (bone->sibling_index > 0)) {
-		buildBone(bone->sibling_index, ogre_skeleton, parent_bone);
+	Ogre::SubMesh* sub = msh->createSubMesh();
+	const size_t nVertices = 3;
+	const size_t nVertCount = 3;
+	const size_t vbufCount = nVertCount*nVertices;
+	float *vertices = (float *)malloc(sizeof(float)*vbufCount);
+
+	for (size_t i = 0; i < nVertices; i++) {
+		vertices[i*nVertCount] = 0.0;
+		vertices[i*nVertCount + 1] = 0.0;
+		vertices[i*nVertCount + 2] = 0.0;
 	}
 
-	if ((bone->child_index != 0xFFFF) && (bone->child_index > 0)) {
-		buildBone(bone->child_index, ogre_skeleton, mBone);
+	const size_t ibufCount = 3;
+	unsigned short *faces = (unsigned short *)malloc(sizeof(unsigned short) * ibufCount);
+
+	for (size_t i = 0; i < ibufCount; i++) {
+		faces[i] = i;
 	}
-	*/
+
+	msh->sharedVertexData = new Ogre::VertexData();
+	msh->sharedVertexData->vertexCount = nVertices;
+
+	Ogre::VertexDeclaration* decl = msh->sharedVertexData->vertexDeclaration;
+	size_t offset = 0;
+
+	decl->addElement(0, offset, Ogre::VET_FLOAT3, Ogre::VES_POSITION);
+	offset += Ogre::VertexElement::getTypeSize(Ogre::VET_FLOAT3);
+
+	Ogre::HardwareVertexBufferSharedPtr vbuf = Ogre::HardwareBufferManager::getSingleton().createVertexBuffer(offset, msh->sharedVertexData->vertexCount, Ogre::HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+	vbuf->writeData(0, vbuf->getSizeInBytes(), vertices, true);
+	Ogre::VertexBufferBinding* bind = msh->sharedVertexData->vertexBufferBinding;
+	bind->setBinding(0, vbuf);
+	Ogre::HardwareIndexBufferSharedPtr ibuf = Ogre::HardwareBufferManager::getSingleton().createIndexBuffer(Ogre::HardwareIndexBuffer::IT_16BIT, ibufCount, Ogre::HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+	ibuf->writeData(0, ibuf->getSizeInBytes(), faces, true);
+	sub->useSharedVertices = true;
+	sub->indexData->indexBuffer = ibuf;
+	sub->indexData->indexCount = ibufCount;
+	sub->indexData->indexStart = 0;
+
+	msh->_setBounds(Ogre::AxisAlignedBox(-100, -100, -100, 100, 100, 100));
+	msh->_setBoundingSphereRadius(100);
+	msh->load();
+
+	free(faces);
+	free(vertices);
+
+	skeleton_entity = mSceneMgr->createEntity(name + "_skeleton");
+	skeleton_node = mSceneMgr->getRootSceneNode()->createChildSceneNode();
+	skeleton_node->attachObject(skeleton_entity);
+	skeleton_node->setVisible(false);
+}
+
+void ESKOgre::refreshAnimations() {
+	if (skeleton_entity) {
+		skeleton_entity->refreshAvailableAnimationState();
+	}
 }
 
 
-Ogre::Skeleton *ESKOgre::createOgreSkeleton() {
+Ogre::Skeleton *ESKOgre::createOgreSkeleton(Ogre::SceneManager *mSceneMgr) {
 	Ogre::SkeletonPtr mSkel = Ogre::SkeletonManager::getSingleton().create(name, XENOVIEWER_RESOURCE_GROUP, true);
-
 	if (bones.size()) {
 		buildBone(0, mSkel.getPointer(), NULL);
 	}
-
 	resources_created = true;
+	createFakeEntity(mSceneMgr);
 	skeleton = mSkel.getPointer();
 	return mSkel.getPointer();
+}
+
+void ESKOgre::changeAnimation() {
+	if (current_animation_state) {
+		current_animation_state->setEnabled(false);
+		current_animation_state = NULL;
+	}
+
+	if (animation_to_change) {
+		string animation_name = animation_to_change->getName();
+
+		if (skeleton_entity->hasAnimationState(animation_name)) {
+			current_animation_state = skeleton_entity->getAnimationState(animation_name);
+			current_animation_state->setLoop(true);
+			current_animation_state->setEnabled(true);
+		}
+		else {
+			SHOW_ERROR("The skeleton doesn't have this animation for some reason!");
+		}
+	}
+
+	animation_to_change = NULL;
+}
+
+void ESKOgre::destroyResources() {
+	if (resources_created) {
+		Ogre::SkeletonManager::getSingleton().remove(name);
+		Ogre::MeshManager::getSingleton().remove(name + "_skeleton");
+		OgreUtil::destroySceneNodeChildren(skeleton_node);
+		skeleton_node->getCreator()->destroySceneNode(skeleton_node);
+	}
+
+	resources_created = false;
+}
+
+ESKOgre::~ESKOgre() {
+	destroyResources();
 }

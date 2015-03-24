@@ -81,10 +81,12 @@ void EMBOgre::createOgreShader(EMBFile *file) {
 	char *new_data = HLSLASM::disassemble(file->getData(), size);
 
 	if (vertex_shader) {
-		Ogre::GpuProgramManager::getSingletonPtr()->createProgramFromString(shader_name, XENOVIEWER_RESOURCE_GROUP, Ogre::String(new_data), Ogre::GPT_VERTEX_PROGRAM, "vs_3_0");
+		Ogre::GpuProgramPtr program = Ogre::GpuProgramManager::getSingletonPtr()->createProgramFromString(shader_name, XENOVIEWER_RESOURCE_GROUP, Ogre::String(new_data), Ogre::GPT_VERTEX_PROGRAM, "vs_3_0");
+		ogre_shaders.push_back(program);
 	}
 	else {
-		Ogre::GpuProgramManager::getSingletonPtr()->createProgramFromString(shader_name, XENOVIEWER_RESOURCE_GROUP, Ogre::String(new_data), Ogre::GPT_FRAGMENT_PROGRAM, "ps_3_0");
+		Ogre::GpuProgramPtr program = Ogre::GpuProgramManager::getSingletonPtr()->createProgramFromString(shader_name, XENOVIEWER_RESOURCE_GROUP, Ogre::String(new_data), Ogre::GPT_FRAGMENT_PROGRAM, "ps_3_0");
+		ogre_shaders.push_back(program);
 	}
 
 	delete new_data;
@@ -93,5 +95,16 @@ void EMBOgre::createOgreShader(EMBFile *file) {
 void EMBOgre::createOgreShaders() {
 	for (size_t i = 0; i < files.size(); i++) {
 		createOgreShader(files[i]);
+	}
+}
+
+
+EMBOgre::~EMBOgre() {
+	for (size_t i = 0; i < ogre_textures.size(); i++) {
+		Ogre::TextureManager::getSingleton().remove(ogre_textures[i]->getName());
+	}
+
+	for (size_t i = 0; i < ogre_shaders.size(); i++) {
+		Ogre::GpuProgramManager::getSingleton().remove(ogre_shaders[i]->getName());
 	}
 }
