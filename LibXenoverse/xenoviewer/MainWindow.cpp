@@ -53,6 +53,7 @@ MainWindow::MainWindow()
 	ogre_widget = new QtOgre::OgreWidget(view_widget);
 	ogre_widget->setMinimumWidth(500);
 	ogre_widget->setMinimumHeight(500);
+	ogre_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
 	QPushButton *reset_camera_button = new QPushButton("Reset Camera", view_widget);
 	view_widget_layout->addWidget(ogre_widget);
