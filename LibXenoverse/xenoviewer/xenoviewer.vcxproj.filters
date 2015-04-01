@@ -25,9 +25,6 @@
     <Filter Include="qt-gradient-editor\gradLib">
       <UniqueIdentifier>{a7197b47-7e85-43cf-8635-75d5fad39341}</UniqueIdentifier>
     </Filter>
-    <Filter Include="qt-gradient-editor\colorWheel">
-      <UniqueIdentifier>{c54d8778-baae-43b4-9b36-41724a738f0a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EMDOgre.h">
@@ -146,18 +143,6 @@
     <ClCompile Include="qt-gradient-editor\gradLib\src\gradLib\gradView.cpp">
       <Filter>qt-gradient-editor\gradLib</Filter>
     </ClCompile>
-    <ClCompile Include="qt-gradient-editor\colorWheel\src\colorWheel\colorpickerwidget.cpp">
-      <Filter>qt-gradient-editor\colorWheel</Filter>
-    </ClCompile>
-    <ClCompile Include="qt-gradient-editor\colorWheel\src\colorWheel\colorviewer.cpp">
-      <Filter>qt-gradient-editor\colorWheel</Filter>
-    </ClCompile>
-    <ClCompile Include="qt-gradient-editor\colorWheel\src\colorWheel\qtcolortriangle.cpp">
-      <Filter>qt-gradient-editor\colorWheel</Filter>
-    </ClCompile>
-    <ClCompile Include="qt-gradient-editor\colorWheel\src\colorWheel\screen.cpp">
-      <Filter>qt-gradient-editor\colorWheel</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="OgreWidget.h">
@@ -177,18 +162,6 @@
     </CustomBuild>
     <CustomBuild Include="xenoviewer.qrc">
       <Filter>Qt Resources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt-gradient-editor\colorWheel\src\colorWheel\colorpickerwidget.h">
-      <Filter>qt-gradient-editor\colorWheel</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt-gradient-editor\colorWheel\src\colorWheel\colorviewer.h">
-      <Filter>qt-gradient-editor\colorWheel</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt-gradient-editor\colorWheel\src\colorWheel\qtcolortriangle.h">
-      <Filter>qt-gradient-editor\colorWheel</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt-gradient-editor\colorWheel\src\colorWheel\screen.h">
-      <Filter>qt-gradient-editor\colorWheel</Filter>
     </CustomBuild>
     <CustomBuild Include="qt-gradient-editor\gradLib\src\gradLib\gradView.h">
       <Filter>qt-gradient-editor\gradLib</Filter>

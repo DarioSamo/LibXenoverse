@@ -59,7 +59,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>qt-gradient-editor/colorWheel/src;qt-gradient-editor/gradLib/src;../../depends/qt/include;../../depends/qt/include/QtCore;../../depends/qt/include/QtGui;../../depends/qt/include/QtWidgets;../../depends/qt/include/QtWinExtras;../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../../depends/zlib/include;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>qt-gradient-editor/gradLib/src;../../depends/qt/include;../../depends/qt/include/QtCore;../../depends/qt/include/QtGui;../../depends/qt/include/QtWidgets;../../depends/qt/include/QtWinExtras;../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../../depends/zlib/include;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <PreprocessorDefinitions>LIBXENOVERSE_WINSDK_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -88,26 +88,6 @@
     <ClInclude Include="FileTreeItemWidget.h" />
     <ClInclude Include="FileTreeWidget.h" />
     <ClInclude Include="OgreCommon.h" />
-    <CustomBuild Include="qt-gradient-editor\colorWheel\src\colorWheel\colorpickerwidget.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="qt-gradient-editor\colorWheel\src\colorWheel\colorviewer.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="qt-gradient-editor\colorWheel\src\colorWheel\qtcolortriangle.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
-    </CustomBuild>
-    <CustomBuild Include="qt-gradient-editor\colorWheel\src\colorWheel\screen.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
-    </CustomBuild>
     <ClInclude Include="qt-gradient-editor\gradLib\src\gradLib\arrow.h" />
     <CustomBuild Include="qt-gradient-editor\gradLib\src\gradLib\gradView.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
@@ -152,10 +132,6 @@
     <ClCompile Include="OgreViewerWidget.cpp" />
     <ClCompile Include="OgreWidget.cpp" />
     <ClCompile Include="QMessageBoxes.cpp" />
-    <ClCompile Include="qt-gradient-editor\colorWheel\src\colorWheel\colorpickerwidget.cpp" />
-    <ClCompile Include="qt-gradient-editor\colorWheel\src\colorWheel\colorviewer.cpp" />
-    <ClCompile Include="qt-gradient-editor\colorWheel\src\colorWheel\qtcolortriangle.cpp" />
-    <ClCompile Include="qt-gradient-editor\colorWheel\src\colorWheel\screen.cpp" />
     <ClCompile Include="qt-gradient-editor\gradLib\src\gradLib\arrow.cpp" />
     <ClCompile Include="qt-gradient-editor\gradLib\src\gradLib\gradView.cpp" />
     <ClCompile Include="res.cpp" />
