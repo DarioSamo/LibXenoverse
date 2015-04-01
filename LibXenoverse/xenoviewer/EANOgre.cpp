@@ -30,10 +30,20 @@ Ogre::NodeAnimationTrack *EANOgre::createOgreAnimationTrack(Ogre::Animation *mAn
 		//LOG_DEBUG("Bone %s (%d) Rotation: %f %f %f %f vs %f %f %f %f\n", mBone->getName().c_str(), i, rx, ry, rz, rw, (float)bone_rotation.x, (float)bone_rotation.y, (float)bone_rotation.z, (float)bone_rotation.w);
 		//LOG_DEBUG("Bone %s (%d) Scale: %f %f %f\n", mBone->getName().c_str(), i, sx, sy, sz);
 		
+		/*
 		if (skeleton->getFlag() == 1) {
 			rotation = bone_rotation.Inverse() * rotation;
 		}
 		else if (skeleton->getFlag() == 0xFFFF) {
+			translate -= bone_position;
+			rotation = bone_rotation.Inverse() * rotation;
+		}
+		*/
+
+		if (mBone->getName().find("f_") == string::npos) {
+			rotation = bone_rotation.Inverse() * rotation;
+		}
+		else {
 			translate -= bone_position;
 			rotation = bone_rotation.Inverse() * rotation;
 		}
@@ -60,13 +70,13 @@ Ogre::Animation *EANOgre::createOgreAnimation(EANAnimation *animation) {
 
 	Ogre::Animation* mAnim = ogre_skeleton->createAnimation(animation->getName(), (float)keyframes_count / fps);
 	vector<EANAnimationNode> &nodes = animation->getNodes();
-	vector<EANBone> &bones = skeleton->getBones();
+	vector<ESKBone *> &bones = skeleton->getBones();
 
 	// Search for matching bones with animation nodes
 	for (size_t i = 0; i < nodes.size(); i++) {
 		unsigned int bone_index = nodes[i].getBoneIndex();
 		if (bone_index < bones.size()) {
-			string bone_name = bones[bone_index].getName();
+			string bone_name = bones[bone_index]->getName();
 			if (ogre_skeleton->hasBone(bone_name)) {
 				Ogre::Bone *mBone = ogre_skeleton->getBone(bone_name);
 				Ogre::NodeAnimationTrack *node_track = createOgreAnimationTrack(mAnim, mBone, animation, &nodes[i]);

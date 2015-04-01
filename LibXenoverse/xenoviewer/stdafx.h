@@ -57,6 +57,7 @@
 #include <QTimer>
 #include <QTreeWidget>
 #include <QtWin>
+#include <QColorDialog>
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #  include <OIS/OISEvents.h>

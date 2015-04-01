@@ -33,6 +33,7 @@ namespace LibXenoverse {
 				file.read(data, data_size);
 
 				EMBFile *file_entry = new EMBFile(data, data_size);
+				file_entry->setIndex(i);
 				files.push_back(file_entry);
 
 				printf("File Entry %d with size %d\n", i, data_size);
@@ -82,6 +83,7 @@ namespace LibXenoverse {
 	void EMB::addFile(string filename) {
 		if (fileCheck(filename)) {
 			EMBFile *emb_file = new EMBFile(filename);
+			emb_file->setIndex(files.size());
 
 			if (emb_file) {
 				files.push_back(emb_file);

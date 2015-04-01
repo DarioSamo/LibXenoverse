@@ -9,8 +9,6 @@ FileTreeWidget::FileTreeWidget(QWidget *parent) : QTreeWidget(parent) {
 	setContextMenuPolicy(Qt::CustomContextMenu);
 }
 
-//void FileTreeWidget::dropEvent(QDropEvent *event) {
-
 void FileTreeWidget::dropEvent(QDropEvent *event) {
 	//MimeData: application/x-qabstractitemmodeldatalist"
 	const QMimeData* qMimeData = event->mimeData();

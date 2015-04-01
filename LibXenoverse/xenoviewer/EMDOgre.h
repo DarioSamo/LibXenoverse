@@ -33,6 +33,10 @@ class EMDOgre : public EMD {
 			material_pack = v;
 		}
 
+		EMMOgre *getMaterialPack() {
+			return material_pack;
+		}
+
 		void setSkeleton(ESKOgre *v) {
 			skeleton = v;
 		}

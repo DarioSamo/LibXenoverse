@@ -58,6 +58,10 @@ namespace LibXenoverse {
 			EMM() {
 			}
 
+			vector<EMMMaterial *> &getMaterials() {
+				return materials;
+			}
+
 			bool load(string filename);
 			void save(string filename, bool big_endian=false);
 			void saveXML(string filename);
@@ -65,6 +69,10 @@ namespace LibXenoverse {
 			void read(File *file);
 			void readXML(TiXmlElement *root);
 			void write(File *file);
+
+			string getName() {
+				return name;
+			}
 	};
 }
 

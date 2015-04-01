@@ -30,7 +30,7 @@ namespace LibXenoverse {
 
 		// Read Skeleton
 		file->goToAddress(skeleton_offset);
-		skeleton = new EANSkeleton();
+		skeleton = new ESK();
 		skeleton->read(file);
 
 		// Read Animations

@@ -230,11 +230,5 @@
     <ClCompile Include="EANKeyframedAnimation.cpp">
       <Filter>EAN</Filter>
     </ClCompile>
-    <ClCompile Include="EANSkeleton.cpp">
-      <Filter>EAN</Filter>
-    </ClCompile>
-    <ClCompile Include="EANBone.cpp">
-      <Filter>EAN</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>

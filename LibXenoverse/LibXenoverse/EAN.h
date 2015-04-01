@@ -1,3 +1,5 @@
+#include "ESK.h"
+
 #ifndef LIBXENOVERSE_EAN_H_INCLUDED
 #define LIBXENOVERSE_EAN_H_INCLUDED
 
@@ -9,54 +11,6 @@
 
 namespace LibXenoverse {
 	class EANAnimation;
-
-	class EANBone {
-		protected:
-			unsigned short parent_index;
-			unsigned short child_index;
-			unsigned short sibling_index;
-			unsigned short index_4;
-
-			string name;
-			float matrix[12];
-
-			unsigned int flag_start;
-			unsigned int flag_end;
-		public:
-			EANBone() {
-			}
-
-			void readName(File *file);
-			void readMatrix(File *file);
-			void readIndices(File *file);
-			void readFlags(File *file);
-
-			void write(File *file);
-
-			string getName() {
-				return name;
-			}
-	};
-
-	class EANSkeleton {
-	protected:
-		vector<EANBone> bones;
-		unsigned short flag;
-	public:
-		EANSkeleton() {
-		}
-
-		void read(File *file);
-		void write(File *file);
-
-		vector<EANBone> &getBones() {
-			return bones;
-		}
-
-		unsigned short getFlag() {
-			return flag;
-		}
-	};
 
 	class EANKeyframe {
 	protected:
@@ -184,7 +138,7 @@ namespace LibXenoverse {
 	protected:
 		string name;
 		vector<EANAnimation> animations;
-		EANSkeleton *skeleton;
+		ESK *skeleton;
 	public:
 		EAN() {
 			name = "";
@@ -197,7 +151,7 @@ namespace LibXenoverse {
 		void read(File *file);
 		void write(File *file);
 
-		EANSkeleton *getSkeleton() {
+		ESK *getSkeleton() {
 			return skeleton;
 		}
 

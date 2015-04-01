@@ -2,4 +2,8 @@
 #include "moc_MainWindow.cpp"
 #include "moc_MainViewer.cpp"
 #include "moc_DocumentWindow.cpp"
-
+#include "colorWheel/moc_colorpickerwidget.cpp"
+#include "colorWheel/moc_colorviewer.cpp"
+#include "colorWheel/moc_qtcolortriangle.cpp"
+#include "colorWheel/moc_screen.cpp"
+#include "gradLib/moc_gradView.cpp"

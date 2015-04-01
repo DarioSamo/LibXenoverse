@@ -30,7 +30,7 @@ public:
 	}
 
 	EMBOgre *getDYTTexturePack() {
-		return texture_pack;
+		return texture_dyt_pack;
 	}
 
 	void destroyResources();

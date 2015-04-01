@@ -22,15 +22,21 @@ namespace LibXenoverse {
 			void readIndices(File *file);
 			void readMatrix(File *file);
 			void readSkinningMatrix(File *file);
+
+			string getName() {
+				return name;
+			}
 	};
 
 	class ESK {
 		protected:
 			vector<ESKBone *> bones;
 			string name;
+			unsigned short flag;
 		public:
 			ESK() {
 				name = "";
+				flag = 0;
 			}
 
 			bool load(string filename);
@@ -41,6 +47,14 @@ namespace LibXenoverse {
 
 			string getName() {
 				return name;
+			}
+
+			vector<ESKBone *> &getBones() {
+				return bones;
+			}
+
+			unsigned short getFlag() {
+				return flag;
 			}
 
 #ifdef LIBXENOVERSE_FBX_SUPPORT

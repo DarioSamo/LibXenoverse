@@ -1,4 +1,5 @@
 #include "EMMOgre.h"
+#include "EMBOgre.h"
 
 EMMOgre::EMMOgre() {
 	material_resources_created = false;
@@ -24,6 +25,7 @@ Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 
 	pass->getTextureUnitState((size_t)1)->setTextureName(name + "_0");     //   ImageSampler1        s1       1
 	pass->getTextureUnitState((size_t)4)->setTextureName(name + ".dyt_0"); //   SamplerToon          s4       1
+	pass->getTextureUnitState((size_t)4)->setTextureFiltering(Ogre::TextureFilterOptions::TFO_NONE);
 	pass->getTextureUnitState((size_t)14)->setTextureName(name + ".dyt_1");    //   ImageSamplerTemp14   s14      1
 
 	string shader_name = emm_material->getShaderName();

@@ -4,6 +4,11 @@
 class ESKOgre;
 class EMDOgre;
 class EANOgre;
+class EMMOgre;
+class EMBOgre;
+
+class LibXenoverse::EMMMaterial;
+class LibXenoverse::EMBFile;
 
 class FileTreeItemWidget : public QTreeWidgetItem {
 public:
@@ -66,6 +71,64 @@ public:
 	void updateText();
 };
 
+
+class MaterialPackItemWidget : public FileTreeItemWidget {
+protected:
+	EMMOgre *data_ptr;
+public:
+	MaterialPackItemWidget(EMMOgre *data, QTreeWidget *parent);
+	~MaterialPackItemWidget();
+
+	EMMOgre *getData() {
+		return data_ptr;
+	}
+
+	void updateText();
+};
+
+
+class MaterialItemWidget : public FileTreeItemWidget {
+protected:
+	EMMMaterial *data_ptr;
+public:
+	MaterialItemWidget(EMMMaterial *data, QTreeWidget *parent);
+	~MaterialItemWidget();
+
+	EMMMaterial *getData() {
+		return data_ptr;
+	}
+
+	void updateText();
+};
+
+
+class TexturePackItemWidget : public FileTreeItemWidget {
+protected:
+	EMBOgre *data_ptr;
+public:
+	TexturePackItemWidget(EMBOgre *data, QTreeWidget *parent);
+	~TexturePackItemWidget();
+
+	EMBOgre *getData() {
+		return data_ptr;
+	}
+
+	void updateText();
+};
+
+class TextureItemWidget : public FileTreeItemWidget {
+protected:
+	EMBFile *data_ptr;
+public:
+	TextureItemWidget(EMBFile *data, QTreeWidget *parent);
+	~TextureItemWidget();
+
+	EMBFile *getData() {
+		return data_ptr;
+	}
+
+	void updateText();
+};
 
 class AnimationPackItemWidget : public FileTreeItemWidget {
 protected:

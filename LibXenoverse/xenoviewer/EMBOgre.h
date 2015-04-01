@@ -34,6 +34,14 @@ public:
 	vector<Ogre::TexturePtr> getOgreTextures() {
 		return ogre_textures;
 	}
+
+	Ogre::Texture *getOgreTexture(size_t index) {
+		if (index < ogre_textures.size()) {
+			return ogre_textures[index].getPointer();
+		}
+
+		return NULL;
+	}
 };
 
 #endif

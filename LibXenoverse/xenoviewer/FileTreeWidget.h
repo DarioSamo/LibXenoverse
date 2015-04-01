@@ -4,6 +4,7 @@
 class FileTreeItemWidget;
 class ModelPackItemWidget;
 class SkeletonItemWidget;
+class MaterialPackItemWidget;
 
 class FileTreeWidget : public QTreeWidget {
 	protected:

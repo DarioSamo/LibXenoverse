@@ -1,1 +1,0 @@
-cpkpack.exe -x data2.cpk -d data2

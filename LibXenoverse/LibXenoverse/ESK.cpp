@@ -4,6 +4,10 @@ namespace LibXenoverse {
 
 		File file(filename, LIBXENOVERSE_FILE_READ_BINARY);
 		if (file.valid() && file.readHeader(LIBXENOVERSE_ESK_SIGNATURE)) {
+			file.goToAddress(0x10);
+			unsigned int address = 0;
+			file.readInt32E(&address);
+			file.goToAddress(address);
 			read(&file);
 			file.close();
 		}
@@ -13,16 +17,10 @@ namespace LibXenoverse {
 	}
 
 	void ESK::read(File *file) {
-		file->goToAddress(0x10);
-
-		unsigned int base_skeleton_address = 0;
-		file->readInt32E(&base_skeleton_address);
-		file->goToAddress(base_skeleton_address);
-
+		unsigned int base_skeleton_address = file->getCurrentAddress();
 		unsigned short bone_count = 0;
-		unsigned short unknown_short_1 = 0;
 		file->readInt16E(&bone_count);
-		file->readInt16E(&unknown_short_1);
+		file->readInt16E(&flag);
 
 		bones.resize(bone_count);
 		for (size_t i = 0; i < bone_count; i++) {
@@ -70,11 +68,13 @@ namespace LibXenoverse {
 		}
 
 		// Read Bone Matrices
-		for (size_t i = 0; i < bone_count; i++) {
-			unsigned int address = 0;
-			file->goToAddress(base_skeleton_address + transform_matrix_offset + i * 64);
+		if (transform_matrix_offset) {
+			for (size_t i = 0; i < bone_count; i++) {
+				unsigned int address = 0;
+				file->goToAddress(base_skeleton_address + transform_matrix_offset + i * 64);
 
-			bones[i]->readMatrix(file);
+				bones[i]->readMatrix(file);
+			}
 		}
 	}
 }

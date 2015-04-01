@@ -10,6 +10,7 @@ namespace LibXenoverse {
 			char *data;
 			size_t data_size;
 			string name;
+			size_t index;
 		public:
 			EMBFile(string filename);
 
@@ -17,6 +18,7 @@ namespace LibXenoverse {
 				data = data_p;
 				data_size = data_size_p;
 				name = "";
+				index = 0;
 			}
 
 			void setName(string name_p) {
@@ -38,6 +40,14 @@ namespace LibXenoverse {
 			char *getData() {
 				return data;
 			}
+
+			void setIndex(size_t v) {
+				index = v;
+			}
+
+			size_t getIndex() {
+				return index;
+			}
 	};
 
 
@@ -56,7 +66,15 @@ namespace LibXenoverse {
 			void addFile(string filename);
 			void addFolder(string folder);
 
+			vector<EMBFile *> &getFiles() {
+				return files;
+			}
+
 			bool detectFilenameMode();
+
+			string getName() {
+				return name;
+			}
 	};
 }
 

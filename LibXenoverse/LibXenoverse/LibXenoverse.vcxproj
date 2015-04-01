@@ -103,8 +103,6 @@
     <ClCompile Include="EANKeyframedAnimation.cpp" />
     <ClCompile Include="EANKeyframe.cpp" />
     <ClCompile Include="EANAnimationNode.cpp" />
-    <ClCompile Include="EANSkeleton.cpp" />
-    <ClCompile Include="EANBone.cpp" />
     <ClCompile Include="EMB.cpp" />
     <ClCompile Include="EMBFile.cpp" />
     <ClCompile Include="EMD.cpp" />
