@@ -143,5 +143,5 @@ void MainViewer::paintCluster() {
 	current_ogre_texture->unload();
 	current_ogre_texture->loadImage(image);
 
-	delete image_data;
+	delete [] image_data;
 }
