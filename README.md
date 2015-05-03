@@ -29,7 +29,5 @@ WARNING: Repacking data2.cpk with the uncompressed files seem to just crash the 
 * Right click to pan the camera's focus point.
 * Mouse wheel to make the camera zoom in or out.
 
-Note : view part could didn't work with more than one monitor. 
-
 ####License
 (todo)
