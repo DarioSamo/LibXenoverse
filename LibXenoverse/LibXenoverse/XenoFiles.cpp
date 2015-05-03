@@ -1,3 +1,16 @@
+#include <stdio.h>  /* defines FILENAME_MAX */
+//#ifdef WINDOWS
+#ifdef WIN32
+	#include <direct.h>
+	#define GetCurrentDir _getcwd
+#else
+	#include <unistd.h>
+	#define GetCurrentDir getcwd
+#endif
+
+
+
+
 namespace LibXenoverse {
 	wstring_convert<codecvt<char16_t, char, mbstate_t>, char16_t> convert16;
 
@@ -5,7 +18,20 @@ namespace LibXenoverse {
 
 	void initializeDebuggingLog() {
 		#ifdef LIBXENOVERSE_DEBUGGING_LOG
-		global_debugging_log = fopen("libxenoverse.log", "wt");
+		
+
+		char cCurrentPath[FILENAME_MAX];
+		if (GetCurrentDir(cCurrentPath, sizeof(cCurrentPath)))
+		{
+			cCurrentPath[sizeof(cCurrentPath) - 1] = '\0'; /* not really required */
+		}else{
+			cCurrentPath[0] = '\0';
+		}
+		string basePath(cCurrentPath);
+
+		OutputDebugStringA( ("WorkingDir: " + basePath +"\n").c_str());
+
+		global_debugging_log = fopen( (basePath + "\\libxenoverse.log").c_str(), "wt");
 		#endif
 	}
 

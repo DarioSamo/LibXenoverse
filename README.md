@@ -17,5 +17,20 @@ It's recommended to use the data folder inside of data2.cpk to override the file
 
 WARNING: Repacking data2.cpk with the uncompressed files seem to just crash the game at the moment for some reason. Try extracting the files first with extract-data2.bat (leaves the files compressed) and repack those instead.
 
+#### Use XenoViewer
+-add esk file for add skeleton
+-add emd for add meshes. it's will automatically use emm (material) and emd (textures)
+-add ean files  to use animations.
+
+-drag and drop emd on skeleton to apply skinning.
+-double-click on an animations to view the result
+
+in view part:
+-use left click to turn camera.
+-use right click to move camera.
+-use mouse wheel to zoom/unzoom.
+
+Note : view part could didn't work with more than one monitor. 
+
 ####License
 (todo)
