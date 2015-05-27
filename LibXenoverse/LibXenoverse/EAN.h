@@ -162,6 +162,11 @@ namespace LibXenoverse {
 		string getName() {
 			return name;
 		}
+
+#ifdef LIBXENOVERSE_FBX_SUPPORT
+		FbxAnimCurveNode *createFBXAnimationCurveNode(FbxNode *fbx_node, EANAnimation *animation, EANAnimationNode* anim_node, FbxAnimStack *lAnimStack, FbxAnimLayer* lAnimLayer);
+		vector<FbxAnimCurveNode *>  exportFBXAnimations(FbxScene *scene, std::vector<FbxAnimStack *> list_AnimStack, FbxNode *fbx_node, size_t indexBone);
+#endif
 	};
 }
 

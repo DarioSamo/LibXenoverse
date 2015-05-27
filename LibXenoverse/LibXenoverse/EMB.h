@@ -75,6 +75,10 @@ namespace LibXenoverse {
 			string getName() {
 				return name;
 			}
+
+			#ifdef LIBXENOVERSE_FBX_SUPPORT
+			void exportShadersToFx(EMB *shader_pack_vs,  EMB *shader_pack_ps);
+			#endif
 	};
 }
 
