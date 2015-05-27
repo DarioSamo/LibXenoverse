@@ -4,6 +4,8 @@
 #define LIBXENOVERSE_EMD_SIGNATURE           "#EMD"
 #define LIBXENOVERSE_EMD_SUBMESH_BONE_LIMIT  24
 
+#include "EMM.h"
+
 namespace LibXenoverse {
 	class EMDVertex {
 		friend class EMD;
@@ -257,9 +259,9 @@ namespace LibXenoverse {
 			void setVertexScale(float scale);
 
 			#ifdef LIBXENOVERSE_FBX_SUPPORT
-				FbxMesh *exportFBX(FbxScene *scene, FbxNode *lMeshNode);
+				FbxMesh *exportFBX(FbxScene *scene, FbxNode *lMeshNode, string path);
 				void exportFBXSkin(FbxScene *scene, FbxMesh *fbx_mesh, vector<FbxNode *> &fbx_bones, FbxAMatrix skin_matrix);
-				FbxSurfacePhong *exportFBXMaterial(FbxScene *scene, string material_name);
+				FbxSurfaceMaterial *exportFBXMaterial(FbxScene *scene, string material_name, EMM *material, EMB *texture_pack, EMB *texture_dyt_pack);
 				void importFBX(FbxNode *lNode);
 			#endif
 

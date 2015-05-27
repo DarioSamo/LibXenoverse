@@ -230,5 +230,8 @@
     <ClCompile Include="EANKeyframedAnimation.cpp">
       <Filter>EAN</Filter>
     </ClCompile>
+    <ClCompile Include="EMBExportFx.cpp">
+      <Filter>EMB</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

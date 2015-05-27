@@ -63,6 +63,9 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Lib>
+      <AdditionalDependencies>d3dcompiler.lib;D3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -81,6 +84,9 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <Lib>
+      <AdditionalDependencies>d3dcompiler.lib;D3dx9.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AGD.h" />
@@ -117,6 +123,7 @@
     <ClCompile Include="EANKeyframe.cpp" />
     <ClCompile Include="EANAnimationNode.cpp" />
     <ClCompile Include="EMB.cpp" />
+    <ClCompile Include="EMBExportFx.cpp" />
     <ClCompile Include="EMBFile.cpp" />
     <ClCompile Include="EMD.cpp" />
     <ClCompile Include="EMDExportFBX.cpp" />
