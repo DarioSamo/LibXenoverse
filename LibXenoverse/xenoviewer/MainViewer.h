@@ -1,5 +1,6 @@
 #include "ui_MainViewer.h"
 
+class QGraphicsScene;
 class EMDOgre;
 class ESKOgre;
 class EANOgre;
@@ -13,14 +14,34 @@ public:
 	void createFileTreeItems(list<EMDOgre *> &new_emd_list, list<ESKOgre *> &new_esk_list, list<EANOgre *> &new_ean_list);
 	void keyPressEvent(QKeyEvent * event);
 
-	Ogre::Texture *current_ogre_texture;
 	
+  void changeCurrentTexture(Ogre::Texture* texture);
+  
+  inline Ogre::Texture* getCurrentTexture()
+  {
+    return _current_ogre_texture;
+  }
+
 	private slots:
 		void fileItemDoubleClicked(QTreeWidgetItem * item, int column);
 		void animationItemDoubleClicked(QTreeWidgetItem * item, int column);
 		void contextMenuFileTree(const QPoint& point);
 		void clearFileTree();
+    void clearAnimTree();
 		void disableTabs();
 		void enableTab(int index);
-		void paintCluster();
+
+    void enableTextureTab();
+    void disableTextureTab();
+
+    void saveTextureToFile();
+    void loadTextureFromFile();
+    void exportOgre();
+
+  
+private:
+  
+  Ogre::Texture *_current_ogre_texture;
+  QGraphicsScene* _textureGraphicsScene;
+
 };

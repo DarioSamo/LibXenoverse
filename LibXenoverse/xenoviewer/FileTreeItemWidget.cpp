@@ -75,6 +75,16 @@ AnimationPackItemWidget::AnimationPackItemWidget(EANOgre *data, QTreeWidget *par
 	setExpanded(true);
 }
 
+AnimationPackItemWidget::~AnimationPackItemWidget()
+{
+
+}
+
+AnimationItemWidget::~AnimationItemWidget()
+{
+
+}
+
 AnimationItemWidget::AnimationItemWidget(EANAnimation *data, QTreeWidget *parent) : FileTreeItemWidget(parent) {
 	data_ptr = data;
 	setText(0, (data->getName()).c_str());

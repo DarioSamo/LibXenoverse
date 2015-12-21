@@ -1,4 +1,12 @@
 #include "EMBOgre.h"
+/*
+#define STBI_NO_STDIO
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image.h"
+#include "stbi_DDS_aug_c.h"
+#include "stb_image_write.h"
+*/
+
 
 EMBOgreDataStream::EMBOgreDataStream(EMBFile *file_p, Ogre::uint16 accessMode) : Ogre::DataStream(accessMode) {
 	current_offset = 0;
@@ -36,6 +44,7 @@ void EMBOgreDataStream::close(void) {
 }
 
 
+
 EMBOgre::EMBOgre() {
 
 }
@@ -51,10 +60,15 @@ void EMBOgre::createOgreTexture(EMBFile *file, size_t index) {
 		ogre_emb_name += ToString(index);
 	}
 
-	Ogre::DataStreamPtr data_stream(new EMBOgreDataStream(file));
-	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().createResource(ogre_emb_name, XENOVIEWER_RESOURCE_GROUP).staticCast<Ogre::Texture>();
+  /*
+  int x, y, comp;
+  unsigned char* rgb=stbi_dds_load_from_memory((stbi_uc*)file->getData(), file->getSize(), &x, &y, &comp, 3);
+  Q_ASSERT(rgb);
+  */
 	Ogre::Image image;
+	Ogre::DataStreamPtr data_stream(new EMBOgreDataStream(file));
 	image.load(data_stream, "DDS");
+	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().createResource(ogre_emb_name, XENOVIEWER_RESOURCE_GROUP).staticCast<Ogre::Texture>();
 	texture->loadImage(image);
 
 	ogre_textures[index] = texture;

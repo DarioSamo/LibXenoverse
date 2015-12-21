@@ -13,17 +13,20 @@ namespace LibXenoverse {
 		}
 	}
 
-	void EMBFile::write(File *file) {
-		file->write(data, data_size);
+	bool EMBFile::write(File *file) {
+		return file->write(data, data_size);
 	}
 
-	void EMBFile::save(string filename) {
-		if (!data) return;
-
+ bool EMBFile::save(string filename) {
+   if (!data)  {
+     return false;
+   }
 		File file(filename, LIBXENOVERSE_FILE_WRITE_BINARY);
 		if (file.valid()) {
-			file.write(data, data_size);
+			bool success = file.write(data, data_size);
 			file.close();
+      return success;
 		}
+    return false;
 	}
 }

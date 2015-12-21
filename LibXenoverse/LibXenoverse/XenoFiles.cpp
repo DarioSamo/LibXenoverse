@@ -267,9 +267,9 @@ namespace LibXenoverse {
 		else writeFloat32(dest);
 	}
 
-	void File::write(void *dest, size_t sz) {
-		if (!readSafeCheck(dest)) return;
-		fwrite(dest, sz, 1, file_ptr);
+	bool File::write(void *dest, size_t sz) {
+		if (!readSafeCheck(dest)) return false;
+		return (fwrite(dest, sz, 1, file_ptr) == sz);
 	}
 	
 	void File::writeString(const char *dest) {

@@ -29,9 +29,9 @@ namespace LibXenoverse {
 				return name;
 			}
 
-			void write(File *file);
+			bool write(File *file);
 
-			void save(string filename);
+			bool save(string filename);
 
 			size_t getSize() {
 				return data_size;

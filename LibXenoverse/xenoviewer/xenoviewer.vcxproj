@@ -40,21 +40,21 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)\..\bin\</OutDir>
-    <LibraryPath>../lib/$(Configuration)/;../../depends/ogre/lib;../../depends/qt/lib;../../depends/zlib/lib;$(DXSDK_DIR)\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>../lib/$(Configuration)/;../../depends/ogre/lib;../../depends/qt/lib;../../depends/fbxsdk/lib/vs2013/x86/release;../../depends/zlib/lib;$(DXSDK_DIR)\lib\x86;$(LibraryPath)</LibraryPath>
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\..\bin\Debug\</OutDir>
+    <OutDir>$(SolutionDir)\..\bin\Debug</OutDir>
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>../lib/$(Configuration)/;../../depends/ogre/lib;../../depends/qt/lib;../../depends/zlib/lib;$(DXSDK_DIR)\lib\x86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>../../depends/fbxsdk/lib/vs2013/x86/release;../lib/$(Configuration)/;../../depends/ogre/lib;../../depends/qt/lib;../../depends/zlib/lib;$(DXSDK_DIR)\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>qt-gradient-editor/gradLib/src;../../depends/qt/include;../../depends/qt/include/QtCore;../../depends/qt/include/QtGui;../../depends/qt/include/QtWidgets;../../depends/qt/include/QtWinExtras;../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../../depends/zlib/include;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>LIBXENOVERSE_WINSDK_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;LIBXENOVERSE_DEBUGGING_LOG;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../depends/qt/include;../../depends/qt/include/QtCore;../../depends/qt/include/QtGui;../../depends/qt/include/QtWidgets;../../depends/qt/include/QtWinExtras;../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../../depends/zlib/include;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>LIBXENOVERSE_WINSDK_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;LIBXENOVERSE_DEBUGGING_LOG;_MBCS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <AdditionalOptions>/Zm300 %(AdditionalOptions)</AdditionalOptions>
@@ -63,7 +63,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>LibXenoverse.lib;d3dcompiler.lib;D3dx9.lib;OgreMain_d.lib;OgreOverlay_d.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LibXenoverse.lib;d3dcompiler.lib;D3dx9.lib;OgreMain_d.lib;OgreOverlay_d.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;zlib.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -73,17 +73,17 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>qt-gradient-editor/gradLib/src;../../depends/qt/include;../../depends/qt/include/QtCore;../../depends/qt/include/QtGui;../../depends/qt/include/QtWidgets;../../depends/qt/include/QtWinExtras;../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../../depends/zlib/include;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../depends/qt/include;../../depends/qt/include/QtCore;../../depends/qt/include/QtGui;../../depends/qt/include/QtWidgets;../../depends/qt/include/QtWinExtras;../../depends/ogre/include;../../depends/ogre/include/OGRE;../../depends/ogre/include/OIS;../../depends/ogre/include/OGRE/Overlay;../../depends/zlib/include;../LibXenoverse;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
       <PreprocessorDefinitions>LIBXENOVERSE_WINSDK_SUPPORT;LIBXENOVERSE_ZLIB_SUPPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <AdditionalOptions>/Zm300 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>LibXenoverse.lib;d3dcompiler.lib;D3dx9.lib;OgreMain.lib;OgreOverlay.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LibXenoverse.lib;d3dcompiler.lib;D3dx9.lib;OgreMain.lib;OgreOverlay.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;zlib.lib;libfbxsdk.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>NotSet</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -102,12 +102,9 @@
     <ClInclude Include="FileTreeItemWidget.h" />
     <ClInclude Include="FileTreeWidget.h" />
     <ClInclude Include="OgreCommon.h" />
-    <ClInclude Include="qt-gradient-editor\gradLib\src\gradLib\arrow.h" />
-    <CustomBuild Include="qt-gradient-editor\gradLib\src\gradLib\gradView.h">
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
-    </CustomBuild>
+    <ClInclude Include="stbi_DDS_aug_c.h" />
+    <ClInclude Include="stb_image.h" />
+    <ClInclude Include="stb_image_write.h" />
     <ClInclude Include="ViewerGrid.h" />
     <CustomBuild Include="MainWindow.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
@@ -146,8 +143,6 @@
     <ClCompile Include="OgreViewerWidget.cpp" />
     <ClCompile Include="OgreWidget.cpp" />
     <ClCompile Include="QMessageBoxes.cpp" />
-    <ClCompile Include="qt-gradient-editor\gradLib\src\gradLib\arrow.cpp" />
-    <ClCompile Include="qt-gradient-editor\gradLib\src\gradLib\gradView.cpp" />
     <ClCompile Include="res.cpp" />
     <ClCompile Include="SkeletonDebug.cpp" />
     <ClCompile Include="stdafx.cpp">
