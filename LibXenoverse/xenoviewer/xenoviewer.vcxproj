@@ -102,6 +102,7 @@
     <ClInclude Include="FileTreeItemWidget.h" />
     <ClInclude Include="FileTreeWidget.h" />
     <ClInclude Include="OgreCommon.h" />
+    <ClInclude Include="OgreTrashfixedDDSCodec.h" />
     <ClInclude Include="stbi_DDS_aug_c.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_image_write.h" />
@@ -140,6 +141,7 @@
     <ClCompile Include="mocs.cpp" />
     <ClCompile Include="ObjectTextDisplay.cpp" />
     <ClCompile Include="OgreCommon.cpp" />
+    <ClCompile Include="OgreTrashfixedDDSCodec.cpp" />
     <ClCompile Include="OgreViewerWidget.cpp" />
     <ClCompile Include="OgreWidget.cpp" />
     <ClCompile Include="QMessageBoxes.cpp" />

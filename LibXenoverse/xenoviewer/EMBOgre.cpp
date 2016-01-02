@@ -1,11 +1,6 @@
 #include "EMBOgre.h"
-/*
-#define STBI_NO_STDIO
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "stb_image.h"
-#include "stbi_DDS_aug_c.h"
-#include "stb_image_write.h"
-*/
+#include "OgreTrashfixedDDSCodec.h"
+
 
 
 EMBOgreDataStream::EMBOgreDataStream(EMBFile *file_p, Ogre::uint16 accessMode) : Ogre::DataStream(accessMode) {
@@ -49,6 +44,7 @@ EMBOgre::EMBOgre() {
 
 }
 
+
 void EMBOgre::createOgreTexture(EMBFile *file, size_t index) {
 	string ogre_emb_name = name + "_";
 	string emb_texture_name = file->getName();
@@ -60,14 +56,18 @@ void EMBOgre::createOgreTexture(EMBFile *file, size_t index) {
 		ogre_emb_name += ToString(index);
 	}
 
-  /*
-  int x, y, comp;
-  unsigned char* rgb=stbi_dds_load_from_memory((stbi_uc*)file->getData(), file->getSize(), &x, &y, &comp, 3);
-  Q_ASSERT(rgb);
-  */
+  Ogre::TrashfixedDDSCodec::startup();
+
 	Ogre::Image image;
 	Ogre::DataStreamPtr data_stream(new EMBOgreDataStream(file));
-	image.load(data_stream, "DDS");
+  Ogre::Codec* ddsCodec = Ogre::Codec::getCodec("trashfixed_dds");
+  Ogre::Codec::DecodeResult result = ddsCodec->decode(data_stream);
+  Ogre::MemoryDataStreamPtr out_data = result.first;
+  Ogre::ImageCodec::ImageData* infos = dynamic_cast<Ogre::ImageCodec::ImageData*>(result.second.get());
+
+  
+
+  image.loadRawData(out_data.dynamicCast<Ogre::DataStream>(),infos->width,infos->height,infos->depth,infos->format,1U, infos->num_mipmaps);
 	Ogre::TexturePtr texture = Ogre::TextureManager::getSingleton().createResource(ogre_emb_name, XENOVIEWER_RESOURCE_GROUP).staticCast<Ogre::Texture>();
 	texture->loadImage(image);
 
