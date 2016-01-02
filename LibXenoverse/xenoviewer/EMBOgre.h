@@ -1,6 +1,7 @@
 #ifndef EMBOGRE_H_INCLUDED
 #define EMBOGRE_H_INCLUDED
 
+
 class EMBOgreDataStream : public Ogre::DataStream {
 	protected:
 		EMBFile *emb_file;
@@ -18,6 +19,7 @@ class EMBOgreDataStream : public Ogre::DataStream {
 		void close(void);
 };
 
+
 class EMBOgre : public EMB {
 protected:
 	vector<Ogre::TexturePtr> ogre_textures;
@@ -31,9 +33,10 @@ public:
 	void createOgreTextures();
 	void createOgreShaders();
 
-	vector<Ogre::TexturePtr> getOgreTextures() {
-		return ogre_textures;
-	}
+  vector<Ogre::TexturePtr> getOgreTextures() {
+    return ogre_textures;
+  }
+  
 
 	Ogre::Texture *getOgreTexture(size_t index) {
 		if (index < ogre_textures.size()) {

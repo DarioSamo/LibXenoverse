@@ -19,12 +19,6 @@
     <Filter Include="Qt Resources">
       <UniqueIdentifier>{71957dcb-2e8d-463b-8574-0cba0a4fa5fd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="qt-gradient-editor">
-      <UniqueIdentifier>{e5b0f245-5627-4d54-a382-612467ba226b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="qt-gradient-editor\gradLib">
-      <UniqueIdentifier>{a7197b47-7e85-43cf-8635-75d5fad39341}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EMDOgre.h">
@@ -66,8 +60,17 @@
     <ClInclude Include="OgreCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="qt-gradient-editor\gradLib\src\gradLib\arrow.h">
-      <Filter>qt-gradient-editor\gradLib</Filter>
+    <ClInclude Include="stbi_DDS_aug_c.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stb_image_write.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OgreTrashfixedDDSCodec.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -137,11 +140,8 @@
     <ClCompile Include="OgreCommon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="qt-gradient-editor\gradLib\src\gradLib\arrow.cpp">
-      <Filter>qt-gradient-editor\gradLib</Filter>
-    </ClCompile>
-    <ClCompile Include="qt-gradient-editor\gradLib\src\gradLib\gradView.cpp">
-      <Filter>qt-gradient-editor\gradLib</Filter>
+    <ClCompile Include="OgreTrashfixedDDSCodec.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -162,9 +162,6 @@
     </CustomBuild>
     <CustomBuild Include="xenoviewer.qrc">
       <Filter>Qt Resources</Filter>
-    </CustomBuild>
-    <CustomBuild Include="qt-gradient-editor\gradLib\src\gradLib\gradView.h">
-      <Filter>qt-gradient-editor\gradLib</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

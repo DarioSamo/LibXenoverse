@@ -106,7 +106,7 @@ namespace LibXenoverse {
 
 			bool readLine(string *dest);
 
-			void write(void *dest, size_t sz);
+			bool write(void *dest, size_t sz);
 			void writeString(const char *dest);
 			void writeString(string *dest);
 			void writeUChar(unsigned char *dest);

@@ -135,6 +135,7 @@ protected:
 	EANOgre *data_ptr;
 public:
 	AnimationPackItemWidget(EANOgre *data, QTreeWidget *parent);
+  virtual ~AnimationPackItemWidget();
 
 	EANOgre *getData() {
 		return data_ptr;
@@ -148,6 +149,7 @@ protected:
 	EANAnimation *data_ptr;
 public:
 	AnimationItemWidget(EANAnimation *data, QTreeWidget *parent);
+  virtual ~AnimationItemWidget();
 
 	EANAnimation *getData() {
 		return data_ptr;

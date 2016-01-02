@@ -4,9 +4,17 @@
 #include "EANOgre.h"
 #include "EMBOgre.h"
 
+#include <QgraphicsScene>
+#include "OgreCommon.h"
+#include <OgreRectangle2D.h>
+
 MainViewer::MainViewer(QWidget *parent)
-	: QWidget(parent) {
+	: QWidget(parent),
+  _textureGraphicsScene(new QGraphicsScene(this))
+{
 	setupUi(this);
+
+  ddsTextureView->setScene(_textureGraphicsScene);
 
 	FileTree->acceptDrops();
 	FileTree->setDragEnabled(true);
@@ -15,9 +23,12 @@ MainViewer::MainViewer(QWidget *parent)
 	connect(FileTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(fileItemDoubleClicked(QTreeWidgetItem *, int)));
 	connect(AnimationTree, SIGNAL(itemDoubleClicked(QTreeWidgetItem *, int)), this, SLOT(animationItemDoubleClicked(QTreeWidgetItem *, int)));
 	connect(ClearFileTreeButton, SIGNAL(released()), this, SLOT(clearFileTree()));
-	connect(GenerateClusterButton, SIGNAL(released()), this, SLOT(paintCluster()));
+  connect(ClearAnimationListButton, SIGNAL(released()), this, SLOT(clearAnimTree()));
+  connect(ExportOgreButton, SIGNAL(released()), this, SLOT(exportOgre()));
+  connect(SaveTextureButton, SIGNAL(released()), this, SLOT(saveTextureToFile()));
+  connect(LoadTextureButton, SIGNAL(released()), this, SLOT(loadTextureFromFile()));
 
-	current_ogre_texture = NULL;
+	_current_ogre_texture = NULL;
 
 	disableTabs();
 }
@@ -33,8 +44,7 @@ void MainViewer::fileItemDoubleClicked(QTreeWidgetItem *item, int column) {
 			EMBFile *emb_file = texture_item->getData();
 
 			if (emb && emb_file) {
-				current_ogre_texture = emb->getOgreTexture(emb_file->getIndex());
-				enableTab(6);
+        changeCurrentTexture(emb->getOgreTexture(emb_file->getIndex()));
 			}
 		}
 	}
@@ -96,52 +106,121 @@ void MainViewer::enableTab(int index) {
 	tabWidget->setCurrentIndex(index);
 }
 
-void MainViewer::paintCluster() {
-	if (!current_ogre_texture) return;
+void MainViewer::clearAnimTree()
+{
+  AnimationTree->clear();
+}
 
-	Ogre::Image image;
-	size_t width = 128;
-	size_t height = 128;
-	size_t image_byte_size = width * height * 3;
-	uchar *image_data = new uchar[image_byte_size];
-	memset(image_data, 0x00, image_byte_size);
+void MainViewer::changeCurrentTexture(Ogre::Texture* texture)
+{
+  _current_ogre_texture = texture;
+  if (_current_ogre_texture)
+  {
+    enableTextureTab();
+    Ogre::Image image;
+    _current_ogre_texture->convertToImage(image);
+    QImage qimage(
+      image.getData(),
+      image.getWidth(),
+      image.getHeight(), 
+      OgreUtil::ToQtPixelFormat(image.getFormat()));
+    QPixmap pixmap;
+    pixmap.convertFromImage(qimage);
+    _textureGraphicsScene->clear();
+    QGraphicsPixmapItem* item = _textureGraphicsScene->addPixmap(pixmap);
+    ddsTextureView->ensureVisible((QGraphicsItem*)item,0,0);
 
-	Cluster1_1->paintOgreTexture(image_data, width, 0);
-	Cluster1_2->paintOgreTexture(image_data, width, 4);
-	Cluster1_3->paintOgreTexture(image_data, width, 8);
-	Cluster1_4->paintOgreTexture(image_data, width, 12);
-	Cluster2_1->paintOgreTexture(image_data, width, 16);
-	Cluster2_2->paintOgreTexture(image_data, width, 20);
-	Cluster2_3->paintOgreTexture(image_data, width, 24);
-	Cluster2_4->paintOgreTexture(image_data, width, 28);
-	Cluster3_1->paintOgreTexture(image_data, width, 32);
-	Cluster3_2->paintOgreTexture(image_data, width, 36);
-	Cluster3_3->paintOgreTexture(image_data, width, 40);
-	Cluster3_4->paintOgreTexture(image_data, width, 44);
-	Cluster4_1->paintOgreTexture(image_data, width, 48);
-	Cluster4_2->paintOgreTexture(image_data, width, 52);
-	Cluster4_3->paintOgreTexture(image_data, width, 56);
-	Cluster4_4->paintOgreTexture(image_data, width, 60);
-	Cluster5_1->paintOgreTexture(image_data, width, 64);
-	Cluster5_2->paintOgreTexture(image_data, width, 68);
-	Cluster5_3->paintOgreTexture(image_data, width, 72);
-	Cluster5_4->paintOgreTexture(image_data, width, 76);
-	Cluster6_1->paintOgreTexture(image_data, width, 80);
-	Cluster6_2->paintOgreTexture(image_data, width, 84);
-	Cluster6_3->paintOgreTexture(image_data, width, 88);
-	Cluster6_4->paintOgreTexture(image_data, width, 92);
-	Cluster7_1->paintOgreTexture(image_data, width, 96);
-	Cluster7_2->paintOgreTexture(image_data, width, 100);
-	Cluster7_3->paintOgreTexture(image_data, width, 104);
-	Cluster7_4->paintOgreTexture(image_data, width, 108);
-	Cluster8_1->paintOgreTexture(image_data, width, 112);
-	Cluster8_2->paintOgreTexture(image_data, width, 116);
-	Cluster8_3->paintOgreTexture(image_data, width, 120);
-	Cluster8_4->paintOgreTexture(image_data, width, 124);
+  }
+  else
+  {
+    disableTextureTab();
+  }
+}
 
-	image.loadDynamicImage(image_data, width, height, 1, Ogre::PF_BYTE_BGR);
-	current_ogre_texture->unload();
-	current_ogre_texture->loadImage(image);
+void MainViewer::enableTextureTab()
+{
+    enableTab(6);
+}
 
-	delete [] image_data;
+void MainViewer::disableTextureTab()
+{
+    tabWidget->setTabEnabled(6, false);
+}
+
+void MainViewer::exportOgre()
+{
+  for each (QTreeWidgetItem* item in FileTree->selectedItems())
+  {
+    FileTreeItemWidget *item_cast = static_cast<FileTreeItemWidget *>(item);
+    
+    if (item_cast->getType() == FileTreeItemWidget::ItemTexture) {
+
+      std::string filename = item->text(0).toStdString() + ".dds";
+      TextureItemWidget* texture_item = static_cast<TextureItemWidget*>(item_cast);
+      if (!texture_item->getData()->save(filename))
+      {
+        QMessageBox::critical(0, QString("Error writing file"), QString(filename.c_str()));
+      }
+    }
+
+  }
+}
+
+void ExtractPathFilename(const QString i, QString& p, QString& f)
+{
+
+}
+
+void MainViewer::loadTextureFromFile()
+{
+  if (_current_ogre_texture)
+  {
+
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open Texture File"),
+                                                    QString(_current_ogre_texture->getName().c_str()) + QString(".dds"),
+                                                    tr("Images (*.dds *.png *.jpg *.tga)"));
+      
+    Ogre::Image image;
+    try
+    {
+
+      QFileInfo infos(fileName);
+     
+      
+      Ogre::ResourceGroupManager::getSingleton().addResourceLocation(infos.canonicalPath().toStdString(), "FileSystem" , XENOVIEWER_RESOURCE_GROUP);
+      Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup(XENOVIEWER_RESOURCE_GROUP);
+      image.load(infos.fileName().toStdString(), XENOVIEWER_RESOURCE_GROUP);
+      _current_ogre_texture->loadImage(image);
+      changeCurrentTexture(_current_ogre_texture);
+    }
+    catch (Ogre::Exception& e)
+    {
+      QMessageBox::critical(NULL, QString("Error !"), QString(e.getFullDescription().c_str()));
+    }
+
+  }
+}
+
+void MainViewer::saveTextureToFile()
+{
+  
+  if (_current_ogre_texture)
+  {
+    Ogre::Image image;
+    _current_ogre_texture->convertToImage(image);
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save Texture File"),
+                                                    QString(_current_ogre_texture->getName().c_str()) + QString(".dds"),
+                                                    tr("Images (*.dds *.png *.jpg *.tga)"));
+    if (!fileName.isEmpty())
+    {
+      try {
+        image.save(Ogre::String(fileName.toStdString()));
+      }
+      catch (Ogre::Exception& e)
+      {
+        QMessageBox::critical(NULL, QString("Error !"), QString(e.getFullDescription().c_str()));
+      }
+    }
+  }
+
 }

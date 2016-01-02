@@ -65,6 +65,7 @@ protected:
 	void about();
 	void resetCamera();
 	bool openFiles(const QStringList& pathList);
+
 private:
 	bool eventFilter(QObject *obj, QEvent *event);
 	void createActions();

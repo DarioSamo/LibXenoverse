@@ -4,7 +4,6 @@
 
 #include "SkeletonDebug.h"
 
-using namespace Ogre;
 
 SkeletonDebug::SkeletonDebug(Ogre::Entity* entity, Ogre::SceneManager *man, Ogre::Camera *cam, float boneSize)
 {
@@ -55,7 +54,7 @@ SkeletonDebug::SkeletonDebug(Ogre::Entity* entity, Ogre::SceneManager *man, Ogre
 		{
 			for (int i = 0; i < numChildren; ++i)
 			{
-				Vector3 v = pBone->getChild(i)->getPosition();
+				Ogre::Vector3 v = pBone->getChild(i)->getPosition();
 				// If the length is zero, no point in creating the bone representation
 				float length = v.length();
 				if (length < 0.00001f)
@@ -153,27 +152,27 @@ void SkeletonDebug::createAxesMaterial()
 {
 	Ogre::String matName = "SkeletonDebug/AxesMat";
 
-	mAxisMatPtr = MaterialManager::getSingleton().getByName(matName);
+	mAxisMatPtr = Ogre::MaterialManager::getSingleton().getByName(matName);
 	if (mAxisMatPtr.isNull())
 	{
-		mAxisMatPtr = MaterialManager::getSingleton().create(matName, ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+		mAxisMatPtr = Ogre::MaterialManager::getSingleton().create(matName, Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
 
 		// First pass for axes that are partially within the model (shows transparency)
-		Pass* p = mAxisMatPtr->getTechnique(0)->getPass(0);
+		Ogre::Pass* p = mAxisMatPtr->getTechnique(0)->getPass(0);
 		p->setLightingEnabled(false);
 		p->setPolygonModeOverrideable(false);
-		p->setVertexColourTracking(TVC_AMBIENT);
-		p->setSceneBlending(SBT_TRANSPARENT_ALPHA);
-		p->setCullingMode(CULL_NONE);
+		p->setVertexColourTracking(Ogre::TVC_AMBIENT);
+		p->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+		p->setCullingMode(Ogre::CULL_NONE);
 		p->setDepthWriteEnabled(false);
 		p->setDepthCheckEnabled(false);
 
 		// Second pass for the portion of the axis that is outside the model (solid colour)
-		Pass* p2 = mAxisMatPtr->getTechnique(0)->createPass();
+		Ogre::Pass* p2 = mAxisMatPtr->getTechnique(0)->createPass();
 		p2->setLightingEnabled(false);
 		p2->setPolygonModeOverrideable(false);
-		p2->setVertexColourTracking(TVC_AMBIENT);
-		p2->setCullingMode(CULL_NONE);
+		p2->setVertexColourTracking(Ogre::TVC_AMBIENT);
+		p2->setCullingMode(Ogre::CULL_NONE);
 		p2->setDepthWriteEnabled(false);
 	}
 }
@@ -182,17 +181,17 @@ void SkeletonDebug::createBoneMaterial()
 {
 	Ogre::String matName = "SkeletonDebug/BoneMat";
 
-	mBoneMatPtr = MaterialManager::getSingleton().getByName(matName);
+	mBoneMatPtr = Ogre::MaterialManager::getSingleton().getByName(matName);
 	if (mBoneMatPtr.isNull())
 	{
-		mBoneMatPtr = MaterialManager::getSingleton().create(matName, ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+		mBoneMatPtr = Ogre::MaterialManager::getSingleton().create(matName, Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
 
-		Pass* p = mBoneMatPtr->getTechnique(0)->getPass(0);
+		Ogre::Pass* p = mBoneMatPtr->getTechnique(0)->getPass(0);
 		p->setLightingEnabled(false);
 		p->setPolygonModeOverrideable(false);
-		p->setVertexColourTracking(TVC_AMBIENT);
-		p->setSceneBlending(SBT_TRANSPARENT_ALPHA);
-		p->setCullingMode(CULL_ANTICLOCKWISE);
+		p->setVertexColourTracking(Ogre::TVC_AMBIENT);
+		p->setSceneBlending(Ogre::SBT_TRANSPARENT_ALPHA);
+		p->setCullingMode(Ogre::CULL_ANTICLOCKWISE);
 		p->setDepthWriteEnabled(false);
 		p->setDepthCheckEnabled(false);
 	}
@@ -200,26 +199,26 @@ void SkeletonDebug::createBoneMaterial()
 
 void SkeletonDebug::createBoneMesh()
 {
-	String meshName = "SkeletonDebug/BoneMesh";
-	mBoneMeshPtr = MeshManager::getSingleton().getByName(meshName);
+	Ogre::String meshName = "SkeletonDebug/BoneMesh";
+	mBoneMeshPtr = Ogre::MeshManager::getSingleton().getByName(meshName);
 	if (mBoneMeshPtr.isNull())
 	{
-		ManualObject mo("tmp");
+		Ogre::ManualObject mo("tmp");
 		mo.begin(mBoneMatPtr->getName());
 
-		Vector3 basepos[6] =
+		Ogre::Vector3 basepos[6] =
 		{
-			Vector3(0, 0, 0),
-			Vector3(mBoneSize/4, mBoneSize/2, mBoneSize/4),
-			Vector3(-mBoneSize/4, mBoneSize/2, mBoneSize/4),
-			Vector3(-mBoneSize/4, mBoneSize/2, -mBoneSize/4),
-			Vector3(mBoneSize/4, mBoneSize/2, -mBoneSize/4),
-			Vector3(0, mBoneSize, 0),
+			Ogre::Vector3(0, 0, 0),
+			Ogre::Vector3(mBoneSize/4, mBoneSize/2, mBoneSize/4),
+			Ogre::Vector3(-mBoneSize/4, mBoneSize/2, mBoneSize/4),
+			Ogre::Vector3(-mBoneSize/4, mBoneSize/2, -mBoneSize/4),
+			Ogre::Vector3(mBoneSize/4, mBoneSize/2, -mBoneSize/4),
+			Ogre::Vector3(0, mBoneSize, 0),
 		};
 
 		// Two colours so that we can distinguish the sides of the bones (we don't use any lighting on the material)
-		ColourValue col = ColourValue(0.5, 0.5, 0.5, 1);
-		ColourValue col1 = ColourValue(0.6, 0.6, 0.6, 1);
+		Ogre::ColourValue col = Ogre::ColourValue(0.5, 0.5, 0.5, 1);
+	  Ogre::ColourValue col1 = Ogre::ColourValue(0.6, 0.6, 0.6, 1);
 
 		mo.position(basepos[0]);
 		mo.colour(col);
@@ -289,17 +288,17 @@ void SkeletonDebug::createBoneMesh()
 
 		mo.end();
 
-		mBoneMeshPtr = mo.convertToMesh(meshName, ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+		mBoneMeshPtr = mo.convertToMesh(meshName,Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
 	}
 }
 
 void SkeletonDebug::createAxesMesh()
 {
-	String meshName = "SkeletonDebug/AxesMesh";
-	mAxesMeshPtr = MeshManager::getSingleton().getByName(meshName);
+	Ogre::String meshName = "SkeletonDebug/AxesMesh";
+	mAxesMeshPtr = Ogre::MeshManager::getSingleton().getByName(meshName);
 	if (mAxesMeshPtr.isNull())
 	{
-		ManualObject mo("tmp");
+		Ogre::ManualObject mo("tmp");
 		mo.begin(mAxisMatPtr->getName());
 		/* 3 axes, each made up of 2 of these (base plane = XY)
 		*   .------------|\
@@ -307,36 +306,36 @@ void SkeletonDebug::createAxesMesh()
 		*/
 		mo.estimateVertexCount(7 * 2 * 3);
 		mo.estimateIndexCount(3 * 2 * 3);
-		Quaternion quat[6];
-		ColourValue col[3];
+		Ogre::Quaternion quat[6];
+		Ogre::ColourValue col[3];
 
 		// x-axis
-		quat[0] = Quaternion::IDENTITY;
-		quat[1].FromAxes(Vector3::UNIT_X, Vector3::NEGATIVE_UNIT_Z, Vector3::UNIT_Y);
-		col[0] = ColourValue::Red;
+		quat[0] = Ogre::Quaternion::IDENTITY;
+		quat[1].FromAxes(Ogre::Vector3::UNIT_X, Ogre::Vector3::NEGATIVE_UNIT_Z, Ogre::Vector3::UNIT_Y);
+		col[0] = Ogre::ColourValue::Red;
 		col[0].a = 0.3;
 		// y-axis
-		quat[2].FromAxes(Vector3::UNIT_Y, Vector3::NEGATIVE_UNIT_X, Vector3::UNIT_Z);
-		quat[3].FromAxes(Vector3::UNIT_Y, Vector3::UNIT_Z, Vector3::UNIT_X);
-		col[1] = ColourValue::Green;
+		quat[2].FromAxes(Ogre::Vector3::UNIT_Y, Ogre::Vector3::NEGATIVE_UNIT_X, Ogre::Vector3::UNIT_Z);
+		quat[3].FromAxes(Ogre::Vector3::UNIT_Y, Ogre::Vector3::UNIT_Z, Ogre::Vector3::UNIT_X);
+		col[1] = Ogre::ColourValue::Green;
 		col[1].a = 0.3;
 		// z-axis
-		quat[4].FromAxes(Vector3::UNIT_Z, Vector3::UNIT_Y, Vector3::NEGATIVE_UNIT_X);
-		quat[5].FromAxes(Vector3::UNIT_Z, Vector3::UNIT_X, Vector3::UNIT_Y);
-		col[2] = ColourValue::Blue;
+		quat[4].FromAxes(Ogre::Vector3::UNIT_Z, Ogre::Vector3::UNIT_Y, Ogre::Vector3::NEGATIVE_UNIT_X);
+		quat[5].FromAxes(Ogre::Vector3::UNIT_Z, Ogre::Vector3::UNIT_X, Ogre::Vector3::UNIT_Y);
+		col[2] = Ogre::ColourValue::Blue;
 		col[2].a = 0.3;
 
-		Vector3 basepos[7] =
+		Ogre::Vector3 basepos[7] =
 		{
 			// stalk
-			Vector3(0, 0.05, 0),
-			Vector3(0, -0.05, 0),
-			Vector3(0.7, -0.05, 0),
-			Vector3(0.7, 0.05, 0),
+			Ogre::Vector3(0, 0.05, 0),
+			Ogre::Vector3(0, -0.05, 0),
+			Ogre::Vector3(0.7, -0.05, 0),
+			Ogre::Vector3(0.7, 0.05, 0),
 			// head
-			Vector3(0.7, -0.15, 0),
-			Vector3(1, 0, 0),
-			Vector3(0.7, 0.15, 0)
+			Ogre::Vector3(0.7, -0.15, 0),
+			Ogre::Vector3(1, 0, 0),
+			Ogre::Vector3(0.7, 0.15, 0)
 		};
 
 
@@ -347,7 +346,7 @@ void SkeletonDebug::createAxesMesh()
 			// 7 points
 			for (size_t p = 0; p < 7; ++p)
 			{
-				Vector3 pos = quat[i] * basepos[p];
+				Ogre::Vector3 pos = quat[i] * basepos[p];
 				mo.position(pos);
 				mo.colour(col[i / 2]);
 			}
@@ -365,6 +364,6 @@ void SkeletonDebug::createAxesMesh()
 
 		mo.end();
 
-		mAxesMeshPtr = mo.convertToMesh(meshName, ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
+		mAxesMeshPtr = mo.convertToMesh(meshName, Ogre::ResourceGroupManager::INTERNAL_RESOURCE_GROUP_NAME);
 	}
 }
