@@ -149,6 +149,8 @@ void MainViewer::disableTextureTab()
 
 void MainViewer::exportOgre()
 {
+
+
   for each (QTreeWidgetItem* item in FileTree->selectedItems())
   {
     FileTreeItemWidget *item_cast = static_cast<FileTreeItemWidget *>(item);

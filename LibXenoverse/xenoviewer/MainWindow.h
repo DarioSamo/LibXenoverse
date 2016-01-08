@@ -61,7 +61,6 @@ protected:
 
 	private slots:
 	void open();
-	bool save();
 	void about();
 	void resetCamera();
 	bool openFiles(const QStringList& pathList);
