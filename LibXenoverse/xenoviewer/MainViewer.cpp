@@ -4,8 +4,11 @@
 #include "EANOgre.h"
 #include "EMBOgre.h"
 
-#include <QgraphicsScene>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
+#include <QTreeWidgetItem>
 #include "OgreCommon.h"
+#include "OgreSkeleton.h"
 #include <OgreRectangle2D.h>
 
 MainViewer::MainViewer(QWidget *parent)
@@ -15,6 +18,7 @@ MainViewer::MainViewer(QWidget *parent)
 	setupUi(this);
 
   ddsTextureView->setScene(_textureGraphicsScene);
+  ddsTextureView->setSizeAdjustPolicy(QGraphicsView::AdjustToContents);
 
 	FileTree->acceptDrops();
 	FileTree->setDragEnabled(true);
@@ -34,11 +38,15 @@ MainViewer::MainViewer(QWidget *parent)
 }
 
 void MainViewer::fileItemDoubleClicked(QTreeWidgetItem *item, int column) {
-	FileTreeItemWidget *item_cast = static_cast<FileTreeItemWidget *>(item);
+  FileTreeItemWidget *item_cast = dynamic_cast<FileTreeItemWidget *>(item);
+  Q_ASSERT(item_cast && "FileTreeItemWidget dynamic_cast failed !");
 
+  //Textures
 	if (item_cast->getType() == FileTreeItemWidget::ItemTexture) {
-		TextureItemWidget *texture_item = static_cast<TextureItemWidget *>(item);
-		TexturePackItemWidget *texture_pack_item = static_cast<TexturePackItemWidget *>(texture_item->parent());
+    TextureItemWidget *texture_item = dynamic_cast<TextureItemWidget *>(item);
+    Q_ASSERT(texture_item && "TextureItemWidget dynamic_cast failed !");
+    TexturePackItemWidget *texture_pack_item = dynamic_cast<TexturePackItemWidget *>(texture_item->parent());
+    Q_ASSERT(texture_pack_item && "TexturePackItemWidget dynamic_cast failed !");
 		if (texture_pack_item) {
 			EMBOgre *emb = texture_pack_item->getData();
 			EMBFile *emb_file = texture_item->getData();
@@ -48,6 +56,16 @@ void MainViewer::fileItemDoubleClicked(QTreeWidgetItem *item, int column) {
 			}
 		}
 	}
+
+  //Skeleton
+  else if (item_cast->getType() == FileTreeItemWidget::ItemSkeleton)
+  {
+    SkeletonItemWidget* skeleton_item = dynamic_cast<SkeletonItemWidget*>(item);
+    Q_ASSERT(skeleton_item && "SkeletonItemWidget cast failed !");
+    ESKOgre* esk = skeleton_item->getData();
+    changeCurrentSkeleton(esk);
+  }
+
 }
 
 void MainViewer::animationItemDoubleClicked(QTreeWidgetItem *item, int column) {
@@ -101,7 +119,7 @@ void MainViewer::disableTabs() {
 }
 
 void MainViewer::enableTab(int index) {
-	disableTabs();
+	//disableTabs();
 	tabWidget->setTabEnabled(index, true);
 	tabWidget->setCurrentIndex(index);
 }
@@ -110,6 +128,54 @@ void MainViewer::clearAnimTree()
 {
   AnimationTree->clear();
 }
+
+void MainViewer::changeCurrentSkeleton(ESKOgre* esk)
+{
+  skeletonTreeWidget->clear();
+  if (esk)
+  {
+    Ogre::Skeleton* skeleton = esk->getOgreSkeleton();
+    skeleton->getName();
+
+    QTreeWidgetItem* skeleton_item = new QTreeWidgetItem();
+    skeleton_item->setText(0, QString::fromStdString(skeleton->getName()));
+    skeletonTreeWidget->addTopLevelItem(skeleton_item);
+   
+    Ogre::Bone* root_bone = skeleton->getRootBone();
+
+    std::unordered_map<Ogre::Bone*, QTreeWidgetItem*> todo;
+    todo.reserve(esk->getBones().size());
+    todo[root_bone] = skeleton_item;
+
+
+    while (!todo.empty())
+    {
+      Ogre::Bone* current_parent_bone = todo.begin()->first;
+      QTreeWidgetItem* current_parent_item = todo.begin()->second;
+      todo.erase(todo.begin());
+
+      Ogre::Bone::ChildNodeIterator it = current_parent_bone->getChildIterator();
+      while (it.hasMoreElements())
+      {
+        Ogre::Bone* bone = dynamic_cast<Ogre::Bone*>(it.getNext());
+        Q_ASSERT(bone && "Ogre::Bone cast Failed !");
+        QTreeWidgetItem* item = new QTreeWidgetItem();
+        item->setText(0, QString::fromStdString(bone->getName()));
+        current_parent_item->addChild(item);
+        todo[bone] = item;
+      }
+    }
+
+    skeletonTreeWidget->expandAll();
+    enableSkeletonTab();
+  }
+  else
+  {
+    disableSkeletonTab();
+  }
+
+}
+
 
 void MainViewer::changeCurrentTexture(Ogre::Texture* texture)
 {
@@ -127,15 +193,29 @@ void MainViewer::changeCurrentTexture(Ogre::Texture* texture)
     QPixmap pixmap;
     pixmap.convertFromImage(qimage);
     _textureGraphicsScene->clear();
+    ddsTextureView->update();
     QGraphicsPixmapItem* item = _textureGraphicsScene->addPixmap(pixmap);
-    ddsTextureView->ensureVisible((QGraphicsItem*)item,0,0);
-
+    _textureGraphicsScene->setSceneRect(item->sceneBoundingRect());
+    ddsTextureView->fitInView(item, Qt::KeepAspectRatio);
+    
+    //ddsTextureView->centerOn((QGraphicsItem*)item);
   }
   else
   {
     disableTextureTab();
   }
 }
+
+void MainViewer::enableSkeletonTab()
+{
+    enableTab(0);
+}
+
+void MainViewer::disableSkeletonTab()
+{
+    tabWidget->setTabEnabled(0, false);
+}
+
 
 void MainViewer::enableTextureTab()
 {
@@ -149,6 +229,8 @@ void MainViewer::disableTextureTab()
 
 void MainViewer::exportOgre()
 {
+
+
   for each (QTreeWidgetItem* item in FileTree->selectedItems())
   {
     FileTreeItemWidget *item_cast = static_cast<FileTreeItemWidget *>(item);

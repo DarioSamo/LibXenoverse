@@ -97,7 +97,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>6</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="SkeletonTab">
            <attribute name="title">
@@ -105,7 +105,10 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <widget class="QTreeWidget" name="treeWidget">
+             <widget class="QTreeWidget" name="skeletonTreeWidget">
+              <attribute name="headerMinimumSectionSize">
+               <number>100</number>
+              </attribute>
               <column>
                <property name="text">
                 <string>Bone Tree</string>
@@ -246,7 +249,7 @@
                <item>
                 <widget class="QGraphicsView" name="ddsTextureView">
                  <property name="sizePolicy">
-                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                  <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -262,6 +265,9 @@
                    <width>1024</width>
                    <height>1024</height>
                   </size>
+                 </property>
+                 <property name="sizeAdjustPolicy">
+                  <enum>QAbstractScrollArea::AdjustToContents</enum>
                  </property>
                 </widget>
                </item>

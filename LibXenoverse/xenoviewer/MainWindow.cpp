@@ -95,15 +95,6 @@ void MainWindow::open()
 	}
 }
 
-bool MainWindow::save()
-{
-	QString fileName = QFileDialog::getSaveFileName(this);
-	if (fileName.isEmpty())
-		return false;
-
-	return true;
-}
-
 void MainWindow::about()
 {
 	QMessageBox::about(this, tr("About Xenoviewer"),

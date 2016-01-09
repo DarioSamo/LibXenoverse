@@ -14,7 +14,10 @@ ESKOgre::ESKOgre() {
 void ESKOgre::buildBone(unsigned short b, Ogre::Skeleton *ogre_skeleton, Ogre::Bone *parent_bone) {
 	ESKBone *bone = bones[b];
 	Ogre::Bone *mBone = ogre_skeleton->createBone(bone->name);
-	if (parent_bone) parent_bone->addChild(mBone);
+  if (parent_bone)
+  {
+    parent_bone->addChild(mBone);
+  }
 
 	Ogre::Matrix4 parent_matrix = Ogre::Matrix4::IDENTITY;
 
