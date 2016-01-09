@@ -16,7 +16,8 @@ public:
 
 	
   void changeCurrentTexture(Ogre::Texture* texture);
-  
+  void changeCurrentSkeleton(ESKOgre* esk);
+
   inline Ogre::Texture* getCurrentTexture()
   {
     return _current_ogre_texture;

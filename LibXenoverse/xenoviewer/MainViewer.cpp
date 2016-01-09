@@ -4,7 +4,8 @@
 #include "EANOgre.h"
 #include "EMBOgre.h"
 
-#include <QgraphicsScene>
+#include <QGraphicsPixmapItem>
+#include <QGraphicsScene>
 #include "OgreCommon.h"
 #include <OgreRectangle2D.h>
 
@@ -15,6 +16,7 @@ MainViewer::MainViewer(QWidget *parent)
 	setupUi(this);
 
   ddsTextureView->setScene(_textureGraphicsScene);
+  ddsTextureView->setSizeAdjustPolicy(QGraphicsView::AdjustToContents);
 
 	FileTree->acceptDrops();
 	FileTree->setDragEnabled(true);
@@ -34,11 +36,15 @@ MainViewer::MainViewer(QWidget *parent)
 }
 
 void MainViewer::fileItemDoubleClicked(QTreeWidgetItem *item, int column) {
-	FileTreeItemWidget *item_cast = static_cast<FileTreeItemWidget *>(item);
+  FileTreeItemWidget *item_cast = dynamic_cast<FileTreeItemWidget *>(item);
+  Q_ASSERT(item_cast && "FileTreeItemWidget dynamic_cast failed !");
 
+  //Textures
 	if (item_cast->getType() == FileTreeItemWidget::ItemTexture) {
-		TextureItemWidget *texture_item = static_cast<TextureItemWidget *>(item);
-		TexturePackItemWidget *texture_pack_item = static_cast<TexturePackItemWidget *>(texture_item->parent());
+    TextureItemWidget *texture_item = dynamic_cast<TextureItemWidget *>(item);
+    Q_ASSERT(texture_item && "TextureItemWidget dynamic_cast failed !");
+    TexturePackItemWidget *texture_pack_item = dynamic_cast<TexturePackItemWidget *>(texture_item->parent());
+    Q_ASSERT(texture_pack_item && "TexturePackItemWidget dynamic_cast failed !");
 		if (texture_pack_item) {
 			EMBOgre *emb = texture_pack_item->getData();
 			EMBFile *emb_file = texture_item->getData();
@@ -48,6 +54,15 @@ void MainViewer::fileItemDoubleClicked(QTreeWidgetItem *item, int column) {
 			}
 		}
 	}
+
+  //Skeleton
+  else if (item_cast->getType() == FileTreeItemWidget::ItemSkeleton)
+  {
+    SkeletonItemWidget* skeleton_item = dynamic_cast<SkeletonItemWidget*>(item);
+    Q_ASSERT(skeleton_item && "SkeletonItemWidget cast failed !");
+    ESKOgre* esk = skeleton_item->getData();
+  }
+
 }
 
 void MainViewer::animationItemDoubleClicked(QTreeWidgetItem *item, int column) {
@@ -111,6 +126,20 @@ void MainViewer::clearAnimTree()
   AnimationTree->clear();
 }
 
+void MainViewer::changeCurrentSkeleton(ESKOgre* esk)
+{
+
+
+  if (esk)
+  {
+  }
+  else
+  {
+  }
+
+}
+
+
 void MainViewer::changeCurrentTexture(Ogre::Texture* texture)
 {
   _current_ogre_texture = texture;
@@ -127,9 +156,12 @@ void MainViewer::changeCurrentTexture(Ogre::Texture* texture)
     QPixmap pixmap;
     pixmap.convertFromImage(qimage);
     _textureGraphicsScene->clear();
+    ddsTextureView->update();
     QGraphicsPixmapItem* item = _textureGraphicsScene->addPixmap(pixmap);
-    ddsTextureView->ensureVisible((QGraphicsItem*)item,0,0);
-
+    _textureGraphicsScene->setSceneRect(item->sceneBoundingRect());
+    ddsTextureView->fitInView(item, Qt::KeepAspectRatio);
+    
+    //ddsTextureView->centerOn((QGraphicsItem*)item);
   }
   else
   {
