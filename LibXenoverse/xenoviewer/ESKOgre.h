@@ -19,6 +19,11 @@ public:
 	void createFakeEntity(Ogre::SceneManager *mSceneMgr);
 	void refreshAnimations();
 
+  Ogre::SceneNode* getOgreSceneNode()
+  {
+    return skeleton_node;
+  }
+
 	Ogre::Skeleton *getOgreSkeleton() {
 		return skeleton;
 	}

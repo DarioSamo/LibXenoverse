@@ -33,7 +33,9 @@ public:
 		void enableTab(int index);
 
     void enableTextureTab();
+    void enableSkeletonTab();
     void disableTextureTab();
+    void disableSkeletonTab();
 
     void saveTextureToFile();
     void loadTextureFromFile();

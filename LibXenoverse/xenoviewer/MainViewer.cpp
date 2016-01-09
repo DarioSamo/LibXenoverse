@@ -6,7 +6,9 @@
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
+#include <QTreeWidgetItem>
 #include "OgreCommon.h"
+#include "OgreSkeleton.h"
 #include <OgreRectangle2D.h>
 
 MainViewer::MainViewer(QWidget *parent)
@@ -61,6 +63,7 @@ void MainViewer::fileItemDoubleClicked(QTreeWidgetItem *item, int column) {
     SkeletonItemWidget* skeleton_item = dynamic_cast<SkeletonItemWidget*>(item);
     Q_ASSERT(skeleton_item && "SkeletonItemWidget cast failed !");
     ESKOgre* esk = skeleton_item->getData();
+    changeCurrentSkeleton(esk);
   }
 
 }
@@ -116,7 +119,7 @@ void MainViewer::disableTabs() {
 }
 
 void MainViewer::enableTab(int index) {
-	disableTabs();
+	//disableTabs();
 	tabWidget->setTabEnabled(index, true);
 	tabWidget->setCurrentIndex(index);
 }
@@ -128,13 +131,47 @@ void MainViewer::clearAnimTree()
 
 void MainViewer::changeCurrentSkeleton(ESKOgre* esk)
 {
-
-
+  skeletonTreeWidget->clear();
   if (esk)
   {
+    Ogre::Skeleton* skeleton = esk->getOgreSkeleton();
+    skeleton->getName();
+
+    QTreeWidgetItem* skeleton_item = new QTreeWidgetItem();
+    skeleton_item->setText(0, QString::fromStdString(skeleton->getName()));
+    skeletonTreeWidget->addTopLevelItem(skeleton_item);
+   
+    Ogre::Bone* root_bone = skeleton->getRootBone();
+
+    std::unordered_map<Ogre::Bone*, QTreeWidgetItem*> todo;
+    todo.reserve(esk->getBones().size());
+    todo[root_bone] = skeleton_item;
+
+
+    while (!todo.empty())
+    {
+      Ogre::Bone* current_parent_bone = todo.begin()->first;
+      QTreeWidgetItem* current_parent_item = todo.begin()->second;
+      todo.erase(todo.begin());
+
+      Ogre::Bone::ChildNodeIterator it = current_parent_bone->getChildIterator();
+      while (it.hasMoreElements())
+      {
+        Ogre::Bone* bone = dynamic_cast<Ogre::Bone*>(it.getNext());
+        Q_ASSERT(bone && "Ogre::Bone cast Failed !");
+        QTreeWidgetItem* item = new QTreeWidgetItem();
+        item->setText(0, QString::fromStdString(bone->getName()));
+        current_parent_item->addChild(item);
+        todo[bone] = item;
+      }
+    }
+
+    skeletonTreeWidget->expandAll();
+    enableSkeletonTab();
   }
   else
   {
+    disableSkeletonTab();
   }
 
 }
@@ -168,6 +205,17 @@ void MainViewer::changeCurrentTexture(Ogre::Texture* texture)
     disableTextureTab();
   }
 }
+
+void MainViewer::enableSkeletonTab()
+{
+    enableTab(0);
+}
+
+void MainViewer::disableSkeletonTab()
+{
+    tabWidget->setTabEnabled(0, false);
+}
+
 
 void MainViewer::enableTextureTab()
 {

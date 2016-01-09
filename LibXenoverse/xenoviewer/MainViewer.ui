@@ -97,7 +97,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>6</number>
+           <number>0</number>
           </property>
           <widget class="QWidget" name="SkeletonTab">
            <attribute name="title">
@@ -106,6 +106,9 @@
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
              <widget class="QTreeWidget" name="skeletonTreeWidget">
+              <attribute name="headerMinimumSectionSize">
+               <number>100</number>
+              </attribute>
               <column>
                <property name="text">
                 <string>Bone Tree</string>
