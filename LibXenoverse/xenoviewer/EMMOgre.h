@@ -14,7 +14,7 @@ public:
 	EMMOgre();
 	~EMMOgre();
 
-	Ogre::Material *createOgreMaterial(EMMMaterial *emm_material);
+	Ogre::MaterialPtr createOgreMaterial(EMMMaterial *emm_material);
 	void createOgreMaterials();
 
 	void setTexturePack(EMBOgre *v) {

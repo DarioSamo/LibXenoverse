@@ -7,12 +7,12 @@ EMMOgre::EMMOgre() {
 	texture_dyt_pack = NULL;
 }
 
-Ogre::Material *EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
+Ogre::MaterialPtr EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 	string ogre_material_name = name + "_" + emm_material->getName();
 
-	Ogre::Material *compile_material = Ogre::MaterialManager::getSingleton().create(ogre_material_name, XENOVIEWER_RESOURCE_GROUP).getPointer();
-	if (!compile_material) {
-		return NULL;
+	Ogre::MaterialPtr compile_material = Ogre::MaterialManager::getSingleton().create(ogre_material_name, XENOVIEWER_RESOURCE_GROUP);
+	if (!compile_material.getPointer()) {
+		return compile_material;
 	}
 
 	Ogre::Pass *pass = compile_material->getTechnique(0)->getPass(0);

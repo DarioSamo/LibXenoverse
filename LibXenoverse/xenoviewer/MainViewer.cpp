@@ -3,6 +3,7 @@
 #include "FileTreeItemWidget.h"
 #include "EANOgre.h"
 #include "EMBOgre.h"
+#include "EMMOgre.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
@@ -227,24 +228,108 @@ void MainViewer::disableTextureTab()
     tabWidget->setTabEnabled(6, false);
 }
 
-void MainViewer::exportOgre()
+
+void MainViewer::exportOgre(QTreeWidgetItem* item, int& export_success)
 {
+  FileTreeItemWidget *item_cast = dynamic_cast<FileTreeItemWidget *>(item);
 
-
-  for each (QTreeWidgetItem* item in FileTree->selectedItems())
+  if (!item_cast)
   {
-    FileTreeItemWidget *item_cast = static_cast<FileTreeItemWidget *>(item);
-    
-    if (item_cast->getType() == FileTreeItemWidget::ItemTexture) {
+    return;
+  }
 
+  if (item_cast->getType() == FileTreeItemWidget::ItemTexture) 
+  {
+    /*
+    TextureItemWidget* texture_item = dynamic_cast<TextureItemWidget*>(item_cast);
+    if (texture_item)
+    {
       std::string filename = item->text(0).toStdString() + ".dds";
-      TextureItemWidget* texture_item = static_cast<TextureItemWidget*>(item_cast);
+      filename = texture_item->
       if (!texture_item->getData()->save(filename))
       {
         QMessageBox::critical(0, QString("Error writing file"), QString(filename.c_str()));
       }
+      else
+      {
+        export_success++;
+      }
+    }*/
+  }
+  else if (item_cast->getType() == FileTreeItemWidget::ItemTexturePack) 
+  {
+  
+    TexturePackItemWidget* texture_pack = dynamic_cast<TexturePackItemWidget*>(item_cast);
+    if (texture_pack)
+    {
+      EMBOgre* emb_ogre = texture_pack->getData();
+      if (emb_ogre)
+      {
+        Ogre::Image image;
+        std::vector<Ogre::TexturePtr> textures = emb_ogre->getOgreTextures();
+        for (int i = 0; i < textures.size(); i++)
+        {
+          try
+          {
+            textures[i]->convertToImage(image);
+            std::string filename = textures[i]->getName() + ".png";
+            image.save(filename);
+            export_success++;
+          }
+          catch (Ogre::Exception& e)
+          {
+            QMessageBox::critical(0, "Failed to save texture", QString::fromStdString(e.getFullDescription()));
+          }
+        }
+
+        std::vector<Ogre::GpuProgramPtr> shaders = emb_ogre->getOgreShaders();
+        for (int i = 0; i < shaders.size(); i++)
+        {
+          std::ofstream outfile(shaders[i]->getSourceFile(), std::ios::out | std::ios::trunc);
+          if (!(outfile << shaders[i]->getSource()))
+          {
+            export_success++;
+          }
+          else
+          {
+            QMessageBox::critical(0, "Failed to save shader", QString("Failed to save: ") + QString::fromStdString(shaders[i]->getSourceFile()));
+          }
+        }
+      }
+    }
+    else if (item_cast->getType() == FileTreeItemWidget::ItemMaterialPack)
+    {
+      MaterialPackItemWidget* material_pack = dynamic_cast<MaterialPackItemWidget*>(item_cast);
+      if (material_pack)
+      {
+        EMMOgre* emm = material_pack->getData();
+
+      }
     }
 
+  }
+  
+
+  for (int i = 0; i < item->childCount(); i++)
+  {
+    exportOgre(item->child(i), export_success);
+  }
+}
+
+void MainViewer::exportOgre()
+{
+  int export_success = 0;
+  for (int i = 0; i < FileTree->topLevelItemCount(); i++)
+  {
+    exportOgre(FileTree->topLevelItem(i), export_success);
+  }
+  if (export_success > 0)
+  {
+    QMessageBox::information(0, "Export results", QString("Exported ") + QString::number(export_success) + QString(" files with success"), QMessageBox::Ok);
+  }
+  else
+  {
+    QMessageBox::critical(0, "Export failed", QString("Failed to export anything !"), QMessageBox::Ok);
   }
 }
 
