@@ -14,8 +14,9 @@ EMDOgre::EMDOgre() {
 	to_delete = false;
 }
 
-Ogre::SubMesh *EMDOgre::createOgreSubmesh(EMDTriangles *triangles, Ogre::MeshPtr mesh) {
+Ogre::SubMesh *EMDOgre::createOgreSubmesh(EMDTriangles *triangles, Ogre::MeshPtr mesh, std::string material_name) {
 	Ogre::SubMesh *sub = mesh->createSubMesh();
+  sub->setMaterialName(name + "_" + material_name + ".material");
 	const size_t ibufCount = triangles->faces.size();
 	unsigned short *faces = (unsigned short *)malloc(sizeof(unsigned short) * ibufCount);
 	for (size_t i = 0; i<ibufCount; i++) {
@@ -33,7 +34,7 @@ Ogre::SubMesh *EMDOgre::createOgreSubmesh(EMDTriangles *triangles, Ogre::MeshPtr
 }
 
 void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
-	string ogre_mesh_name = mesh_name + "_" + submesh->getMaterialName();
+	string ogre_mesh_name = mesh_name + "_" + submesh->getMaterialName() + ".mesh";
 	Ogre::MeshPtr ogre_mesh = Ogre::MeshManager::getSingleton().createManual(ogre_mesh_name, XENOVIEWER_RESOURCE_GROUP);
 
 	LibXenoverse::AABB mesh_aabb;
@@ -64,7 +65,7 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 	// Create Submeshes for each Triangle List
 	vector<EMDTriangles> submesh_triangles = submesh->getTriangles();
 	for (size_t i = 0; i < submesh_triangles.size(); i++) {
-		Ogre::SubMesh *sub = createOgreSubmesh(&submesh_triangles[i], ogre_mesh);
+		Ogre::SubMesh *sub = createOgreSubmesh(&submesh_triangles[i], ogre_mesh, submesh->getMaterialName());
 	}
 
 	// Create Shared Vertex Data for all submeshes
@@ -184,8 +185,8 @@ Ogre::SceneNode *EMDOgre::createOgreSceneNodeModel(EMDModel *model, Ogre::SceneN
 		}
 
 		for (size_t j = 0; j < submeshes.size(); j++) {
-			Ogre::Entity *entity = scene_manager->createEntity(meshes[i]->getName() + "_" + submeshes[j]->getMaterialName());
-			entity->setMaterialName(name + "_" + submeshes[j]->getMaterialName());
+			Ogre::Entity *entity = scene_manager->createEntity(meshes[i]->getName() + "_" + submeshes[j]->getMaterialName() + ".mesh");
+			entity->setMaterialName(name + "_" + submeshes[j]->getMaterialName() + ".material");
 
 			// Create Render Object Listeners depending on submesh definitions
 			vector<EMDSubmeshDefinition> definitions = submeshes[j]->getDefinitions();

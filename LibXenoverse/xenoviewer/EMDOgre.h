@@ -22,7 +22,7 @@ class EMDOgre : public EMD {
 		EMDOgre();
 		~EMDOgre();
 
-		Ogre::SubMesh *createOgreSubmesh(EMDTriangles *triangles, Ogre::MeshPtr mesh);
+		Ogre::SubMesh *createOgreSubmesh(EMDTriangles *triangles, Ogre::MeshPtr mesh, std::string mat_name);
 		void createOgreMesh(EMDSubmesh *submesh, string mesh_name);
 		void createOgreEntityMeshes(EMDMesh *mesh);
 		Ogre::SceneNode *createOgreSceneNodeModel(EMDModel *model, Ogre::SceneNode *parent, Ogre::SceneManager *scene_manager);
@@ -60,6 +60,11 @@ class EMDOgre : public EMD {
 		bool toDelete() {
 			return to_delete;
 		}
+
+    std::list<Ogre::String> getOgreMeshNames() const 
+    {
+      return created_meshes;
+    }
 
 		void rebuild();
 		void cleanNodes(bool parent=false);

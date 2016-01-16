@@ -8,7 +8,7 @@ EMMOgre::EMMOgre() {
 }
 
 Ogre::MaterialPtr EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
-	string ogre_material_name = name + "_" + emm_material->getName();
+	string ogre_material_name = name + "_" + emm_material->getName() + ".material";
 
 	Ogre::MaterialPtr compile_material = Ogre::MaterialManager::getSingleton().create(ogre_material_name, XENOVIEWER_RESOURCE_GROUP);
 	if (!compile_material.getPointer()) {
@@ -23,10 +23,10 @@ Ogre::MaterialPtr EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 	}
 	pass->setAmbient(1.0, 1.0, 1.0);
 
-	pass->getTextureUnitState((size_t)1)->setTextureName(name + "_0");     //   ImageSampler1        s1       1
-	pass->getTextureUnitState((size_t)4)->setTextureName(name + ".dyt_0"); //   SamplerToon          s4       1
+	pass->getTextureUnitState((size_t)1)->setTextureName(name + "_0.dds");     //   ImageSampler1        s1       1
+	pass->getTextureUnitState((size_t)4)->setTextureName(name + ".dyt_0.dds"); //   SamplerToon          s4       1
 	pass->getTextureUnitState((size_t)4)->setTextureFiltering(Ogre::TextureFilterOptions::TFO_NONE);
-	pass->getTextureUnitState((size_t)14)->setTextureName(name + ".dyt_1");    //   ImageSamplerTemp14   s14      1
+	pass->getTextureUnitState((size_t)14)->setTextureName(name + ".dyt_1.dds");    //   ImageSamplerTemp14   s14      1
 
 	string shader_name = emm_material->getShaderName();
 	string pixel_shader_name = shader_name + "_PS";
@@ -115,7 +115,7 @@ Ogre::MaterialPtr EMMOgre::createOgreMaterial(EMMMaterial *emm_material) {
 		vp_parameters->setAutoConstant((size_t)104, Ogre::GpuProgramParameters::ACT_WORLD_MATRIX_ARRAY_3x4);
 	}
 
-	created_materials.push_back(ogre_material_name);
+  _materials[ogre_material_name] = compile_material;
 	return compile_material;
 }
 
@@ -140,7 +140,13 @@ EMMOgre::~EMMOgre() {
 	delete texture_dyt_pack;
 
 	list<Ogre::String> created_materials;
-	for (list<Ogre::String>::iterator it = created_materials.begin(); it != created_materials.end(); it++) {
+  std::map<Ogre::String, Ogre::MaterialPtr>::const_iterator it;
+  for (it = _materials.begin(); it != _materials.end(); it++)
+  {
+    created_materials.push_back(it->first);
+  }
+  _materials.clear();
+  for (list<Ogre::String>::iterator it = created_materials.begin(); it != created_materials.end(); it++) {
 		Ogre::MaterialManager::getSingleton().remove(*it);
 	}
 }
