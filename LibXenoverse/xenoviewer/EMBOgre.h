@@ -33,6 +33,11 @@ public:
 	void createOgreTextures();
 	void createOgreShaders();
 
+  vector<Ogre::GpuProgramPtr> getOgreShaders()
+  {
+    return ogre_shaders;
+  }
+
   vector<Ogre::TexturePtr> getOgreTextures() {
     return ogre_textures;
   }

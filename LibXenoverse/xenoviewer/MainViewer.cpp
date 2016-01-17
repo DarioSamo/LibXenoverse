@@ -3,6 +3,8 @@
 #include "FileTreeItemWidget.h"
 #include "EANOgre.h"
 #include "EMBOgre.h"
+#include "EMMOgre.h"
+#include "EMDOgre.h"
 
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
@@ -227,24 +229,163 @@ void MainViewer::disableTextureTab()
     tabWidget->setTabEnabled(6, false);
 }
 
-void MainViewer::exportOgre()
+
+void MainViewer::exportOgre(QTreeWidgetItem* item, int& export_success, const QString& dir)
 {
+  FileTreeItemWidget *item_cast = dynamic_cast<FileTreeItemWidget *>(item);
 
-
-  for each (QTreeWidgetItem* item in FileTree->selectedItems())
+  if (!item_cast)
   {
-    FileTreeItemWidget *item_cast = static_cast<FileTreeItemWidget *>(item);
-    
-    if (item_cast->getType() == FileTreeItemWidget::ItemTexture) {
+    return;
+  }
 
-      std::string filename = item->text(0).toStdString() + ".dds";
-      TextureItemWidget* texture_item = static_cast<TextureItemWidget*>(item_cast);
-      if (!texture_item->getData()->save(filename))
+  if (item_cast->getType() == FileTreeItemWidget::ItemTexturePack)
+  {
+    TexturePackItemWidget* texture_pack = dynamic_cast<TexturePackItemWidget*>(item_cast);
+    if (texture_pack)
+    {
+      EMBOgre* emb_ogre = texture_pack->getData();
+      if (emb_ogre)
       {
-        QMessageBox::critical(0, QString("Error writing file"), QString(filename.c_str()));
+        Ogre::Image image;
+        std::vector<Ogre::TexturePtr> textures = emb_ogre->getOgreTextures();
+        for (int i = 0; i < textures.size(); i++)
+        {
+          try
+          {
+            textures[i]->convertToImage(image);
+            std::string filename = dir.toStdString() + "/" + textures[i]->getName();
+            image.save(filename);
+            export_success++;
+          }
+          catch (Ogre::Exception& e)
+          {
+            QMessageBox::critical(0, "Failed to save texture", QString::fromStdString(e.getFullDescription()));
+          }
+        }
+      }
+    }
+  }
+  else if (item_cast->getType() == FileTreeItemWidget::ItemMaterialPack)
+  {
+    MaterialPackItemWidget* material_pack = dynamic_cast<MaterialPackItemWidget*>(item_cast);
+    if (material_pack)
+    {
+      EMMOgre* emm = material_pack->getData();
+      if (emm)
+      {
+        Ogre::MaterialSerializer serializer;
+        std::vector<Ogre::MaterialPtr> mats = emm->getOgreMaterials();
+        for (int i = 0; i < mats.size(); i++)
+        {
+          std::string filename = dir.toStdString() + "/" + mats[i]->getName();
+          try
+          {
+            serializer.exportMaterial(mats[i], filename,true);
+            export_success++;
+          }
+          catch (Ogre::Exception& e)
+          {
+            QMessageBox::critical(0, "Failed to export material", QString::fromStdString(e.getFullDescription()));
+          }
+        }
+      }
+    }
+  }
+  else if (item_cast->getType() == FileTreeItemWidget::ItemModelPack)
+  {
+    ModelPackItemWidget* model_pack = dynamic_cast<ModelPackItemWidget*>(item_cast);
+    if (model_pack)
+    {
+      EMDOgre* emd = model_pack->getData();
+      if (emd)
+      {
+        std::list<Ogre::String> mesh_names = emd->getOgreMeshNames();
+        std::list<Ogre::String>::const_iterator it;
+        Ogre::MeshSerializer serializer;
+        
+        for (it = mesh_names.begin(); it != mesh_names.end(); it++)
+        {
+          Ogre::MeshPtr mesh = Ogre::MeshManager::getSingleton().getByName(*it);
+          std::string filename = dir.toStdString() + "/" + mesh->getName();
+          try
+          {
+            Ogre::Mesh::SubMeshIterator sit = mesh->getSubMeshIterator();
+            
+            //qDebug() << "Mesh name:" << mesh->getName().c_str();
+            //qDebug() << "Mesh filename: " << filename.c_str();
+            while (sit.hasMoreElements())
+            {
+              Ogre::SubMesh* sub_mesh = sit.getNext();
+              //qDebug() << "Sub mesh material name:" << sub_mesh->getMaterialName().c_str();
+            }
+
+            serializer.exportMesh(mesh.getPointer(), filename);
+            export_success++;
+          }
+          catch (Ogre::Exception& e)
+          {
+            QMessageBox::critical(0, "Failed to export mesh", QString::fromStdString(e.getFullDescription()));
+          }
+        }
+      }
+    }
+  }
+  else if (item_cast->getType() == FileTreeItemWidget::ItemSkeleton)
+  {
+    SkeletonItemWidget* skeleton_item = dynamic_cast<SkeletonItemWidget*>(item_cast);
+    if (skeleton_item)
+    {
+      ESKOgre* esk = skeleton_item->getData();
+      if (esk)
+      {
+        Ogre::Skeleton* skeleton = esk->getOgreSkeleton();
+        if (skeleton)
+        {
+          Ogre::SkeletonSerializer serializer;
+          std::string filename = dir.toStdString() + "/" + skeleton->getName();
+          try
+          {
+            serializer.exportSkeleton(skeleton, filename);
+            export_success++;
+          }
+          catch (Ogre::Exception& e)
+          {
+            QMessageBox::critical(0, "Failed to export skeleton", QString::fromStdString(e.getFullDescription()));
+          }
+        }
       }
     }
 
+  }
+
+  for (int i = 0; i < item->childCount(); i++)
+  {
+    exportOgre(item->child(i), export_success, dir);
+  }
+}
+
+void MainViewer::exportOgre()
+{
+  int export_success = 0;
+  QString dir = QFileDialog::getExistingDirectory();
+  if (dir.isEmpty())
+  {
+    return;
+  }
+
+  for (int i = 0; i < FileTree->topLevelItemCount(); i++)
+  {
+    exportOgre(FileTree->topLevelItem(i), export_success, dir);
+  }
+
+  if (export_success > 0)
+  {
+    QMessageBox::information(0, "Export results", QString("Exported ") + QString::number(export_success) + QString(" files with success"), QMessageBox::Ok);
+  }
+  else
+  {
+    QMessageBox::critical(0, "Export failed", QString("Failed to export anything !"), QMessageBox::Ok);
   }
 }
 

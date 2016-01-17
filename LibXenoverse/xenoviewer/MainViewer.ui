@@ -68,6 +68,9 @@
          <layout class="QHBoxLayout" name="horizontalLayout_6">
           <item>
            <widget class="QPushButton" name="ClearFileTreeButton">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="text">
              <string>Clear list</string>
             </property>
@@ -341,6 +344,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="ClearAnimationListButton">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>Clear list</string>
         </property>

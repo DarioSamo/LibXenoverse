@@ -56,6 +56,8 @@ void EMBOgre::createOgreTexture(EMBFile *file, size_t index) {
 		ogre_emb_name += ToString(index);
 	}
 
+  ogre_emb_name += ".dds";
+
   Ogre::TrashfixedDDSCodec::startup();
 
 	Ogre::Image image;

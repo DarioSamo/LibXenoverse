@@ -43,7 +43,9 @@ public:
 
   
 private:
-  
+  static void exportOgre(QTreeWidgetItem* item, int& export_success, const QString& dir);
+
+
   Ogre::Texture *_current_ogre_texture;
   QGraphicsScene* _textureGraphicsScene;
 

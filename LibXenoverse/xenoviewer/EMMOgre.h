@@ -1,6 +1,9 @@
 #ifndef EMMOGRE_H_INCLUDED
 #define EMMOGRE_H_INCLUDED
 
+#include <vector>
+#include <map>
+
 class EMBOgre;
 
 class EMMOgre : public EMM {
@@ -9,12 +12,12 @@ protected:
 	EMBOgre *texture_pack;
 	EMBOgre *texture_dyt_pack;
 
-	list<Ogre::String> created_materials;
+	std::map<Ogre::String,Ogre::MaterialPtr> _materials;
 public:
 	EMMOgre();
 	~EMMOgre();
 
-	Ogre::Material *createOgreMaterial(EMMMaterial *emm_material);
+	Ogre::MaterialPtr createOgreMaterial(EMMMaterial *emm_material);
 	void createOgreMaterials();
 
 	void setTexturePack(EMBOgre *v) {
@@ -32,6 +35,18 @@ public:
 	EMBOgre *getDYTTexturePack() {
 		return texture_dyt_pack;
 	}
+
+  std::vector<Ogre::MaterialPtr> getOgreMaterials() const
+  {
+    std::vector<Ogre::MaterialPtr> mats;
+    mats.reserve(_materials.size());
+    std::map<Ogre::String, Ogre::MaterialPtr>::const_iterator it;
+    for (it = _materials.begin(); it != _materials.end(); it++)
+    {
+      mats.push_back(it->second);
+    }
+    return mats;
+  }
 
 	void destroyResources();
 };
