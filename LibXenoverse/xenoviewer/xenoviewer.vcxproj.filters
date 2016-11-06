@@ -72,6 +72,9 @@
     <ClInclude Include="OgreTrashfixedDDSCodec.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OgreSkeletonModifier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EMDOgre.cpp">
@@ -143,6 +146,15 @@
     <ClCompile Include="OgreTrashfixedDDSCodec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SkeletonMergingWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BonesTreeWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OgreSkeletonModifier.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="OgreWidget.h">
@@ -161,6 +173,15 @@
       <Filter>Header Files</Filter>
     </CustomBuild>
     <CustomBuild Include="xenoviewer.qrc">
+      <Filter>Qt Resources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="BonesTreeWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SkeletonMergingWidget.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="SkeletonMergingWidget.ui">
       <Filter>Qt Resources</Filter>
     </CustomBuild>
   </ItemGroup>

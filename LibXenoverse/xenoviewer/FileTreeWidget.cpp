@@ -95,9 +95,9 @@ void FileTreeWidget::dropItemOnItem(FileTreeItemWidget *source_item, FileTreeIte
 void FileTreeWidget::keyPressEvent(QKeyEvent * event) {
 	QTreeWidget::keyPressEvent(event);
 
-	if (event->key() == Qt::Key_Delete) {
+	/*if (event->key() == Qt::Key_Delete) {
 		SHOW_ERROR("Key Detected!");
-	}
+	}*/
 }
 
 void FileTreeWidget::processContextMenuModelPack(ModelPackItemWidget *item, const QPoint& point) {

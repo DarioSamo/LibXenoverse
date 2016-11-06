@@ -17,6 +17,8 @@ class EMDOgre : public EMD {
 		list<Ogre::SceneNode *> scene_nodes;
 		list<EMDRenderObject *> created_render_objects;
 
+    Ogre::Vector3 sumDeltaPosition;
+
 		list<Ogre::String> created_meshes;
 	public:
 		EMDOgre();
@@ -64,6 +66,16 @@ class EMDOgre : public EMD {
     std::list<Ogre::String> getOgreMeshNames() const 
     {
       return created_meshes;
+    }
+
+		std::list<Ogre::SceneNode *> getSceneNodes() const
+    {
+		  return scene_nodes;
+    }
+
+    void applyDeltaPosition(const Ogre::Vector3& delta)
+    {
+      sumDeltaPosition += delta;
     }
 
 		void rebuild();

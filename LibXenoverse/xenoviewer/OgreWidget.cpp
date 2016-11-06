@@ -10,7 +10,7 @@ namespace QtOgre
 		QWidget *q_parent = dynamic_cast <QWidget *> (parent());
 
 		setMouseTracking(true);
-		grabKeyboard();
+		//grabKeyboard();
 
 		setAttribute(Qt::WA_PaintOnScreen);
 		mRoot = new Ogre::Root();

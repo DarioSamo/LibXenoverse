@@ -2,3 +2,5 @@
 #include "moc_MainWindow.cpp"
 #include "moc_MainViewer.cpp"
 #include "moc_DocumentWindow.cpp"
+#include "moc_SkeletonMergingWidget.cpp"
+#include "moc_BonesTreeWidget.cpp"
