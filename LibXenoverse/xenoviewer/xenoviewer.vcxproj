@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{E379C2FB-21F0-441B-95A3-49971AAAFDF4}</ProjectGuid>
     <RootNamespace>xenoviewer</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -44,7 +45,7 @@
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\..\bin\Debug</OutDir>
+    <OutDir>$(SolutionDir)\..\bin\Debug\</OutDir>
     <IncludePath>$(DXSDK_DIR)\Include;$(IncludePath)</IncludePath>
     <LibraryPath>../../depends/fbxsdk/lib/vs2013/x86/release;../lib/$(Configuration)/;../../depends/ogre/lib;../../depends/qt/lib;../../depends/zlib/lib;$(DXSDK_DIR)\lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -93,6 +94,14 @@
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
     </CustomBuild>
+    <CustomBuild Include="BonesTreeWidget.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+    </CustomBuild>
     <ClInclude Include="EANOgre.h" />
     <ClInclude Include="EMBOgre.h" />
     <ClInclude Include="EMDOgre.h" />
@@ -102,7 +111,16 @@
     <ClInclude Include="FileTreeItemWidget.h" />
     <ClInclude Include="FileTreeWidget.h" />
     <ClInclude Include="OgreCommon.h" />
+    <ClInclude Include="OgreSkeletonModifier.h" />
     <ClInclude Include="OgreTrashfixedDDSCodec.h" />
+    <CustomBuild Include="SkeletonMergingWidget.h">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+    </CustomBuild>
     <ClInclude Include="stbi_DDS_aug_c.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="stb_image_write.h" />
@@ -111,11 +129,17 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
     </CustomBuild>
     <CustomBuild Include="MainViewer.h">
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">MOC</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\depends\qt\bin\moc.exe %(RootDir)%(Directory)%(Filename).h -o %(RootDir)%(Directory)moc_%(Filename).cpp</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">MOC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)moc_%(Filename).cpp</Outputs>
     </CustomBuild>
     <ClInclude Include="ObjectTextDisplay.h" />
     <CustomBuild Include="OgreWidget.h">
@@ -127,6 +151,7 @@
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BonesTreeWidget.cpp" />
     <ClCompile Include="DocumentWindow.cpp" />
     <ClCompile Include="EANOgre.cpp" />
     <ClCompile Include="EMBOgre.cpp" />
@@ -141,12 +166,14 @@
     <ClCompile Include="mocs.cpp" />
     <ClCompile Include="ObjectTextDisplay.cpp" />
     <ClCompile Include="OgreCommon.cpp" />
+    <ClCompile Include="OgreSkeletonModifier.cpp" />
     <ClCompile Include="OgreTrashfixedDDSCodec.cpp" />
     <ClCompile Include="OgreViewerWidget.cpp" />
     <ClCompile Include="OgreWidget.cpp" />
     <ClCompile Include="QMessageBoxes.cpp" />
     <ClCompile Include="res.cpp" />
     <ClCompile Include="SkeletonDebug.cpp" />
+    <ClCompile Include="SkeletonMergingWidget.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -160,6 +187,9 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\uic.exe %(RootDir)%(Directory)%(Filename).ui -o %(RootDir)%(Directory)ui_%(Filename).h</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)ui_%(Filename).h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\depends\qt\bin\uic.exe %(RootDir)%(Directory)%(Filename).ui -o %(RootDir)%(Directory)ui_%(Filename).h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)ui_%(Filename).h</Outputs>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +201,17 @@
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\rcc.exe %(RootDir)%(Directory)%(Filename).qrc -o %(RootDir)%(Directory)qrc_%(Filename).cpp</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">RCC</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)qrc_%(Filename).cpp</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="SkeletonMergingWidget.ui">
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\depends\qt\bin\uic.exe %(RootDir)%(Directory)%(Filename).ui -o %(RootDir)%(Directory)ui_%(Filename).h</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">UIC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(RootDir)%(Directory)ui_%(Filename).h</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">UIC</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(RootDir)%(Directory)ui_%(Filename).h</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\depends\qt\bin\uic.exe %(RootDir)%(Directory)%(Filename).ui -o %(RootDir)%(Directory)ui_%(Filename).h</Command>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

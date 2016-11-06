@@ -51,9 +51,9 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 	const size_t vbufCount = nVertCount*nVertices;
 	float *vertices = (float *)malloc(sizeof(float)*vbufCount);
 	for (size_t i = 0; i < nVertices; i++) {
-		vertices[i*nVertCount] = submesh_vertices[i].x;
-		vertices[i*nVertCount + 1] = submesh_vertices[i].y;
-		vertices[i*nVertCount + 2] = submesh_vertices[i].z;
+		vertices[i*nVertCount] = submesh_vertices[i].x + sumDeltaPosition.x;
+		vertices[i*nVertCount + 1] = submesh_vertices[i].y + sumDeltaPosition.y;
+		vertices[i*nVertCount + 2] = submesh_vertices[i].z + sumDeltaPosition.z;
 		vertices[i*nVertCount + 3] = submesh_vertices[i].nx;
 		vertices[i*nVertCount + 4] = submesh_vertices[i].ny;
 		vertices[i*nVertCount + 5] = submesh_vertices[i].nz;
@@ -118,10 +118,10 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 				// Build Bone Mapping Table
 				vector<unsigned short> bone_table;
 				bone_table.resize(triangles->bone_names.size());
-
+        QSet<QString> bone_requiered_names;
 				for (size_t j = 0; j < bone_table.size(); j++) {
 					string bone_name = triangles->bone_names[j];
-
+          bone_requiered_names.insert(QString::fromStdString(bone_name));
 					LOG_DEBUG("Bone Skin Table %d: %s\n", j, bone_name.c_str());
 					if (ogre_skeleton->hasBone(bone_name)) {
 						Ogre::Bone *mBone = ogre_skeleton->getBone(bone_name);
@@ -131,6 +131,8 @@ void EMDOgre::createOgreMesh(EMDSubmesh *submesh, string mesh_name) {
 						LOG_DEBUG("Couldn't find %s in ogre skeleton!\n", bone_name.c_str());
 					}
 				}
+
+        qDebug() << "Requiered bones for mesh " << QString::fromStdString(mesh_name) << bone_requiered_names;
 
 				// Add bone assignments to all the vertices that were found
 				for (size_t j = 0; j < vertex_indices.size(); j++) {

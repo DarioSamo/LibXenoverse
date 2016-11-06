@@ -50,6 +50,7 @@ namespace Ogre
     */
     class _OgreExport Bone : public Node
     {
+      friend class OgreSkeletonModifier;
     public:
         /** Constructor, not to be used directly (use Bone::createChild or Skeleton::createBone) */
         Bone(unsigned short handle, Skeleton* creator);

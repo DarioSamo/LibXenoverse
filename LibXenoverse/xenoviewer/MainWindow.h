@@ -66,7 +66,7 @@ protected:
 	bool openFiles(const QStringList& pathList);
 
 private:
-	bool eventFilter(QObject *obj, QEvent *event);
+	//bool eventFilter(QObject *obj, QEvent *event);
 	void createActions();
 	void createMenus();
 	QMenu *fileMenu;
@@ -76,6 +76,8 @@ private:
 	QAction *exitAct;
 	QAction *aboutAct;
 	QAction *aboutQtAct;
+  
+
 	QtOgre::OgreWidget *ogre_widget;
 	MainViewer *main_viewer;
 };

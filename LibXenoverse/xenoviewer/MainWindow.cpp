@@ -164,14 +164,23 @@ bool MainWindow::openFiles(const QStringList& pathList) {
 }
 
 
-bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
+/*bool MainWindow::eventFilter(QObject *obj, QEvent *event) {
 	if (event->type() == QEvent::KeyPress)
 	{
-		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+   	QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    qDebug() << obj;
 		if (obj == main_viewer)
 		{
 			main_viewer->keyPressEvent(keyEvent);
 		}
 	}
+  else if (event->type() == QEvent::KeyRelease)
+  {
+		QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    if (obj == main_viewer)
+		{
+			main_viewer->keyReleaseEvent(keyEvent);
+		}
+  }
 	return QObject::eventFilter(obj, event);
-}
+}*/

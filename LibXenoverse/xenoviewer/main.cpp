@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 	app.setApplicationName("Xenoviewer");
 	MainWindow mainWin;
-	qApp->installEventFilter(&mainWin);
+	//qApp->installEventFilter(&mainWin);
 
 #if defined(Q_OS_SYMBIAN)
 	mainWin.showMaximized();

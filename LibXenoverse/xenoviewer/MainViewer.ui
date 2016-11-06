@@ -10,6 +10,9 @@
     <height>757</height>
    </rect>
   </property>
+  <property name="focusPolicy">
+   <enum>Qt::StrongFocus</enum>
+  </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
@@ -100,7 +103,7 @@
         <item>
          <widget class="QTabWidget" name="tabWidget">
           <property name="currentIndex">
-           <number>0</number>
+           <number>1</number>
           </property>
           <widget class="QWidget" name="SkeletonTab">
            <attribute name="title">
@@ -108,7 +111,34 @@
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_3">
             <item>
-             <widget class="QTreeWidget" name="skeletonTreeWidget">
+             <widget class="BonesTreeWidget" name="skeletonTreeWidget">
+              <property name="mouseTracking">
+               <bool>false</bool>
+              </property>
+              <property name="focusPolicy">
+               <enum>Qt::WheelFocus</enum>
+              </property>
+              <property name="contextMenuPolicy">
+               <enum>Qt::CustomContextMenu</enum>
+              </property>
+              <property name="dragEnabled">
+               <bool>false</bool>
+              </property>
+              <property name="dragDropMode">
+               <enum>QAbstractItemView::InternalMove</enum>
+              </property>
+              <property name="defaultDropAction">
+               <enum>Qt::MoveAction</enum>
+              </property>
+              <property name="selectionMode">
+               <enum>QAbstractItemView::ExtendedSelection</enum>
+              </property>
+              <property name="selectionBehavior">
+               <enum>QAbstractItemView::SelectItems</enum>
+              </property>
+              <property name="indentation">
+               <number>10</number>
+              </property>
               <attribute name="headerMinimumSectionSize">
                <number>100</number>
               </attribute>
@@ -119,121 +149,176 @@
               </column>
              </widget>
             </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <item>
+               <spacer name="horizontalSpacer">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QPushButton" name="mergeSkeletonButton">
+                <property name="text">
+                 <string>Merge</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
            </layout>
           </widget>
-          <widget class="QWidget" name="ModelPackTab">
+          <widget class="QWidget" name="MeshTab">
            <attribute name="title">
-            <string>Model Pack</string>
+            <string>Mesh</string>
            </attribute>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
+           <layout class="QVBoxLayout" name="verticalLayout_9">
             <item>
-             <widget class="QGroupBox" name="groupBox">
+             <widget class="QGroupBox" name="transformGroupBox">
               <property name="title">
-               <string>Global</string>
+               <string>Transform</string>
               </property>
               <layout class="QVBoxLayout" name="verticalLayout">
                <item>
-                <widget class="QFrame" name="frame_7">
-                 <property name="frameShape">
-                  <enum>QFrame::StyledPanel</enum>
-                 </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Raised</enum>
-                 </property>
-                 <layout class="QHBoxLayout" name="horizontalLayout_7">
-                  <item>
-                   <widget class="QLabel" name="label_4">
-                    <property name="minimumSize">
-                     <size>
-                      <width>130</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Vertex Count:</string>
-                    </property>
-                   </widget>
-                  </item>
-                  <item>
-                   <widget class="QLabel" name="label_5">
-                    <property name="minimumSize">
-                     <size>
-                      <width>130</width>
-                      <height>0</height>
-                     </size>
-                    </property>
-                    <property name="text">
-                     <string>Polygon Count:</string>
-                    </property>
-                   </widget>
-                  </item>
-                 </layout>
-                </widget>
+                <layout class="QHBoxLayout" name="horizontalLayout_5">
+                 <item>
+                  <widget class="QLabel" name="label">
+                   <property name="text">
+                    <string>Position</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="posXSpinBox">
+                   <property name="prefix">
+                    <string>X: </string>
+                   </property>
+                   <property name="decimals">
+                    <number>5</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-100.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                   <property name="value">
+                    <double>0.000000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="posYSpinBox">
+                   <property name="prefix">
+                    <string>Y: </string>
+                   </property>
+                   <property name="decimals">
+                    <number>5</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-100.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QDoubleSpinBox" name="posZSpinBox">
+                   <property name="prefix">
+                    <string>Z: </string>
+                   </property>
+                   <property name="decimals">
+                    <number>5</number>
+                   </property>
+                   <property name="minimum">
+                    <double>-100.000000000000000</double>
+                   </property>
+                   <property name="maximum">
+                    <double>100.000000000000000</double>
+                   </property>
+                   <property name="singleStep">
+                    <double>0.010000000000000</double>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
                </item>
                <item>
-                <widget class="QFrame" name="frame_3">
-                 <property name="frameShape">
-                  <enum>QFrame::StyledPanel</enum>
+                <layout class="QHBoxLayout" name="horizontalLayout">
+                 <item>
+                  <spacer name="horizontalSpacer_2">
+                   <property name="orientation">
+                    <enum>Qt::Horizontal</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0">
+                    <size>
+                     <width>40</width>
+                     <height>20</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="applyTransformButton">
+                   <property name="text">
+                    <string>Apply</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item>
+             <widget class="QGroupBox" name="groupBox">
+              <property name="title">
+               <string>Bone assigment</string>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_5">
+               <item>
+                <widget class="QTableWidget" name="vertexBoneAssignmentMeshTable">
+                 <property name="columnCount">
+                  <number>3</number>
                  </property>
-                 <property name="frameShadow">
-                  <enum>QFrame::Raised</enum>
-                 </property>
-                 <layout class="QVBoxLayout" name="verticalLayout_8">
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout">
-                    <item>
-                     <widget class="QLabel" name="label_2">
-                      <property name="text">
-                       <string>Attach to Skeleton:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="ModelSkeletonCombo"/>
-                    </item>
-                   </layout>
-                  </item>
-                  <item>
-                   <layout class="QHBoxLayout" name="horizontalLayout_5">
-                    <item>
-                     <widget class="QLabel" name="label">
-                      <property name="text">
-                       <string>Attach to bone:</string>
-                      </property>
-                     </widget>
-                    </item>
-                    <item>
-                     <widget class="QComboBox" name="ModelBoneCombo"/>
-                    </item>
-                   </layout>
-                  </item>
-                 </layout>
+                 <attribute name="verticalHeaderVisible">
+                  <bool>false</bool>
+                 </attribute>
+                 <column>
+                  <property name="text">
+                   <string>Bone name</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Bone handle</string>
+                  </property>
+                 </column>
+                 <column>
+                  <property name="text">
+                   <string>Vertices count</string>
+                  </property>
+                 </column>
                 </widget>
                </item>
               </layout>
              </widget>
             </item>
            </layout>
-          </widget>
-          <widget class="QWidget" name="ModelTab">
-           <attribute name="title">
-            <string>Model</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="MeshTab">
-           <attribute name="title">
-            <string>Mesh</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="SubmeshTab">
-           <attribute name="title">
-            <string>Submesh</string>
-           </attribute>
-          </widget>
-          <widget class="QWidget" name="MaterialTab">
-           <attribute name="title">
-            <string>Material</string>
-           </attribute>
           </widget>
           <widget class="QWidget" name="TextureTab">
            <attribute name="title">
@@ -437,6 +522,11 @@
    <class>FileTreeWidget</class>
    <extends>QTreeWidget</extends>
    <header>FileTreeWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>BonesTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>BonesTreeWidget.h</header>
   </customwidget>
  </customwidgets>
  <resources>

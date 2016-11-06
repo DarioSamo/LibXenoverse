@@ -36,6 +36,8 @@ THE SOFTWARE.
 #include "OgreHeaderPrefix.h"
 #include "OgreSharedPtr.h"
 
+class OgreSkeletonModifier;
+
 namespace Ogre {
     /** \addtogroup Core
     *  @{
@@ -84,6 +86,7 @@ namespace Ogre {
     */
     class _OgreExport Skeleton : public Resource, public AnimationContainer
     {
+        friend class OgreSkeletonModifier;
         friend class SkeletonInstance;
     protected:
         /// Internal constructor for use by SkeletonInstance only

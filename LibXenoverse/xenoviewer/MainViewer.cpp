@@ -1,5 +1,7 @@
 #include "MainViewer.h"
 #include "OgreWidget.h"
+#include "SkeletonMergingWidget.h"
+
 #include "FileTreeItemWidget.h"
 #include "EANOgre.h"
 #include "EMBOgre.h"
@@ -9,12 +11,18 @@
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QTreeWidgetItem>
+#include <QTableWidgetItem>
 #include "OgreCommon.h"
 #include "OgreSkeleton.h"
 #include <OgreRectangle2D.h>
+#include <OgreSceneNode.h>
+
+
 
 MainViewer::MainViewer(QWidget *parent)
 	: QWidget(parent),
+  _currentESKOgre(NULL),
+  _currentEMDOgre(NULL),
   _textureGraphicsScene(new QGraphicsScene(this))
 {
 	setupUi(this);
@@ -40,11 +48,33 @@ MainViewer::MainViewer(QWidget *parent)
 }
 
 void MainViewer::fileItemDoubleClicked(QTreeWidgetItem *item, int column) {
+  
+  if (item->parent())
+  {
+    fileItemDoubleClicked(item->parent(), column); // FIXME create a proper function with the correct name that use FileTreeItemWidget
+  }
+  
   FileTreeItemWidget *item_cast = dynamic_cast<FileTreeItemWidget *>(item);
   Q_ASSERT(item_cast && "FileTreeItemWidget dynamic_cast failed !");
-
+  
+  //Skeleton
+  if (item_cast->getType() == FileTreeItemWidget::ItemSkeleton)
+  {
+    SkeletonItemWidget* skeleton_item = dynamic_cast<SkeletonItemWidget*>(item);
+    Q_ASSERT(skeleton_item && "SkeletonItemWidget cast failed !");
+    ESKOgre* esk = skeleton_item->getData();
+    changeCurrentSkeleton(esk);
+  }
+  //Mesh
+  else if (item_cast->getType() == FileTreeItemWidget::ItemModelPack)
+  {
+    ModelPackItemWidget* modelpack_item = dynamic_cast<ModelPackItemWidget*>(item);
+    Q_ASSERT(modelpack_item && "ModelPackItemWidget cast failed !");
+    changeCurrentMesh(modelpack_item->getData());
+    regenerateBoneVertexAssigmentTable();
+  }
   //Textures
-	if (item_cast->getType() == FileTreeItemWidget::ItemTexture) {
+	else if (item_cast->getType() == FileTreeItemWidget::ItemTexture) {
     TextureItemWidget *texture_item = dynamic_cast<TextureItemWidget *>(item);
     Q_ASSERT(texture_item && "TextureItemWidget dynamic_cast failed !");
     TexturePackItemWidget *texture_pack_item = dynamic_cast<TexturePackItemWidget *>(texture_item->parent());
@@ -59,14 +89,9 @@ void MainViewer::fileItemDoubleClicked(QTreeWidgetItem *item, int column) {
 		}
 	}
 
-  //Skeleton
-  else if (item_cast->getType() == FileTreeItemWidget::ItemSkeleton)
-  {
-    SkeletonItemWidget* skeleton_item = dynamic_cast<SkeletonItemWidget*>(item);
-    Q_ASSERT(skeleton_item && "SkeletonItemWidget cast failed !");
-    ESKOgre* esk = skeleton_item->getData();
-    changeCurrentSkeleton(esk);
-  }
+  
+
+   
 
 }
 
@@ -95,13 +120,6 @@ void MainViewer::createFileTreeItems(list<EMDOgre *> &new_emd_list, list<ESKOgre
 	}
 }
 
-
-void MainViewer::keyPressEvent(QKeyEvent * event) {
-	QWidget::keyPressEvent(event);
-	FileTree->keyPressEvent(event);
-	//AnimationTree->keyPressEvent(event);
-}
-
 void MainViewer::contextMenuFileTree(const QPoint& point) {
 	FileTree->processContextMenu(point);
 }
@@ -114,10 +132,6 @@ void MainViewer::disableTabs() {
 	tabWidget->setTabEnabled(0, false);
 	tabWidget->setTabEnabled(1, false);
 	tabWidget->setTabEnabled(2, false);
-	tabWidget->setTabEnabled(3, false);
-	tabWidget->setTabEnabled(4, false);
-	tabWidget->setTabEnabled(5, false);
-	tabWidget->setTabEnabled(6, false);
 }
 
 void MainViewer::enableTab(int index) {
@@ -134,48 +148,47 @@ void MainViewer::clearAnimTree()
 void MainViewer::changeCurrentSkeleton(ESKOgre* esk)
 {
   skeletonTreeWidget->clear();
+  _currentESKOgre = esk;
+  skeletonTreeWidget->setESK(esk);
   if (esk)
   {
-    Ogre::Skeleton* skeleton = esk->getOgreSkeleton();
-    skeleton->getName();
-
-    QTreeWidgetItem* skeleton_item = new QTreeWidgetItem();
-    skeleton_item->setText(0, QString::fromStdString(skeleton->getName()));
-    skeletonTreeWidget->addTopLevelItem(skeleton_item);
-   
-    Ogre::Bone* root_bone = skeleton->getRootBone();
-
-    std::unordered_map<Ogre::Bone*, QTreeWidgetItem*> todo;
-    todo.reserve(esk->getBones().size());
-    todo[root_bone] = skeleton_item;
-
-
-    while (!todo.empty())
-    {
-      Ogre::Bone* current_parent_bone = todo.begin()->first;
-      QTreeWidgetItem* current_parent_item = todo.begin()->second;
-      todo.erase(todo.begin());
-
-      Ogre::Bone::ChildNodeIterator it = current_parent_bone->getChildIterator();
-      while (it.hasMoreElements())
-      {
-        Ogre::Bone* bone = dynamic_cast<Ogre::Bone*>(it.getNext());
-        Q_ASSERT(bone && "Ogre::Bone cast Failed !");
-        QTreeWidgetItem* item = new QTreeWidgetItem();
-        item->setText(0, QString::fromStdString(bone->getName()));
-        current_parent_item->addChild(item);
-        todo[bone] = item;
-      }
-    }
-
-    skeletonTreeWidget->expandAll();
     enableSkeletonTab();
   }
   else
   {
     disableSkeletonTab();
   }
+}
 
+void MainViewer::changeCurrentMesh(EMDOgre* emd)
+{
+  _currentEMDOgre = emd;
+  if (emd)
+  {
+    enableMeshTab();
+    if (emd && !emd->getSceneNodes().empty())
+    {
+      std::list<Ogre::SceneNode*> sceneNodes = emd->getSceneNodes();
+      Ogre::Vector3 pos = (*sceneNodes.begin())->getPosition(); 
+      for (auto it = sceneNodes.begin(); it != sceneNodes.end(); ++it)
+      {
+        Q_ASSERT(pos == (*it)->getPosition()); // Oh oh my assumption was bad 
+      }
+      posXSpinBox->setValue(pos.x);
+      posYSpinBox->setValue(pos.y);
+      posZSpinBox->setValue(pos.z);
+      //TODO do quaternion and scale 
+      transformGroupBox->setEnabled(true);
+    }
+    else 
+    {
+      transformGroupBox->setEnabled(false);
+    }
+  }
+  else
+  {
+    disableMeshTab();
+  }
 }
 
 
@@ -221,14 +234,23 @@ void MainViewer::disableSkeletonTab()
 
 void MainViewer::enableTextureTab()
 {
-    enableTab(6);
+    enableTab(2);
 }
 
 void MainViewer::disableTextureTab()
 {
-    tabWidget->setTabEnabled(6, false);
+    tabWidget->setTabEnabled(2, false);
 }
 
+void MainViewer::enableMeshTab()
+{
+  enableTab(1);
+}
+
+void MainViewer::disableMeshTab()
+{
+  tabWidget->setTabEnabled(1, false);
+}
 
 void MainViewer::exportOgre(QTreeWidgetItem* item, int& export_success, const QString& dir)
 {
@@ -307,26 +329,26 @@ void MainViewer::exportOgre(QTreeWidgetItem* item, int& export_success, const QS
         for (it = mesh_names.begin(); it != mesh_names.end(); it++)
         {
           Ogre::MeshPtr mesh = Ogre::MeshManager::getSingleton().getByName(*it);
-          std::string filename = dir.toStdString() + "/" + mesh->getName();
-          try
-          {
-            Ogre::Mesh::SubMeshIterator sit = mesh->getSubMeshIterator();
-            
-            //qDebug() << "Mesh name:" << mesh->getName().c_str();
-            //qDebug() << "Mesh filename: " << filename.c_str();
-            while (sit.hasMoreElements())
-            {
-              Ogre::SubMesh* sub_mesh = sit.getNext();
-              //qDebug() << "Sub mesh material name:" << sub_mesh->getMaterialName().c_str();
-            }
+std::string filename = dir.toStdString() + "/" + mesh->getName();
+try
+{
+  Ogre::Mesh::SubMeshIterator sit = mesh->getSubMeshIterator();
 
-            serializer.exportMesh(mesh.getPointer(), filename);
-            export_success++;
-          }
-          catch (Ogre::Exception& e)
-          {
-            QMessageBox::critical(0, "Failed to export mesh", QString::fromStdString(e.getFullDescription()));
-          }
+  //qDebug() << "Mesh name:" << mesh->getName().c_str();
+  //qDebug() << "Mesh filename: " << filename.c_str();
+  while (sit.hasMoreElements())
+  {
+    Ogre::SubMesh* sub_mesh = sit.getNext();
+    //qDebug() << "Sub mesh material name:" << sub_mesh->getMaterialName().c_str();
+  }
+
+  serializer.exportMesh(mesh.getPointer(), filename);
+  export_success++;
+}
+catch (Ogre::Exception& e)
+{
+  QMessageBox::critical(0, "Failed to export mesh", QString::fromStdString(e.getFullDescription()));
+}
         }
       }
     }
@@ -389,9 +411,108 @@ void MainViewer::exportOgre()
   }
 }
 
-void ExtractPathFilename(const QString i, QString& p, QString& f)
+void MainViewer::on_mergeSkeletonButton_clicked(bool)
 {
+  if (_currentESKOgre && _currentESKOgre->getOgreSkeleton())
+  {
+    SkeletonMergingWidget mergingWidget(this);
+    mergingWidget.setTargetSkeleton(_currentESKOgre->getOgreSkeleton());
+    mergingWidget.exec();
+    skeletonTreeWidget->clear();
+    skeletonTreeWidget->regenerateTree();
+  }
+}
 
+void MainViewer::on_posXSpinBox_valueChanged(double value)
+{
+  transformMeshChanged(Ogre::Vector3(posXSpinBox->value(), posYSpinBox->value(), posZSpinBox->value()));
+}
+
+void MainViewer::on_posYSpinBox_valueChanged(double value)
+{
+  transformMeshChanged(Ogre::Vector3(posXSpinBox->value(), posYSpinBox->value(), posZSpinBox->value()));
+}
+
+void MainViewer::on_posZSpinBox_valueChanged(double value)
+{
+  transformMeshChanged(Ogre::Vector3(posXSpinBox->value(), posYSpinBox->value(), posZSpinBox->value()));
+}
+
+
+void MainViewer::transformMeshChanged(const Ogre::Vector3& pos)
+{
+  if (_currentEMDOgre && !_currentEMDOgre->getSceneNodes().empty())
+  {
+    std::list<Ogre::SceneNode*> meshNodes = _currentEMDOgre->getSceneNodes();
+    for (auto it = meshNodes.begin(); it != meshNodes.end(); ++it)
+    {
+      (*it)->setPosition(pos);
+    }
+  }
+}
+
+
+void MainViewer::on_applyTransformButton_clicked(bool)
+{
+  if (_currentEMDOgre && !_currentEMDOgre->getSceneNodes().empty())
+  {
+    const Ogre::Vector3 pos(posXSpinBox->value(), posYSpinBox->value(), posZSpinBox->value());
+    std::list<std::string> meshNames = _currentEMDOgre->getOgreMeshNames();
+    for (auto it = meshNames.begin(); it != meshNames.end(); ++it)
+    {
+      Ogre::MeshPtr mesh = Ogre::MeshManager::getSingleton().getByName(*it, XENOVIEWER_RESOURCE_GROUP);
+      if (mesh->sharedVertexData)
+      {
+        applyTransformToMesh(mesh->sharedVertexData, pos);
+      }
+      
+      auto subMeshIt = mesh->getSubMeshIterator();
+      while (subMeshIt.hasMoreElements())
+      {
+        if ((*subMeshIt.current())->vertexData)
+        {
+          applyTransformToMesh((*subMeshIt.current())->vertexData, pos);
+        }
+        subMeshIt.moveNext();
+      }
+    }
+    _currentEMDOgre->applyDeltaPosition(pos);
+    posXSpinBox->setValue(0);
+    posYSpinBox->setValue(0);
+    posZSpinBox->setValue(0);
+    //transformMeshChanged(Ogre::Vector3(0, 0, 0));
+  }
+}
+
+void MainViewer::applyTransformToMesh(Ogre::VertexData* vertexData, const Ogre::Vector3& pos)
+{
+  Q_ASSERT(vertexData);
+  Q_ASSERT(vertexData->vertexBufferBinding);
+  for (size_t i = 0; i < vertexData->vertexBufferBinding->getBufferCount(); ++i)
+  {
+    Ogre::HardwareVertexBufferSharedPtr vbuf = vertexData->vertexBufferBinding->getBuffer(i);
+    unsigned char* pVert = static_cast<unsigned char*>(vbuf->lock(Ogre::HardwareBuffer::HBL_NORMAL));
+    Ogre::Real* pReal;
+    for (size_t v = 0; v < vertexData->vertexCount; ++v)
+    {
+      // Get elements
+      Ogre::VertexDeclaration::VertexElementList elems = vertexData->vertexDeclaration->findElementsBySource(i);
+      Ogre::VertexDeclaration::VertexElementList::iterator i, iend;
+      for (i = elems.begin(); i != elems.end(); ++i)
+      {
+        Ogre::VertexElement& elem = *i;
+        if (elem.getSemantic() == Ogre::VES_POSITION)
+        {
+          elem.baseVertexPointerToElement(pVert, &pReal);
+          pReal[0] += pos.x;
+          pReal[1] += pos.y;
+          pReal[2] += pos.z;
+        }
+      }
+      pVert += vbuf->getVertexSize();
+    }
+    vbuf->unlock();
+  }
 }
 
 void MainViewer::loadTextureFromFile()
@@ -444,6 +565,91 @@ void MainViewer::saveTextureToFile()
         QMessageBox::critical(NULL, QString("Error !"), QString(e.getFullDescription().c_str()));
       }
     }
+  }
+
+}
+
+void MainViewer::regenerateBoneVertexAssigmentTable()
+{
+  Q_ASSERT(_currentEMDOgre);
+  std::list<Ogre::String> meshNames = _currentEMDOgre->getOgreMeshNames();
+  std::list<Ogre::String>::iterator it;
+  
+  std::map<unsigned short, size_t> verticesAssigned;
+  for (it = meshNames.begin(); it != meshNames.end(); ++it)
+  {
+    Ogre::MeshPtr mesh = Ogre::MeshManager::getSingleton().getByName(*it);
+    const Ogre::Mesh::VertexBoneAssignmentList& assigments = mesh->getBoneAssignments();
+    Ogre::Mesh::VertexBoneAssignmentList::const_iterator bit;
+    for (bit = assigments.cbegin(); bit != assigments.cend(); ++bit)
+    {
+      if (verticesAssigned.find(bit->second.boneIndex) == verticesAssigned.end())
+      {
+        verticesAssigned[bit->second.boneIndex] = 1;
+      }
+      else
+      {
+        verticesAssigned[bit->second.boneIndex] += 1;
+      }
+    }
+
+    auto submesh_it = mesh->getSubMeshIterator();
+    while (submesh_it.hasMoreElements())
+    {
+      Ogre::SubMesh* submesh = *submesh_it.current();
+      const Ogre::SubMesh::VertexBoneAssignmentList& assigments = submesh->getBoneAssignments();
+      Ogre::SubMesh::VertexBoneAssignmentList::const_iterator bit;
+      for (bit = assigments.cbegin(); bit != assigments.cend(); ++bit)
+      {
+        if (verticesAssigned.find(bit->second.boneIndex) == verticesAssigned.end())
+        {
+          verticesAssigned[bit->second.boneIndex] = 1;
+        }
+        else
+        {
+          verticesAssigned[bit->second.boneIndex] += 1;
+        }
+      }
+
+      submesh_it.moveNext();
+    }
+
+    if (_currentESKOgre)
+    {
+      Q_ASSERT(mesh->getSkeleton().get() == _currentESKOgre->getOgreSkeleton());
+    }
+    else
+    {
+      Q_ASSERT(!mesh->getSkeleton().get());
+    }
+  }
+
+
+  vertexBoneAssignmentMeshTable->clearContents();
+  vertexBoneAssignmentMeshTable->setRowCount(verticesAssigned.size());
+
+  Ogre::Skeleton* skeleton = 0;
+  if (_currentESKOgre)
+  {
+    skeleton = _currentESKOgre->getOgreSkeleton();
+  }
+
+  int current_row = 0;
+  std::map<unsigned short, size_t>::iterator vit;
+  for (vit = verticesAssigned.begin(); vit != verticesAssigned.end(); ++vit)
+  {
+    QTableWidgetItem* boneIndex = new QTableWidgetItem(QString::number(vit->first));
+    QTableWidgetItem* verticesCount = new QTableWidgetItem(QString::number(vit->second));
+    vertexBoneAssignmentMeshTable->setItem(current_row, 1, boneIndex);
+    vertexBoneAssignmentMeshTable->setItem(current_row, 2, verticesCount);
+
+    if (skeleton)
+    {
+      Ogre::Bone* bone = skeleton->getBone(vit->first);
+      QTableWidgetItem* boneName = new QTableWidgetItem(QString::fromStdString(bone->getName()));
+      vertexBoneAssignmentMeshTable->setItem(current_row, 0, boneName);
+    }
+    ++current_row;
   }
 
 }
